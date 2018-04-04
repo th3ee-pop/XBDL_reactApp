@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { QuestionList }from './questionList';
-import { Container, Header, Title, Content, Footer, ListItem,Radio, FooterTab, Button, Left, Right, Body, Icon, Text, Form, Item, Input, Label } from 'native-base';
-import { View } from 'react-native';
+import { Container, Content, Text, Item, View, Button } from 'native-base';
 import NormalInputComponent from './components/input-normal';
 import RadioGroupComponent from './components/radio-group';
 import MyDatePicker from './components/date-picker';
@@ -12,38 +11,55 @@ export default class Touchables extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            answer: {}
+        };
+        this.virtualState = {
         };
         this.handleChange = this.handleChange.bind(this);
     }
 
     questions = new QuestionList().questions[0];
     componentDidMount() {
-        console.log(this.props);
-        console.log(this.questions);
-        this.questions.forEach(question => this.state[question.id] = '');
+        this.questions.forEach(question => this.state.answer[question.id] = '');
+        this.questions.forEach(question => this.virtualState[question.id] = '');
+        console.log(this.virtualState);
+        console.log(this.state);
         this.setState({
-            state: this.state
+            answer: this.state.answer
+        }, ()=> {
+            console.log(this.state)
         })
     }
 
     handleChange(aid, answers) {
-        console.log(aid);
-        this.setState(
+        /*this.setState(
             {
            [aid]: answers
-        })
+        });*/
+        this.virtualState[aid] = answers;
+        console.log(this.virtualState);
     }
 
+    updateState = () => {
+        console.log(this.virtualState);
+        console.log(this.state);
+        this.setState({
+            answer: this.virtualState
+        }, () => {
+            console.log(this.state);
+            console.log(this.virtualState);
+        })
+    };
+
     switch_Widget = (widget) => {
-        //console.log(this.state[widget.id]);
         switch (widget.type)
         {
             case 'input':
-                return ( <NormalInputComponent handleChange={this.handleChange} value={this.state[widget.id]} title = {widget.tittle} id = {widget.id} />);
+                return ( <NormalInputComponent handleChange={this.handleChange} value={this.virtualState[widget.id]} title = {widget.tittle} id = {widget.id} />);
 
             case 'radio':
                 return (
-                    <RadioGroupComponent handleChange={this.handleChange} value={this.state[widget.id]} title = {widget.tittle} id = {widget.id} options = {widget.content}/>
+                    <RadioGroupComponent handleChange={this.handleChange} value={this.virtualState[widget.id]} title = {widget.tittle} id = {widget.id} options = {widget.content}/>
                 );
             case 'date':
                 return (
@@ -65,6 +81,9 @@ export default class Touchables extends Component {
         const { params } = this.props.navigation.state;
         return (
             <Container>
+                <View>
+                    <Button light onPress={this.updateState}><Text> Light </Text></Button>
+                </View>
                 <Content>
                     {/*<Item>
                         <NormalInputComponent handleChange={this.handleChange} value={this.state['1.1']} title = '体检编号：（此项体检当天填写）' id = '1.1' />
@@ -134,26 +153,10 @@ export default class Touchables extends Component {
                             ))
                         }
                 </Content>
+
             </Container>
         );
     }
 }
 
-/*const styles = StyleSheet.create({
-    container: {
-        paddingTop: 60,
-    },
-    button: {
-        marginBottom: 30,
-        width: 260,
-        alignItems: 'center',
-        backgroundColor: '#2196F3'
-    },
-    buttonText: {
-        padding: 20,
-        color: 'white'
-    }
-});*/
-
-// skip this line if using Create React Native App
 

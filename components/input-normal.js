@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, Form, Item, Input, Label } from 'native-base';
-import { StyleSheet } from 'react-native';
+import {Content, Form, Input, Label } from 'native-base';
+
 
 
 export default class NormalInputComponent extends Component {
@@ -8,12 +8,19 @@ export default class NormalInputComponent extends Component {
     constructor(props) {
         super (props);
         this.handleChange = this.handleChange.bind(this);
+        this.state = {
+            input_value: this.props.value
+        }
     }
 
 
     handleChange(e) {
-        console.log(e);
-        this.props.handleChange(this.props.id, e)
+        this.setState({
+            input_value: e
+        }, () => {
+            console.log(e);
+            this.props.handleChange(this.props.id, e)
+        })
     }
 
 
@@ -25,7 +32,7 @@ export default class NormalInputComponent extends Component {
                         <Label>
                             {id + ' ' + title}
                         </Label>
-                        <Input type="text" value={value} onChangeText={(text) => {this.handleChange(text)}}/>
+                        <Input type="text" value={this.state.input_value} onChangeText={(text) => {this.handleChange(text)}}/>
                 </Form>
             </Content>
         )

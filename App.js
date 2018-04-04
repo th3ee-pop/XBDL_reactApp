@@ -10,9 +10,6 @@ import HomeScreen from './HomeScreen';
 import {
   Platform,
   StyleSheet,
-  Text,
-  View,
-    Button
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
@@ -44,19 +41,6 @@ const RootStack = StackNavigator({
 export default class App extends Component<Props> {
   render() {
       return <RootStack />
-    /*return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
-    );*/
   }
 }
 

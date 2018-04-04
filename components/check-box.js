@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, Form, Item, Input, Label, Right, Radio, ListItem, Text, View} from 'native-base';
+import { Content, Form, Label, Text, View} from 'native-base';
 import Checkbox from 'react-native-custom-checkbox';
 
 
@@ -33,13 +33,6 @@ export default class CheckBoxComponent extends Component {
                                 </View>
                             ))
                         }
-
-                        {/*<View style={{ flexDirection: 'row', paddingTop: 10 }}>
-                            <Checkbox
-                                style={{flex: 1, padding: 10}}
-                                checked={true}/>
-                            <Text>content1</Text>
-                        </View>*/}
                     </View>
 
 

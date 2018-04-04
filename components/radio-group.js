@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, Form, Item, Input, Label, Right, Radio, ListItem, Text} from 'native-base';
+import { Content, Form,Label,Text} from 'native-base';
 import RadioModal from 'react-native-radio-master';
 
 
@@ -8,6 +8,9 @@ export default class RadioGroupComponent extends Component {
     constructor(props) {
         super (props);
         this.handleChange = this.handleChange.bind(this);
+        this.state = {
+            selected_option: this.props.value
+        }
     }
 
     handleChange(e) {
@@ -31,6 +34,7 @@ export default class RadioGroupComponent extends Component {
                         padding:5,marginTop:10
                     }}
                     onValueChange={this.handleChange}
+                    selectedValue={this.state.selected_option}
                     >
                         {
                             options.map((option, i) => (
@@ -40,17 +44,6 @@ export default class RadioGroupComponent extends Component {
                             ))
                         }
                     </RadioModal>
-
-                       {/* <ListItem>
-                            <Text>Daily Stand Up</Text>
-
-                        </ListItem>
-                        <ListItem>
-                            <Text>Discussion with Client</Text>
-                            <Right>
-                                <Radio selected={true} />
-                            </Right>
-                        </ListItem>*/}
                 </Form>
             </Content>
         )
