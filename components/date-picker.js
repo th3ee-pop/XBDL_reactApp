@@ -5,7 +5,26 @@ import DatePicker from 'react-native-datepicker'
 export default class MyDatePicker extends Component {
     constructor(props){
         super(props);
-        this.state = {date:"2018-04-03"}
+        this.state = {
+            date:""
+        };
+        this.setDate = this.setDate.bind(this);
+    }
+
+    setDate(date) {
+        this.setState({
+            date: date
+        }, () => {
+            console.log(this.state)
+        });
+        this.props.handleChange(this.props.id, date);
+    }
+
+    componentWillReceiveProps(props) {
+        console.log(props);
+        this.setState({
+            date: props.value
+        });
     }
 
     render(){
@@ -23,8 +42,8 @@ export default class MyDatePicker extends Component {
                         mode="date"
                         placeholder="select date"
                         format="YYYY-MM-DD"
-                        minDate="2018-04-03"
-                        maxDate="2030-01-01"
+                        minDate="1900-01-01"
+                        maxDate="2050-01-01"
                         confirmBtnText="Confirm"
                         cancelBtnText="Cancel"
                         customStyles={{
@@ -39,7 +58,7 @@ export default class MyDatePicker extends Component {
                             }
                             // ... You can check the source to find the other keys.
                         }}
-                        onDateChange={(date) => {this.setState({date: date})}}
+                        onDateChange={(date) => {this.setDate(date)}}
                     />
                 </Form>
             </Content>

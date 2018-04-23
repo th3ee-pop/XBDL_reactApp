@@ -1,21 +1,79 @@
 import React, { Component } from 'react';
 import { Content, Form, Label, Text, View} from 'native-base';
-import Checkbox from 'react-native-custom-checkbox';
+import Checkbox from 'react-native-check-box';
 
 
 export default class CheckBoxComponent extends Component {
 
     constructor(props) {
         super (props);
-        this.setArray = this.setArray.bind(this);
+        this.state = {
+            options: []
+        };
+        this.searchOption = this.searchOption.bind(this);
     }
 
-    setArray() {
+    searchOption(value) {
+        const answers = [];
+        this.state.options.forEach(option => {
+            if(option.name === value) {
+                option.selected = !option.selected;
+            }
+        });
+        this.setState({
+            options: this.state.options
+        }, () => {
+            console.log(this.state.options);
+            this.state.options.forEach(option => {
+                if(option.selected) {
+                    answers.push(option.name);
+                }
+            });
+            this.props.handleChange(this.props.id, answers.join(','));
+        })
+    }
 
+    componentWillReceiveProps(props) {
+        console.log(props.value);
+        if(props.value) {
+            console.log(props);
+            let selected_options = props.value.split(',');
+            console.log(selected_options);
+            props.options.forEach(option => {
+                for (let i=0; i<selected_options.length; i++) {
+                    if (option === selected_options[i]) {
+                        this.state.options.push({
+                            name: option,
+                            selected: true
+                        });
+                        break;
+                    }
+                    if (i === selected_options.length-1) {
+                        this.state.options.push({
+                            name: option,
+                            selected: false
+                        });
+                    }
+                }
+            });
+        } else {
+            props.options.forEach(option => {
+                this.state.options.push({
+                    name: option,
+                    selected: false
+                })
+            })
+        }
+        this.setState({
+            options: this.state.options
+        }, () => {
+            console.log(this.state.options)
+        });
     }
 
     render() {
         const {id, title, options} = this.props;
+        console.log(this.state.options);
         return (
             <Content style={{top: 10, marginBottom: 10}}>
                 <Form>
@@ -24,12 +82,15 @@ export default class CheckBoxComponent extends Component {
                     </Label>
                     <View style={{ paddingTop: 10 }}>
                         {
-                            options.map((option) => (
-                                <View key={option} style={{ flexDirection: 'row', paddingTop: 10 , paddingLeft: 10}}>
+                            this.state.options.map((option,index) => (
+                                <View key={index} style={{ flexDirection: 'row', paddingTop: 10 , paddingLeft: 5}}>
                                     <Checkbox
-                                        style={{flex: 1, padding: 10, color: '#666666'}}
-                                        checked={false}/>
-                                    <Text style={{fontSize: 14, paddingLeft: 5}}>{option}</Text>
+                                        rightText={option.name}
+                                        style={{flex: 1, padding: 5}}
+                                        isChecked={option.selected} onClick={() => {
+                                            this.searchOption(option.name);
+                                    }}/>
+                                    {/*<Text style={{fontSize: 14, paddingLeft: 5}}>{option.name}</Text>*/}
                                 </View>
                             ))
                         }

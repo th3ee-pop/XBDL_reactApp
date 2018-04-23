@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Content, Form,Label,Text} from 'native-base';
+import { StyleSheet } from 'react-native';
+import { Content, Form,Label,Text, View} from 'native-base';
 import RadioModal from 'react-native-radio-master';
+import {RadioGroup, RadioButton} from 'react-native-flexi-radio-button';
 
 
 export default class RadioGroupComponent extends Component {
@@ -9,43 +11,60 @@ export default class RadioGroupComponent extends Component {
         super (props);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
-            selected_option: this.props.value
+            value: ''
         }
     }
 
     handleChange(e) {
-        console.log(e);
-        this.props.handleChange(this.props.id, e)
+        this.setState({
+            value: e
+        });
+        this.props.handleChange(this.props.id, e);
+    }
+
+    componentWillReceiveProps(props) {
+        this.setState({
+            value: props.value
+        });
     }
 
     render() {
-
-        const { title, id, options} = this.props;
+        const { title, value, id, options} = this.props;
         return (
             <Content style={{top: 10, marginBottom: 10}}>
                 <Form>
                         <Label>
                             {id + ' ' + title}
                         </Label>
-                    <RadioModal style={{ flexDirection:'row',
-                        flexWrap:'wrap',
-                        alignItems:'flex-start',
-                        flex:1,
-                        padding:5,marginTop:10
-                    }}
-                    onValueChange={this.handleChange}
-                    selectedValue={this.state.selected_option}
-                    >
+                    < RadioGroup
+                        size = {16}
+                        thickness={2}
+                        color = '#4682B4'
+                        onSelect={(index, value) => {
+                        console.log(index);
+                        console.log(value);
+                        this.handleChange(index);
+                    }} selectedIndex={value} >
                         {
-                            options.map((option, i) => (
-                                <Text key={i} value={i.toString()}>
-                                    {option}
-                                </Text>
+                            options.map((option, index) => (
+                                    <RadioButton style={{marginLeft:3}} key={index} value={option}>
+                                        <Text style={{bottom: 3}}>{option}</Text>
+                                    </RadioButton>
                             ))
                         }
-                    </RadioModal>
+                    </RadioGroup>
                 </Form>
             </Content>
         )
     }
 }
+
+let styles = StyleSheet.create({
+    container: {
+        marginTop: 40,
+        padding: 20
+    },
+    text: {
+        fontSize: 14,
+    },
+});
