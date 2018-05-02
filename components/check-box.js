@@ -39,6 +39,7 @@ export default class CheckBoxComponent extends Component {
             console.log(props);
             let selected_options = props.value.split(',');
             console.log(selected_options);
+            this.state.options = [];
             props.options.forEach(option => {
                 for (let i=0; i<selected_options.length; i++) {
                     if (option === selected_options[i]) {
@@ -57,6 +58,7 @@ export default class CheckBoxComponent extends Component {
                 }
             });
         } else {
+            this.state.options = [];
             props.options.forEach(option => {
                 this.state.options.push({
                     name: option,
@@ -64,6 +66,7 @@ export default class CheckBoxComponent extends Component {
                 })
             })
         }
+        console.log(this.state.options);
         this.setState({
             options: this.state.options
         }, () => {

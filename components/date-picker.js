@@ -37,24 +37,24 @@ export default class MyDatePicker extends Component {
                         {id + ' ' + title}
                     </Label>
                     <DatePicker
-                        style={{width: 200, paddingTop:10, left: 20}}
+                        style={{width: 200, paddingTop:15, left: 20}}
                         date={this.state.date}
                         mode="date"
-                        placeholder="select date"
+                        placeholder="选择日期"
                         format="YYYY-MM-DD"
                         minDate="1900-01-01"
                         maxDate="2050-01-01"
                         confirmBtnText="Confirm"
                         cancelBtnText="Cancel"
                         customStyles={{
-                            dateIcon: {
+                            /*dateIcon: {
                                 position: 'absolute',
                                 left: 0,
                                 top: 4,
                                 marginLeft: 0
-                            },
+                            },*/
                             dateInput: {
-                                marginLeft: 36
+                                marginLeft: 3
                             }
                             // ... You can check the source to find the other keys.
                         }}
