@@ -19,7 +19,7 @@ export default class RadioGroupComponent extends Component {
         this.setState({
             value: e
         });
-        this.props.handleChange(this.props.id, e);
+        this.props.handleChange(this.props.index, e);
     }
 
     componentWillReceiveProps(props) {

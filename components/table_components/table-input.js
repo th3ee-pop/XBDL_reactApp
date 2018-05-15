@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import {Content, Form, Input, Label } from 'native-base';
+import { StyleSheet , View, ScrollView, TextInput, ActivityIndicator} from 'react-native';
 
-
-
-export default class NormalInputComponent extends Component {
+export default class TableInputComponent extends Component {
 
 
     constructor(props) {
@@ -19,8 +17,9 @@ export default class NormalInputComponent extends Component {
         this.setState({
             value: e
         });
-       this.props.handleChange(this.props.index, e);
+        this.props.changeValue(e, this.props.index, this.props.cellIndex);
     }
+    
 
     componentWillReceiveProps(props) {
         this.setState({
@@ -32,14 +31,9 @@ export default class NormalInputComponent extends Component {
     render() {
         const { func , value, title, id } = this.props;
         return (
-            <Content style={{top: 10}}>
-                <Form>
-                        <Label>
-                            {id + ' ' + title}
-                        </Label>
-                        <Input type="text" value={this.state.value} onChangeText={(text) => {this.handleChange(text)}}/>
-                </Form>
-            </Content>
+            <TextInput value={this.state.value}  onChangeText={(value) => {
+                this.handleChange(value)
+            }}/>
         )
     }
 }

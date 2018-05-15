@@ -24,14 +24,16 @@ export default class Page_3 extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.initialAnswers = this.initialAnswers.bind(this);
     }
 
 
     componentWillMount() {
-        console.log(this.state);
-        console.log('mounting');
-        AsyncStorage.getItem('PID2').then((result) => {
+        this.virtualState.answers = this.props.answer;
+        this.setState({
+            answers: this.props.answer
+        }, () => {
+        })
+        /*AsyncStorage.getItem('PID2').then((result) => {
             if(result) {
                 console.log('had');
                 this.myQuestions.forEach(question => {
@@ -52,12 +54,13 @@ export default class Page_3 extends Component {
                 }, ()=> {
                 })
             }
-        });
+        });*/
     }
 
-    handleChange(aid, answers) {
-        this.virtualState.answers[aid] = answers;
+    handleChange(index, answers) {
+        this.virtualState.answers[index].Record_Value = answers;
         console.log(this.virtualState);
+        this.props.handleChange(2, this.virtualState.answers);
     }
 
 
@@ -83,82 +86,27 @@ export default class Page_3 extends Component {
         }
     };
 
-    initialAnswers(questions) {
-        questions.forEach(question => {
-            if (question.type === 'table') {
-                this.state.answers[question.id] = [];
-                this.virtualState.answers[question.id] = [];
-                for (let row = 0; row < question.configuration.column_title.length; row ++) {
-                    this.state.answers[question.id].push([]);
-                    this.virtualState.answers[question.id].push([]);
-                    if (question.configuration.reverse) {
-                        for (let col = 0; col<question.configuration.header.length; col ++) {
-                            switch (question.configuration.column_type[row]) {
-                                case 'check':
-                                      this.state.answers[question.id][row].push(false);
-                                    this.virtualState.answers[question.id][row].push(false);
-                                    break;
-                                case 'input':
-                                      this.state.answers[question.id][row].push('');
-                                    this.virtualState.answers[question.id][row].push('');
-                                    break;
-                                case 'date':
-                                      this.state.answers[question.id][row].push('');
-                                    this.virtualState.answers[question.id][row].push('');
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    } else {
-                        for (let col = 0; col<question.configuration.column_type.length; col ++) {
-                            switch (question.configuration.column_type[col]) {
-                                case 'check':
-                                       this.state.answers[question.id][row].push(false);
-                                    this.virtualState.answers[question.id][row].push(false);
-                                    break;
-                                case 'input':
-                                        this.state.answers[question.id][row].push('');
-                                    this.virtualState.answers[question.id][row].push('');
-                                    break;
-                                case 'date':
-                                       this.state.answers[question.id][row].push('');
-                                    this.virtualState.answers[question.id][row].push('');
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }
-                }
-            } else {
-                this.state.answers[question.id] = '';
-                this.virtualState.answers[question.id] = '';
-            }
-        })
-    }
-
-    switch_Widget = (widget) => {
+    switch_Widget = (widget, index) => {
         switch (widget.type)
         {
             case 'input':
-                return ( <NormalInputComponent handleChange={this.handleChange} value={this.state.answers[widget.id]} title = {widget.tittle} id = {widget.id} />);
+                return ( <NormalInputComponent index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} />);
 
             case 'radio':
                 return (
-                    <RadioGroupComponent handleChange={this.handleChange} value={this.state.answers[widget.id]} title = {widget.tittle} id = {widget.id} options = {widget.content}/>
+                    <RadioGroupComponent index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} options = {widget.content}/>
                 );
             case 'date':
                 return (
-                    <MyDatePicker handleChange={this.handleChange} value={this.state.answers[widget.id]} title = {widget.tittle} id = {widget.id}/>
+                    <MyDatePicker index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id}/>
                 );
             case 'checkbox':
                 return (
-                    <CheckBoxComponent handleChange={this.handleChange} value={this.state.answers[widget.id]} title = {widget.tittle} id = {widget.id} options = {widget.content}/>
+                    <CheckBoxComponent index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} options = {widget.content}/>
                 );
             case 'table':
                 return (
-                    <TableComponent handleChange={this.handleChange}  title = {widget.tittle} id = {widget.id} configuration = {widget.configuration} value={this.state.answers[widget.id]}/>
+                    <TableComponent index={index} handleChange={this.handleChange}  title = {widget.tittle} id = {widget.id} configuration = {widget.configuration} value={this.state.answers[index].Record_Value}/>
                 );
             default:
                 return (<Text>
@@ -174,8 +122,8 @@ export default class Page_3 extends Component {
                 <Content>
                     {
                         this.myQuestions.map((d, index) => (
-                            <Item key={index}>
-                                {this.switch_Widget(d)}
+                            <Item  key={index}>
+                                {this.switch_Widget(d, index)}
                             </Item>
                         ))
                     }

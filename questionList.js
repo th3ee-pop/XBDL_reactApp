@@ -1937,11 +1937,9 @@
                         '亲生子女(填写数量)'
                     ],
                     'column_type': ['check', 'check', 'input', 'input'],
-                    'special_row': [],
-                    'reverse': true
                 },
                 'hidden': false,
-                'type': 'table',
+                'type': 'table_2',
                 'tittle': '你是否曾被乡/区级或以上医院医生诊断患有过下列疾病？'
             },
             {

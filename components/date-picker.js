@@ -17,7 +17,7 @@ export default class MyDatePicker extends Component {
         }, () => {
             console.log(this.state)
         });
-        this.props.handleChange(this.props.id, date);
+        this.props.handleChange(this.props.index, date);
     }
 
     componentWillReceiveProps(props) {

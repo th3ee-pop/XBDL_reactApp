@@ -29,11 +29,27 @@ export default class CheckBoxComponent extends Component {
                     answers.push(option.name);
                 }
             });
-            this.props.handleChange(this.props.id, answers.join(','));
+            this.props.handleChange(this.props.index, answers.join(','));
         })
     }
+    componentWillMount() {
 
-    componentWillReceiveProps(props) {
+            this.state.options = [];
+            this.props.options.forEach(option => {
+                this.state.options.push({
+                    name: option,
+                    selected: false
+                })
+            });
+        console.log(this.state.options);
+        this.setState({
+            options: this.state.options
+        }, () => {
+            console.log(this.state.options)
+        });
+    }
+
+    /*componentWillReceiveProps(props) {
         console.log(props.value);
         if(props.value) {
             console.log(props);
@@ -72,7 +88,7 @@ export default class CheckBoxComponent extends Component {
         }, () => {
             console.log(this.state.options)
         });
-    }
+    }*/
 
     render() {
         const {id, title, options} = this.props;

@@ -23,6 +23,12 @@ export default class HomeScreen extends Component {
                         pageInfo: state.Page1
                     })}
                 />
+                <Button
+                    title = 'Add New'
+                    onPress={() => this.props.navigation.navigate('Details', {
+                        pageInfo: state.Page1
+                    })}
+                />
             </View>
         );
     }

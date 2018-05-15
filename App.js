@@ -20,13 +20,6 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-
-
-
-
-
-
-
 const RootStack = StackNavigator({
         Home: {
             screen: HomeScreen
