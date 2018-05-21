@@ -68,35 +68,35 @@ export default class ExaminationView extends Component {
                 switch (question.type) {
                     case 'table': {
                         answerBucket[child].push({
-                            "Record_ID": question.id,
+                            "Record_ID": this.switchID(question.id),
                             "Record_Value": this.generateTable(question)
                         });
                         break;
                     }
                     case 'table_2': {
                         answerBucket[child].push({
-                            "Record_ID": question.id,
+                            "Record_ID": this.switchID(question.id),
                             "Record_Value": this.generateTable_2(question)
                         });
                         break;
                     }
                     case 'radio': {
                         answerBucket[child].push({
-                            "Record_ID": question.id,
+                            "Record_ID": this.switchID(question.id),
                             "Record_Value": this.generateRadio(question)
                         });
                         break;
                     }
                     case 'checkbox': {
                         answerBucket[child].push({
-                            "Record_ID": question.id,
+                            "Record_ID": this.switchID(question.id),
                             "Record_Value": this.generateCheckBox(question)
                         });
                         break;
                     }
                     default: {
                         answerBucket[child].push({
-                            "Record_ID": question.id,
+                            "Record_ID": this.switchID(question.id),
                             "Record_Value": ''
                         });
                         break;
@@ -220,11 +220,11 @@ export default class ExaminationView extends Component {
         return tableAnswer;
     }
 
-    switchID(idstr, index) {
+    switchID(idstr, index?) {
         const idArray = idstr.split('.');
-        idArray.push(index);
+        index ? idArray.push(index) : null;
         const newId = idArray.join('_');
-        return `ID${newId}`
+        return `ID${newId}`;
     }
 
     setContent = () => {
