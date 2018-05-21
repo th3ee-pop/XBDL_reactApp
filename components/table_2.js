@@ -60,57 +60,15 @@ export default class Table2Component extends Component {
         })
     }
 
-    /*componentWillReceiveProps(props) {
-        console.log(props.configuration);
-        const header = props.configuration.header;
-        const column = props.configuration.column_title;
-        const type = props.configuration.column_type;
-        const tableData = [];
-        if (props.configuration.reverse) {
-            console.log('reverse');
-            for (let row = 0; row < type.length; row ++) {
-                tableData.push([{
-                    type: 'text',
-                    name: `${column[row]}_${header[0]}`
-                }]);
-                for (let col = 1; col < header.length; col++) {
-                    tableData[row].push({
-                        type: type[row],
-                        name: `${column[row]}_${header[col]}`
-                    })
-                }
-            }
-        } else {
-            console.log('not re');
-            for (let row = 0; row < column.length; row ++) {
-                tableData.push([]);
-                console.log(tableData[row]);
-                for (let col = 0; col < type.length; col ++) {
-                    tableData[row].push({
-                        type: type[col],
-                        name: `${column[row]}_${header[col]}`
-                    });
-                    console.log(tableData[row]);
-                }
-            }
-        }
-        if (props.configuration.special_row) {
-            props.configuration.special_row.forEach(row => {
-                tableData[row].splice(0, 1, {
-                    type: 'else',
-                    name: `${column[row]}_${header[0]}`
-                });
-            })
-        }
+    componentWillReceiveProps(props) {
+        this.virtualState.answers = props.value;
         this.setState({
-            tableHead: header,
-            tableData: tableData,
             answers: props.value,
             loading: false
         }, () => {
             console.log(this.state);
         })
-    }*/
+    }
 
 
     handleChange(index, answer) {

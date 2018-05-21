@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
-import { Container, Tab, Tabs, ScrollableTab } from 'native-base';
+import { Container, Tab, Tabs, ScrollableTab, Button, Text, Header, Left, Body, Right, Content, Title, Icon} from 'native-base';
 import {QuestionList} from './questionList';
 import Page_1 from './pages/page_first';
 import Page_2 from './pages/page_two';
@@ -12,9 +12,16 @@ import Page_7 from './pages/page_seven';
 import Page_8 from './pages/page_eight';
 import Page_9 from './pages/page_nine';
 import Page_10 from './pages/page_ten';
-export default class Touchables extends Component {
+export default class ExaminationView extends Component {
+
+    static navigationOptions = {
+        //标题
+        drawerLabel:'表单详情',
+        //图标
+    };
 
     allQuestions = new QuestionList().questions;
+   // itemId = this.props.getParam('id', 'NO-ID');
     constructor(props) {
         super(props);
         this.state = {
@@ -26,15 +33,68 @@ export default class Touchables extends Component {
         this.generateTable = this.generateTable.bind(this);
         this.generateTable_2 = this.generateTable_2.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.generateRadio = this.generateRadio.bind(this);
+    }
+
+    componentWillUpdate() {
+        console.log('update');
     }
 
     componentWillMount() {
-        console.log(this.allQuestions);
+       // console.log(this.itemId);
+        console.log(this.props.navigation.getParam('id', 'NO-ID'));
+        const id = this.props.navigation.getParam('id', 'NO-ID');
+        if (id !== 'NO-ID') {
+            AsyncStorage.getItem(id, (err, data) => {
+                if (data) {
+                    this.virtualState.answers = JSON.parse(data).answers;
+                    this.setState({
+                        answers: JSON.parse(data).answers
+                    }, () => {
+                    })
+                } else {
+                    console.log('new');
+                }
+
+            });
+        }
+
         const answerBucket = [];
         for (let child = 0; child < this.allQuestions.length; child ++) {
             answerBucket.push([]);
             this.allQuestions[child].forEach(question => {
-                if (question.type === 'table') {
+
+                switch (question.type) {
+                    case 'table': {
+                        answerBucket[child].push({
+                            "Record_ID": question.id,
+                            "Record_Value": this.generateTable(question)
+                        });
+                        break;
+                    }
+                    case 'table_2': {
+                        answerBucket[child].push({
+                            "Record_ID": question.id,
+                            "Record_Value": this.generateTable_2(question)
+                        });
+                        break;
+                    }
+                    case 'radio': {
+                        answerBucket[child].push({
+                            "Record_ID": question.id,
+                            "Record_Value": this.generateRadio(question)
+                        });
+                        break;
+                    }
+                    default: {
+                        answerBucket[child].push({
+                            "Record_ID": question.id,
+                            "Record_Value": ''
+                        });
+                        break;
+                    }
+                }
+                /*if (question.type === 'table') {
                     answerBucket[child].push({
                         "Record_ID": question.id,
                         "Record_Value": this.generateTable(question)
@@ -44,13 +104,12 @@ export default class Touchables extends Component {
                         "Record_ID": question.id,
                         "Record_Value": this.generateTable_2(question)
                     });
-                }
-                    else {
+                } else {
                     answerBucket[child].push({
                         "Record_ID": question.id,
                         "Record_Value": ''
                     })
-                }
+                }*/
             })
         }
         console.log(answerBucket);
@@ -65,7 +124,18 @@ export default class Touchables extends Component {
 
     handleChange(index, answer) {
         this.virtualState.answers[index] = answer;
-        console.log(this.virtualState.answers);
+        // console.log(this.virtualState.answers);
+    }
+
+    generateRadio(question) {
+        const radioAnswer = [];
+        for (let i = 1; i < question.content.length + 1; i++) {
+            radioAnswer.push({
+                "Record_ID": `ID${question.id}_${i}`,
+                "Record_Value": false
+            })
+        }
+        return radioAnswer;
     }
 
     generateTable(question) {
@@ -132,16 +202,40 @@ export default class Touchables extends Component {
     }
 
     setContent = () => {
-        AsyncStorage.setItem('PID1', JSON.stringify(this.virtualState), (error) => {
-            console.log(error);
-            console.log('111');
+        console.log(this.virtualState.answers[0][0].Record_Value);
+        const saveId = this.virtualState.answers[0][0].Record_Value;
+        if (saveId.length !== 8) {
+            alert('体检编号必须为8位');
+        } else {
+             AsyncStorage.setItem(saveId, JSON.stringify(this.virtualState), (error) => {
+                 if (error) {
+                     alert(error);
+                 } else {
+                     alert('存储成功！');
+                 }
+
         })
+        }
+
     };
 
     render() {
         const { params } = this.props.navigation.state;
         return (
             <Container>
+                <Header>
+                    <Left>
+                        <Button transparent onPress={() => {
+                            this.props.navigation.navigate('DrawerOpen')
+                        }}>
+                            <Icon name='menu' />
+                        </Button>
+                    </Left>
+                    <Body>
+                    <Title>{'健康体检调查表'}</Title>
+                    </Body>
+                    <Right />
+                </Header>
                 <Tabs renderTabBar={()=> <ScrollableTab />}>
                     <Tab heading="一般信息">
                         <Page_1 answer = {this.state.answers[0]} handleChange={this.handleChange}/>
@@ -174,6 +268,9 @@ export default class Touchables extends Component {
                         <Page_10 answer = {this.state.answers[9]} handleChange={this.handleChange}/>
                     </Tab>
                 </Tabs>
+                <Button bordered onPress={this.setContent}>
+                    <Text>暂存</Text>
+                </Button>
             </Container>
         );
     }

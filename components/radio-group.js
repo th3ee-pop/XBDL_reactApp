@@ -11,18 +11,37 @@ export default class RadioGroupComponent extends Component {
         super (props);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
-            value: ''
+            value: []
         }
     }
 
     handleChange(e) {
-        this.setState({
-            value: e
+        console.log(e);
+        this.state.value[e].Record_Value = !this.state.value[e].Record_Value;
+        this.state.value.forEach((d, index) => {
+            if (index !== e) {
+                d.Record_Value = false;
+            }
         });
-        this.props.handleChange(this.props.index, e);
+        this.setState({
+            value: this.state.value
+        }, () => {
+            console.log(this.state.value);
+            this.props.handleChange(this.props.index, this.state.value);
+        });
+
+    }
+
+    componentWillMount() {
+        this.setState({
+            value: this.props.value
+        }, () => {
+            console.log(this.state.value);
+        });
     }
 
     componentWillReceiveProps(props) {
+        console.log(props.value);
         this.setState({
             value: props.value
         });
@@ -41,8 +60,6 @@ export default class RadioGroupComponent extends Component {
                         thickness={2}
                         color = '#4682B4'
                         onSelect={(index, value) => {
-                        console.log(index);
-                        console.log(value);
                         this.handleChange(index);
                     }} selectedIndex={value} >
                         {

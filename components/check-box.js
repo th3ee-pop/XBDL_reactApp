@@ -23,7 +23,6 @@ export default class CheckBoxComponent extends Component {
         this.setState({
             options: this.state.options
         }, () => {
-            console.log(this.state.options);
             this.state.options.forEach(option => {
                 if(option.selected) {
                     answers.push(option.name);
@@ -41,20 +40,16 @@ export default class CheckBoxComponent extends Component {
                     selected: false
                 })
             });
-        console.log(this.state.options);
         this.setState({
             options: this.state.options
         }, () => {
-            console.log(this.state.options)
         });
     }
 
-    /*componentWillReceiveProps(props) {
-        console.log(props.value);
+    componentWillReceiveProps(props) {
+        console.log(props);
         if(props.value) {
-            console.log(props);
             let selected_options = props.value.split(',');
-            console.log(selected_options);
             this.state.options = [];
             props.options.forEach(option => {
                 for (let i=0; i<selected_options.length; i++) {
@@ -82,17 +77,14 @@ export default class CheckBoxComponent extends Component {
                 })
             })
         }
-        console.log(this.state.options);
         this.setState({
             options: this.state.options
         }, () => {
-            console.log(this.state.options)
         });
-    }*/
+    }
 
     render() {
         const {id, title, options} = this.props;
-        console.log(this.state.options);
         return (
             <Content style={{top: 10, marginBottom: 10}}>
                 <Form>

@@ -37,7 +37,6 @@ export default class TableLineComponent extends Component {
 
     componentWillReceiveProps(props) {
         this.setState({
-            tableData: props.config,
             answers: props.answer
         }, () => {
         })

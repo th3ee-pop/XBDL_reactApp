@@ -5,13 +5,14 @@
  */
 
 import React, { Component } from 'react';
-import Touchables from './List';
+import ExaminationView from './List';
 import HomeScreen from './HomeScreen';
+import LocalInfo from './LocalInfo';
 import {
   Platform,
   StyleSheet,
 } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { DrawerNavigator } from 'react-navigation';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -20,20 +21,28 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-const RootStack = StackNavigator({
-        Home: {
+const Drawer = DrawerNavigator({
+         Home: {
             screen: HomeScreen
-        },
-        Details: {
-            screen: Touchables
-        }},
+         },
+         Details: {
+            screen: ExaminationView
+         },
+         LocalInfo: {
+            screen: LocalInfo
+         }
+       },
+    {
+        drawerWidth:300,
+        drawerPosition:'left',
+    },
     {
         initialRouteName: 'Home'
     });
 
 export default class App extends Component<Props> {
   render() {
-      return <RootStack />
+      return <Drawer />
   }
 }
 

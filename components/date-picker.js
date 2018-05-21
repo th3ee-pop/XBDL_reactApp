@@ -21,7 +21,6 @@ export default class MyDatePicker extends Component {
     }
 
     componentWillReceiveProps(props) {
-        console.log(props);
         this.setState({
             date: props.value
         });
@@ -47,16 +46,9 @@ export default class MyDatePicker extends Component {
                         confirmBtnText="Confirm"
                         cancelBtnText="Cancel"
                         customStyles={{
-                            /*dateIcon: {
-                                position: 'absolute',
-                                left: 0,
-                                top: 4,
-                                marginLeft: 0
-                            },*/
                             dateInput: {
                                 marginLeft: 3
                             }
-                            // ... You can check the source to find the other keys.
                         }}
                         onDateChange={(date) => {this.setDate(date)}}
                     />

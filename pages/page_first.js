@@ -57,6 +57,16 @@ export default class Page_1 extends Component {
         });*/
     }
 
+    componentWillReceiveProps(props) {
+        console.log(props);
+        this.virtualState.answers = props.answer;
+        this.setState({
+            answers: props.answer
+        }, () => {
+            console.log(this.state.answers);
+        })
+    }
+
     handleChange(index, answers) {
         this.virtualState.answers[index].Record_Value = answers;
         console.log(this.virtualState);
