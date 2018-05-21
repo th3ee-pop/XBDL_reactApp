@@ -13,8 +13,14 @@ export default class CheckBoxComponent extends Component {
         this.searchOption = this.searchOption.bind(this);
     }
 
-    searchOption(value) {
-        const answers = [];
+    searchOption(index) {
+        this.state.options[index].Record_Value = !this.state.options[index].Record_Value;
+        this.setState({
+            options: this.state.options
+        }, () => {
+            this.props.handleChange(this.props.index, this.state.options);
+        })
+        /*const answers = [];
         this.state.options.forEach(option => {
             if(option.name === value) {
                 option.selected = !option.selected;
@@ -29,25 +35,18 @@ export default class CheckBoxComponent extends Component {
                 }
             });
             this.props.handleChange(this.props.index, answers.join(','));
-        })
+        })*/
     }
     componentWillMount() {
-
-            this.state.options = [];
-            this.props.options.forEach(option => {
-                this.state.options.push({
-                    name: option,
-                    selected: false
-                })
-            });
         this.setState({
-            options: this.state.options
+            options: this.props.value
         }, () => {
+            console.log(this.state);
         });
     }
 
     componentWillReceiveProps(props) {
-        console.log(props);
+        /*console.log(props);
         if(props.value) {
             let selected_options = props.value.split(',');
             this.state.options = [];
@@ -80,6 +79,11 @@ export default class CheckBoxComponent extends Component {
         this.setState({
             options: this.state.options
         }, () => {
+        });*/
+        this.setState({
+            options: props.value
+        }, () => {
+            console.log(this.state);
         });
     }
 
@@ -93,13 +97,13 @@ export default class CheckBoxComponent extends Component {
                     </Label>
                     <View style={{ paddingTop: 10 }}>
                         {
-                            this.state.options.map((option,index) => (
+                            options.map((option,index) => (
                                 <View key={index} style={{ flexDirection: 'row', paddingTop: 10 , paddingLeft: 5}}>
                                     <Checkbox
-                                        rightText={option.name}
+                                        rightText={option}
                                         style={{flex: 1, padding: 5}}
-                                        isChecked={option.selected} onClick={() => {
-                                            this.searchOption(option.name);
+                                        isChecked={this.state.options[index].Record_Value} onClick={() => {
+                                            this.searchOption(index);
                                     }}/>
                                     {/*<Text style={{fontSize: 14, paddingLeft: 5}}>{option.name}</Text>*/}
                                 </View>

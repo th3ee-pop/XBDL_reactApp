@@ -30,28 +30,28 @@ export default class HomeScreen extends Component {
         });
     }
 
-    removeItem(id) {
+    removeItem(id, secId, rowId, rowMap) {
+        console.log(secId);
+        console.log(rowId);
+        console.log(rowMap);
         AsyncStorage.removeItem(id, (err) => {
             if (err) {
                 alert('删除失败');
             } else {
                 alert('删除成功');
-                for (let i = 0; i < this.state.list.length; i++) {
-                    if(this.state.list[i] === id) {
-                        this.state.list.splice(i, 1);
-                    }
-                }
-                this.setState({
-                    list: this.state.list
-                }, () => {
-                    console.log(this.state.list);
-                })
+                rowMap[`${secId}${rowId}`].props.closeRow();
+                const newData = [...this.state.list];
+                newData.splice(rowId, 1);
+                this.setState({ list: newData }, () => {
+                    console.log(this.state);
+                });
             }
         })
     }
 
+
+
     render() {
-        const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         return (
             <Container>
                 <Header>
@@ -84,13 +84,13 @@ export default class HomeScreen extends Component {
                                 <Text> {data} </Text>
                             </ListItem>}
                         renderLeftHiddenRow={data =>
-                            <Button full onPress={() => alert(data)}>
+                            (<Button full onPress={() => alert(data)}>
                                 <Icon active name="md-arrow-round-up" />
-                            </Button>}
-                        renderRightHiddenRow={(data) =>
-                            <Button full danger onPress={() => this.removeItem(data)}>
+                            </Button>)}
+                        renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                            (<Button full danger onPress={_ => this.removeItem(data, secId, rowId, rowMap)}>
                                 <Icon active name="trash" />
-                            </Button>}
+                            </Button>)}
                         leftOpenValue={75}
                         rightOpenValue={-75}
                     />

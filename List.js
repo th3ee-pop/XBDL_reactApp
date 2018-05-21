@@ -34,6 +34,7 @@ export default class ExaminationView extends Component {
         this.generateTable_2 = this.generateTable_2.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.generateRadio = this.generateRadio.bind(this);
+        this.generateCheckBox = this.generateCheckBox.bind(this);
     }
 
     componentWillUpdate() {
@@ -86,6 +87,13 @@ export default class ExaminationView extends Component {
                         });
                         break;
                     }
+                    case 'checkbox': {
+                        answerBucket[child].push({
+                            "Record_ID": question.id,
+                            "Record_Value": this.generateCheckBox(question)
+                        });
+                        break;
+                    }
                     default: {
                         answerBucket[child].push({
                             "Record_ID": question.id,
@@ -131,11 +139,22 @@ export default class ExaminationView extends Component {
         const radioAnswer = [];
         for (let i = 1; i < question.content.length + 1; i++) {
             radioAnswer.push({
-                "Record_ID": `ID${question.id}_${i}`,
+                "Record_ID": this.switchID(question.id, i),
                 "Record_Value": false
             })
         }
         return radioAnswer;
+    }
+
+    generateCheckBox(question) {
+        const checkAnswer = [];
+        for (let i=1; i < question.content.length + 1; i++) {
+            checkAnswer.push({
+                "Record_ID": this.switchID(question.id, i),
+                "Record_Value": false
+            })
+        }
+        return checkAnswer;
     }
 
     generateTable(question) {
@@ -199,6 +218,13 @@ export default class ExaminationView extends Component {
         }
         console.log(tableAnswer);
         return tableAnswer;
+    }
+
+    switchID(idstr, index) {
+        const idArray = idstr.split('.');
+        idArray.push(index);
+        const newId = idArray.join('_');
+        return `ID${newId}`
     }
 
     setContent = () => {

@@ -11,7 +11,8 @@ export default class RadioGroupComponent extends Component {
         super (props);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
-            value: []
+            value: [],
+            selected: ''
         }
     }
 
@@ -42,8 +43,15 @@ export default class RadioGroupComponent extends Component {
 
     componentWillReceiveProps(props) {
         console.log(props.value);
+        let selected = 0;
+        props.value.forEach((option, index) => {
+            if (option.Record_Value === true) {
+                selected = index;
+            }
+        });
         this.setState({
-            value: props.value
+            value: props.value,
+            selected: selected
         });
     }
 
@@ -61,7 +69,7 @@ export default class RadioGroupComponent extends Component {
                         color = '#4682B4'
                         onSelect={(index, value) => {
                         this.handleChange(index);
-                    }} selectedIndex={value} >
+                    }} selectedIndex={this.state.selected} >
                         {
                             options.map((option, index) => (
                                     <RadioButton style={{marginLeft:3}} key={index} value={option}>
