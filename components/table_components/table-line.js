@@ -142,7 +142,7 @@ export default class TableLineComponent extends Component {
                 return (
                     <DatePicker
                         style={{width: 125, paddingTop:10}}
-                        date="2000-01-01"
+                        date={this.state.answers[index].Record_Value}
                         mode="date"
                         placeholder="选择日期"
                         format="YYYY-MM-DD"

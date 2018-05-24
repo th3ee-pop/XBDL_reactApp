@@ -34,8 +34,15 @@ export default class RadioGroupComponent extends Component {
     }
 
     componentWillMount() {
+        let selected = null;
+        this.props.value.forEach((option, index) => {
+            if (option.Record_Value === true) {
+                selected = index;
+            }
+        });
         this.setState({
-            value: this.props.value
+            value: this.props.value,
+            selected: selected
         }, () => {
             console.log(this.state.value);
         });
@@ -43,7 +50,7 @@ export default class RadioGroupComponent extends Component {
 
     componentWillReceiveProps(props) {
         console.log(props.value);
-        let selected = 0;
+        let selected = null;
         props.value.forEach((option, index) => {
             if (option.Record_Value === true) {
                 selected = index;

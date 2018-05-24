@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 import { Container, Tab, Tabs, ScrollableTab, Button, Text, Header, Left, Body, Right, Content, Title, Icon} from 'native-base';
+import moment from 'moment';
 import {QuestionList} from './questionList';
 import Page_1 from './pages/page_first';
 import Page_2 from './pages/page_two';
@@ -42,14 +43,6 @@ export default class ExaminationView extends Component {
     }
 
     componentWillMount() {
-       // console.log(this.itemId);
-        this.table46Id(this.allQuestions[3][6]);
-        this.table51Id(this.allQuestions[4][0]);
-        this.table53Id(this.allQuestions[4][3]);
-        this.table54Id(this.allQuestions[4][4]);
-        this.table614Id(this.allQuestions[5][23]);
-        this.table78Id(this.allQuestions[6][12]);
-        this.table715Id(this.allQuestions[6][25]);
         console.log(this.props.navigation.getParam('id', 'NO-ID'));
         const id = this.props.navigation.getParam('id', 'NO-ID');
         if (id !== 'NO-ID') {
@@ -74,16 +67,93 @@ export default class ExaminationView extends Component {
 
                 switch (question.type) {
                     case 'table': {
-                        answerBucket[child].push({
+                        switch (question.id) {
+                            case '3.5': {
+                                answerBucket[child].push({
+                                    "Record_ID": this.switchID(question.id),
+                                    "Record_Value": this.table35Id(question)
+                                });
+                                break;
+                            }
+                            case '4.6': {
+                                answerBucket[child].push({
+                                    "Record_ID": this.switchID(question.id),
+                                    "Record_Value": this.table46Id(question)
+                                });
+                                break;
+                            }
+                            case '5.1': {
+                                answerBucket[child].push({
+                                    "Record_ID": this.switchID(question.id),
+                                    "Record_Value": this.table51Id(question)
+                                });
+                                break;
+                            }
+                            case '5.3': {
+                                answerBucket[child].push({
+                                    "Record_ID": this.switchID(question.id),
+                                    "Record_Value": this.table53Id(question)
+                                });
+                                break;
+                            }
+                            case '5.4': {
+                                answerBucket[child].push({
+                                    "Record_ID": this.switchID(question.id),
+                                    "Record_Value": this.table54Id(question)
+                                });
+                                break;
+                            }
+                            case '6.14': {
+                                answerBucket[child].push({
+                                    "Record_ID": this.switchID(question.id),
+                                    "Record_Value": this.table614Id(question)
+                                });
+                                break;
+                            }
+                            case '7.8': {
+                                answerBucket[child].push({
+                                    "Record_ID": this.switchID(question.id),
+                                    "Record_Value": this.table78Id(question)
+                                });
+                                break;
+                            }
+
+                            case '8.13': {
+                                answerBucket[child].push({
+                                    "Record_ID": this.switchID(question.id),
+                                    "Record_Value": this.table813Id(question)
+                                });
+                                break;
+                            }
+                            case '9.6': {
+                                answerBucket[child].push({
+                                    "Record_ID": this.switchID(question.id),
+                                    "Record_Value": this.table96Id(question)
+                                });
+                                break;
+                            }
+                            case '9.13': {
+                                answerBucket[child].push({
+                                    "Record_ID": this.switchID(question.id),
+                                    "Record_Value": this.table913Id(question)
+                                });
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                        break;
+                        /*answerBucket[child].push({
                             "Record_ID": this.switchID(question.id),
                             "Record_Value": this.generateTable(question)
                         });
-                        break;
+                        break;*/
                     }
                     case 'table_2': {
                         answerBucket[child].push({
                             "Record_ID": this.switchID(question.id),
-                            "Record_Value": this.generateTable_2(question)
+                            "Record_Value": this.table715Id(question)
                         });
                         break;
                     }
@@ -121,6 +191,25 @@ export default class ExaminationView extends Component {
         })
     }
 
+    table35Id(question) {
+        const config = question.configuration;
+        const IdArray = [];
+        for (let row = 0; row < config.column_title.length; row++) {
+            IdArray.push([]);
+            IdArray[row].push({
+                "Record_ID": `ID3_5_0_${String.fromCharCode(row + 97)}`,
+                "Record_Value": config.column_title[row]
+            });
+            for (let col = 1; col<config.header.length; col++) {
+                IdArray[row].push({
+                    "Record_ID": `ID3_5_${col}_${String.fromCharCode((97 + row))}`,
+                    "Record_Value": ''
+                })
+            }
+        }
+        return IdArray;
+    }
+
     table46Id(question) {
         const config = question.configuration;
         const IdArray = [];
@@ -137,7 +226,7 @@ export default class ExaminationView extends Component {
                 })
             }
         }
-        console.log(IdArray);
+        return IdArray;
     }
 
     table51Id(question) {
@@ -162,7 +251,7 @@ export default class ExaminationView extends Component {
         }
         IdArray[29][0].Record_ID = 'ID5_1_30_o';
         IdArray[29][0].Record_Value = '';
-        console.log(IdArray);
+        return IdArray;
     }
 
     table53Id(question) {
@@ -182,7 +271,7 @@ export default class ExaminationView extends Component {
             }
         }
         IdArray[2][1].Record_ID = 'ID5_3_4';
-        console.log(IdArray);
+        return IdArray;
     }
 
     table54Id(question) {
@@ -201,7 +290,7 @@ export default class ExaminationView extends Component {
                 })
             }
         }
-        console.log(IdArray);
+        return IdArray;
     }
 
     table614Id(question) {
@@ -222,7 +311,7 @@ export default class ExaminationView extends Component {
                 "Record_Value": '',
             });
         }
-        console.log(IdArray);
+        return IdArray;
     }
 
     table78Id(question) {
@@ -252,7 +341,7 @@ export default class ExaminationView extends Component {
         IdArray[25][0].Record_Value = '';
         IdArray[26][0].Record_ID = 'ID7_8_h_27';
         IdArray[26][0].Record_Value = '';
-        console.log(IdArray);
+        return IdArray;
     }
 
     table715Id(question) {
@@ -278,7 +367,74 @@ export default class ExaminationView extends Component {
                 }
             }
         }
-        console.log(IdArray);
+        return IdArray;
+    }
+
+    table813Id(question) {
+        const config = question.configuration;
+        const IdArray = [];
+        for (let row = 0; row < config.column_title.length; row++) {
+            IdArray.push([]);
+            IdArray[row].push({
+                "Record_ID": `ID8_13_${row + 1}_0`,
+                "Record_Value": config.column_title[row]
+            });
+            for (let col = 1; col < config.header.length - 1; col++) {
+                IdArray[row].push({
+                    "Record_ID": `ID8_13_${row+1}_${col}`,
+                    "Record_Value": false
+                })
+            }
+            IdArray[row].push({
+                "Record_ID": `ID8_13_a_${row+1}`,
+                "Record_Value": ''
+            })
+        }
+        return IdArray;
+    }
+
+    table96Id(question) {
+        const config = question.configuration;
+        const IdArray = [];
+        for (let row = 0; row < config.column_title.length; row++) {
+            IdArray.push([]);
+            IdArray[row].push({
+                "Record_ID": `ID9_6_0_${row + 1}`,
+                "Record_Value": config.column_title[row]
+            });
+            for (let col = 1; col < config.header.length - 1; col++) {
+                IdArray[row].push({
+                    "Record_ID": `ID9_6_${String.fromCharCode(96 + col)}_${row + 1}`,
+                    "Record_Value": ''
+                })
+            }
+            IdArray[row].push({
+                "Record_ID": `ID9_6_c_${row+1}`,
+                "Record_Value": false
+            })
+        }
+        return IdArray;
+    }
+
+    table913Id(question) {
+        const config = question.configuration;
+        const IdArray = [];
+        for (let row = 0; row < config.column_title.length; row++) {
+            IdArray.push([]);
+            IdArray[row].push({
+                "Record_ID": `ID9_13_0_${row + 1}`,
+                "Record_Value": config.column_title[row]
+            });
+                IdArray[row].push({
+                    "Record_ID": `ID9_13_${row + 1}`,
+                    "Record_Value": false
+                });
+            IdArray[row].push({
+                "Record_ID": `ID9_13_a_${row+1}`,
+                "Record_Value": ''
+            })
+        }
+        return IdArray;
     }
 
     handleChange(index, answer) {
@@ -394,6 +550,9 @@ export default class ExaminationView extends Component {
         if (saveId.length !== 8) {
             alert('体检编号必须为8位');
         } else {
+             this.virtualState.status = 0;
+             this.virtualState.updateTime = moment().format('YYYY-MM-DD HH:mm:ss');
+             console.log(this.virtualState);
              AsyncStorage.setItem(saveId, JSON.stringify(this.virtualState), (error) => {
                  if (error) {
                      alert(error);
