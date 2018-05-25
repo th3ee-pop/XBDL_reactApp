@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {Text, View, AsyncStorage, ListView ,Alert} from 'react-native';
-import {Container, Header, Title, Content, List, ListItem, Left, Right, Icon, Body, Button, SwipeRow,Footer, FooterTab} from 'native-base';
+import {Text, View, AsyncStorage, ListView ,Alert, ToastAndroid, NetInfo} from 'react-native';
+import {Container, Header, Title, Content, List, ListItem, Left, Right, Icon, Body, Button, SwipeRow,Footer, FooterTab, Spinner} from 'native-base';
 import {QuestionList} from "./questionList";
 import { modelList } from "./qlmodel";
 
@@ -27,7 +27,9 @@ export default class HomeScreen extends Component {
             Page2: '现病史',
             list: [],
             uploaded_list: [],
-            logged_user: null
+            logged_user: null,
+            isConnected: null,
+            uploading: false
         }
     }
 
@@ -45,6 +47,13 @@ export default class HomeScreen extends Component {
                     })
                 }
             }
+        });
+        // check if the user has logged
+
+        NetInfo.isConnected.fetch().done((isConnected) => {
+            this.setState({
+                isConnected: isConnected
+            })
         });
         AsyncStorage.getAllKeys((err, keys) => {
             console.log(keys);
@@ -78,26 +87,49 @@ export default class HomeScreen extends Component {
 
 
         });
+        // get the localStorage and divide them into two groups.
     }
 
     removeItem(id, secId, rowId, rowMap) {
-        console.log(secId);
-        console.log(rowId);
-        console.log(rowMap);
-        console.log(id);
-        AsyncStorage.removeItem(id[0], (err) => {
-            if (err) {
-                alert('删除失败');
-            } else {
-                alert('删除成功');
-                rowMap[`${secId}${rowId}`].props.closeRow();
-                const newData = [...this.state.list];
-                newData.splice(rowId, 1);
-                this.setState({ list: newData }, () => {
-                    console.log(this.state);
-                });
-            }
-        })
+        Alert.alert(
+            '提示',
+            '将记录从本地删除将不可恢复，确定要删除？',
+            [
+                {text:'取消', onPress: () => console.log('取消了'), style: 'cancel'},
+                {text: '确定', onPress: () => {
+                        AsyncStorage.removeItem(id[0], (err) => {
+                            if (err) {
+                                alert('删除失败');
+                            } else {
+                                rowMap[`${secId}${rowId}`].props.closeRow();
+                                if (id[1].status === 0) {
+                                    const newData = [...this.state.list];
+                                    newData.splice(rowId, 1);
+                                    this.setState({ list: newData }, () => {
+                                        ToastAndroid.show('删除成功', ToastAndroid.SHORT);
+                                    });
+                                } else {
+                                    const newData = [...this.state.uploaded_list];
+                                    newData.splice(rowId, 1);
+                                    this.setState({ uploaded_list: newData }, () => {
+                                        ToastAndroid.show('删除成功', ToastAndroid.SHORT);
+                                    });
+                                }
+                            }
+                        })
+                    }}
+            ]
+        )
+
+    }
+    //remove item from localStorage.
+    checkIfConnected(id) {
+        console.log(this.state);
+        if (this.state.isConnected === true) {
+            this.checkAndUpload(id);
+        } else {
+            ToastAndroid.show('您当前不处于网络环境下', ToastAndroid.SHORT);
+        }
     }
 
     checkAndUpload(id) {
@@ -151,14 +183,7 @@ export default class HomeScreen extends Component {
                     "Record_ID": 'ID0_5',
                     "Record_Value": this.state.logged_user.name
                 });
-                console.log(allTableData);
-                const page1 = [];
-                allTableData.forEach(item => {
-                    if(item.Record_ID.substr(0, 4) === 'ID1_' || item.Record_ID.substr(0, 4) === 'ID0_') {
-                        page1.push(item);
-                    }
-                });
-                console.log(page1);
+
                 fetch("http://39.106.142.184:9501/healthexamination/recordop/", {
                     method: 'PUT',
                     body: JSON.stringify({
@@ -191,7 +216,7 @@ export default class HomeScreen extends Component {
                                 ]
                             )
                         } else if (result.Return === 0) {
-                            alert('上传成功');
+                            ToastAndroid.show('上传成功', ToastAndroid.SHORT);
                             const newData = JSON.parse(data);
                             newData.status = 1;
                             console.log(newData);
@@ -200,11 +225,27 @@ export default class HomeScreen extends Component {
                                     console.log(err);
                                 } else {
                                     console.log('状态已转换');
+                                    this.state.list.forEach((item, index )=> {
+                                        console.log(item);
+                                        if(item[0] === id) {
+                                            this.state.list.splice(index, 1);
+                                        }
+                                    });
+                                    this.state.uploaded_list.push([id, JSON.stringify(newData)]);
+                                    this.setState({
+                                        list: this.state.list,
+                                        uploaded_list: this.state.uploaded_list
+                                    }, () => {
+                                        console.log(this.state);
+                                    })
                                 }
                             })
+                        } else if (result.Return === 1) {
+                            ToastAndroid.show('上传失败，未知错误。', ToastAndroid.SHORT);
                         }
                     }).catch(err => {
                         console.log(err);
+                    ToastAndroid.show('您当前不处于网络环境下或网络不佳', ToastAndroid.SHORT);
                 })
             }
         })
@@ -319,7 +360,7 @@ export default class HomeScreen extends Component {
             console.log(tableDataPair);
             return tableDataPair;
         } else {
-            goodData = [];
+            const goodData = [];
             data.Record_Value.forEach((option) => {
                 if (option.Record_Value === true) {
                     goodData.push(option);
@@ -343,7 +384,15 @@ export default class HomeScreen extends Component {
                     <Body>
                     <Title>{'体检调查表管理'}</Title>
                     </Body>
-                    <Right />
+                    <Right>
+                        <Button transparent onPress={() => {
+                            this.props.navigation.navigate('Details', {
+                                id: 'NO-ID'
+                            })
+                        }}>
+                            <Icon name='md-add' />
+                        </Button>
+                    </Right>
                 </Header>
                 <Content>
                     <View style={{marginTop: 15, marginBottom: 10}}>
@@ -351,64 +400,81 @@ export default class HomeScreen extends Component {
                             {'本地未上传记录：'}
                         </Title>
                     </View>
-                    <List
-                        dataSource={this.ds.cloneWithRows(this.state.list)}
-                        renderRow={(data) =>
-                            <ListItem style={{alignItems: 'center'}} onPress={() => {
-                                this.props.navigation.navigate('Details', {
-                                    id: data[0]
-                                })
-                            }}>
-                                <Text> {`${JSON.parse(data[1]).updateTime.substr(0,10)}录入，体检编号:${data[0]}`} </Text>
-                            </ListItem>}
-                        renderLeftHiddenRow={data =>
-                            (<Button full onPress={() => {
-                                this.checkAndUpload(data[0])
-                            }}>
-                                <Icon active name="md-arrow-round-up" />
-                            </Button>)}
-                        renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                            (<Button full danger onPress={_ => this.removeItem(data, secId, rowId, rowMap)}>
-                                <Icon active name="trash" />
-                            </Button>)}
-                        leftOpenValue={75}
-                        rightOpenValue={-75}
-                    />
+                    {
+                        this.state.list.length === 0 ? (
+                            <Spinner color='blue' />
+                        ) : (
+                            <List
+                                dataSource={this.ds.cloneWithRows(this.state.list)}
+                                renderRow={(data) =>
+                                    <ListItem style={{alignItems: 'center'}} onPress={() => {
+                                        this.props.navigation.navigate('Details', {
+                                            id: data[0]
+                                        })
+                                    }}>
+                                        <Text> {`${JSON.parse(data[1]).updateTime.substr(0,10)}录入，体检编号:${data[0]}`} </Text>
+                                    </ListItem>}
+                                renderLeftHiddenRow={data =>
+                                    (<Button full onPress={() => {
+                                        this.checkAndUpload(data[0])
+                                    }}>
+                                        <Icon active name="md-arrow-round-up" />
+                                    </Button>)}
+                                renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                                    (<Button full danger onPress={_ => this.removeItem(data, secId, rowId, rowMap)}>
+                                        <Icon active name="trash" />
+                                    </Button>)}
+                                leftOpenValue={75}
+                                rightOpenValue={-75}
+                            />
+                        )
+                    }
+
 
                     <View style={{marginTop: 15, marginBottom: 10}}>
                         <Title style={{color: '#888888'}}>
                             {'本地已上传记录：'}
                         </Title>
                     </View>
-                    <List
-                        dataSource={this.ds.cloneWithRows(this.state.uploaded_list)}
-                        renderRow={(data) =>
-                            <ListItem style={{alignItems: 'center'}} onPress={() => {
-                                this.props.navigation.navigate('Details', {
-                                    id: data[0]
-                                })
-                            }}>
-                                <Text> {`${JSON.parse(data[1]).updateTime.substr(0,10)}录入，体检编号:${data[0]}`} </Text>
-                            </ListItem>}
-                        renderLeftHiddenRow={data =>
-                            (<Button full onPress={() => {
-                                this.checkAndUpload(data[0])
-                            }}>
-                                <Icon active name="md-arrow-round-up" />
-                            </Button>)}
-                        renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                            (<Button full danger onPress={_ => this.removeItem(data, secId, rowId, rowMap)}>
-                                <Icon active name="trash" />
-                            </Button>)}
-                        leftOpenValue={75}
-                        rightOpenValue={-75}
-                    />
+                    {
+                        this.state.uploaded_list.length === 0 ? (
+                            <Spinner color='blue' />
+                        ) : (
+                            <List
+                                dataSource={this.ds.cloneWithRows(this.state.uploaded_list)}
+                                renderRow={(data) =>
+                                    <ListItem style={{alignItems: 'center'}} onPress={() => {
+                                        this.props.navigation.navigate('Details', {
+                                            id: data[0]
+                                        })
+                                    }}>
+                                        <Text> {`${JSON.parse(data[1]).updateTime.substr(0,10)}录入，体检编号:${data[0]}`} </Text>
+                                    </ListItem>}
+                                renderLeftHiddenRow={data =>
+                                    (<Button full onPress={() => {
+                                        this.checkIfConnected(data[0])
+                                    }}>
+                                        <Icon active name="md-arrow-round-up" />
+                                    </Button>)}
+                                renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                                    (<Button full danger onPress={_ => this.removeItem(data, secId, rowId, rowMap)}>
+                                        <Icon active name="trash" />
+                                    </Button>)}
+                                leftOpenValue={75}
+                                rightOpenValue={-75}
+                            />
+                        )
+                    }
+
                {/* <Button
                     title = 'Add New'
                     onPress={() => this.props.navigation.navigate('Details', {
                         pageInfo: this.state.Page1
                     })}
                 />*/}
+
+
+
                 </Content>
                 <Footer style={{alignItems: 'center'}}>
                     <Text style={{color: '#ffffff'}}>

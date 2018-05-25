@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, ToastAndroid } from 'react-native';
 import { Container, Tab, Tabs, ScrollableTab, Button, Text, Header, Left, Body, Right, Content, Title, Icon} from 'native-base';
 import moment from 'moment';
 import {QuestionList} from './questionList';
@@ -557,7 +557,7 @@ export default class ExaminationView extends Component {
                  if (error) {
                      alert(error);
                  } else {
-                     alert('存储成功！');
+                     ToastAndroid.show('已保存', ToastAndroid.SHORT);
                  }
 
         })
@@ -616,9 +616,13 @@ export default class ExaminationView extends Component {
                         <Page_10 answer = {this.state.answers[9]} handleChange={this.handleChange}/>
                     </Tab>
                 </Tabs>
-                <Button bordered onPress={this.setContent}>
+                <Button full onPress={this.setContent}>
+                    <Icon name='folder'/>
                     <Text>暂存</Text>
                 </Button>
+                {/*<Button bordered >
+                    <Text>暂存</Text>
+                </Button>*/}
             </Container>
         );
     }

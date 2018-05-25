@@ -6,7 +6,7 @@ import {Container, Header, Title, Content, List, ListItem, Left, Right, Icon, Bo
 export default class LocalInfo extends Component {
 
     static navigationOptions = {
-        drawerLabel:'录入者信息配置',
+        drawerLabel:'录入者信息',
     };
 
     constructor(props) {
@@ -137,7 +137,7 @@ export default class LocalInfo extends Component {
                                         <Text> {`${this.state.logged_user.name}`}</Text>
                                     </Item>
                                     <Item>
-                                        <Icon active name='md-eye' />
+                                        <Icon active name='home' />
                                         <Text> {`${this.state.logged_user.province}`}</Text>
                                     </Item>
 
