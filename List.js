@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AsyncStorage, ToastAndroid } from 'react-native';
-import { Container, Tab, Tabs, ScrollableTab, Button, Text, Header, Left, Body, Right, Content, Title, Icon} from 'native-base';
+import { Container, Tab, Tabs, ScrollableTab, Button, Text, Header, Left, Body, Right, Content, Title, Icon, Separator} from 'native-base';
 import moment from 'moment';
 import {QuestionList} from './questionList';
 import Page_1 from './pages/page_first';
@@ -144,11 +144,6 @@ export default class ExaminationView extends Component {
                             }
                         }
                         break;
-                        /*answerBucket[child].push({
-                            "Record_ID": this.switchID(question.id),
-                            "Record_Value": this.generateTable(question)
-                        });
-                        break;*/
                     }
                     case 'table_2': {
                         answerBucket[child].push({

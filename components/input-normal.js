@@ -22,6 +22,12 @@ export default class NormalInputComponent extends Component {
        this.props.handleChange(this.props.index, e);
     }
 
+    componentWillMount() {
+        this.setState({
+            value: this.props.value
+        });
+    }
+
     componentWillReceiveProps(props) {
         this.setState({
             value: props.value

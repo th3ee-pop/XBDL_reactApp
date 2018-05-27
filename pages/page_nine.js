@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AsyncStorage, Picker } from 'react-native';
 import { QuestionList }from '../questionList';
-import { Container, Content, Text, Item, View, Button, Form, Label, Input} from 'native-base';
+import { Container, Content, Text, Item, Separator} from 'native-base';
 import NormalInputComponent from '../components/input-normal';
 import RadioGroupComponent from '../components/radio-group';
 import MyDatePicker from '../components/date-picker';
@@ -126,7 +126,11 @@ export default class Page_9 extends Component {
                             </Item>
                         ))
                     }
-
+                    <Separator style={{alignItems: 'center'}}>
+                        <Text>
+                            本页结束
+                        </Text>
+                    </Separator>
                 </Content>
 
             </Container>

@@ -20,22 +20,6 @@ export default class CheckBoxComponent extends Component {
         }, () => {
             this.props.handleChange(this.props.index, this.state.options);
         })
-        /*const answers = [];
-        this.state.options.forEach(option => {
-            if(option.name === value) {
-                option.selected = !option.selected;
-            }
-        });
-        this.setState({
-            options: this.state.options
-        }, () => {
-            this.state.options.forEach(option => {
-                if(option.selected) {
-                    answers.push(option.name);
-                }
-            });
-            this.props.handleChange(this.props.index, answers.join(','));
-        })*/
     }
     componentWillMount() {
         this.setState({
@@ -46,40 +30,6 @@ export default class CheckBoxComponent extends Component {
     }
 
     componentWillReceiveProps(props) {
-        /*console.log(props);
-        if(props.value) {
-            let selected_options = props.value.split(',');
-            this.state.options = [];
-            props.options.forEach(option => {
-                for (let i=0; i<selected_options.length; i++) {
-                    if (option === selected_options[i]) {
-                        this.state.options.push({
-                            name: option,
-                            selected: true
-                        });
-                        break;
-                    }
-                    if (i === selected_options.length-1) {
-                        this.state.options.push({
-                            name: option,
-                            selected: false
-                        });
-                    }
-                }
-            });
-        } else {
-            this.state.options = [];
-            props.options.forEach(option => {
-                this.state.options.push({
-                    name: option,
-                    selected: false
-                })
-            })
-        }
-        this.setState({
-            options: this.state.options
-        }, () => {
-        });*/
         this.setState({
             options: props.value
         }, () => {
@@ -105,7 +55,6 @@ export default class CheckBoxComponent extends Component {
                                         isChecked={this.state.options[index].Record_Value} onClick={() => {
                                             this.searchOption(index);
                                     }}/>
-                                    {/*<Text style={{fontSize: 14, paddingLeft: 5}}>{option.name}</Text>*/}
                                 </View>
                             ))
                         }

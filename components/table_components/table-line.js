@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet , View, ScrollView, TextInput, ActivityIndicator} from 'react-native';
-import {Content, Form, Input, Label, Item, Text } from 'native-base';
+import { StyleSheet , View, ScrollView, TextInput, ActivityIndicator, DatePickerAndroid} from 'react-native';
+import {Content, Form, Input, Label, Item, Text, Button, Icon } from 'native-base';
 import CheckBox from 'react-native-check-box';
 import DatePicker from 'react-native-datepicker'
 import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
@@ -24,6 +24,7 @@ export default class TableLineComponent extends Component {
         };
         this.changeOptionSingle = this.changeOptionSingle.bind(this);
         this.changeInputValue = this.changeInputValue.bind(this);
+        this.openDatePicker = this.openDatePicker.bind(this);
     }
     componentWillMount() {
         const props = this.props;
@@ -42,57 +43,6 @@ export default class TableLineComponent extends Component {
         })
     }
 
-    /*componentWillReceiveProps(props) {
-        console.log(props.configuration);
-        const header = props.configuration.header;
-        const column = props.configuration.column_title;
-        const type = props.configuration.column_type;
-        const tableData = [];
-        if (props.configuration.reverse) {
-            console.log('reverse');
-            for (let row = 0; row < type.length; row ++) {
-                tableData.push([{
-                    type: 'text',
-                    name: `${column[row]}_${header[0]}`
-                }]);
-                for (let col = 1; col < header.length; col++) {
-                    tableData[row].push({
-                        type: type[row],
-                        name: `${column[row]}_${header[col]}`
-                    })
-                }
-            }
-        } else {
-            console.log('not re');
-            for (let row = 0; row < column.length; row ++) {
-                tableData.push([]);
-                console.log(tableData[row]);
-                for (let col = 0; col < type.length; col ++) {
-                    tableData[row].push({
-                        type: type[col],
-                        name: `${column[row]}_${header[col]}`
-                    });
-                    console.log(tableData[row]);
-                }
-            }
-        }
-        if (props.configuration.special_row) {
-            props.configuration.special_row.forEach(row => {
-                tableData[row].splice(0, 1, {
-                    type: 'else',
-                    name: `${column[row]}_${header[0]}`
-                });
-            })
-        }
-        this.setState({
-            tableHead: header,
-            tableData: tableData,
-            answers: props.value,
-            loading: false
-        }, () => {
-            console.log(this.state);
-        })
-    }*/
 
     changeOptionSingle = (index, method) => {
         this.state.answers[index].Record_Value = !this.state.answers[index].Record_Value;
@@ -121,6 +71,32 @@ export default class TableLineComponent extends Component {
         });
     };
 
+    async openDatePicker(index) {
+        console.log(index);
+        const dateArray = this.state.answers[index].Record_Value.split('-');
+        console.log(parseInt(dateArray[0]));
+        console.log(parseInt(dateArray[1]));
+        console.log(parseInt(dateArray[2]));
+        try {
+            let {action, year, month, day} = await DatePickerAndroid.open({
+                date: new Date(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2])),
+                maxDate: new Date()
+            });
+            if (action !== DatePickerAndroid.dismissedAction) {
+                let date = '';
+                if (month < 9) {
+                    date = `${year}-0${month+1}-${day}`;
+                } else {
+                    date = `${year}-${month+1}-${day}`;
+                }
+                this.changeInputValue(date, index);
+            }
+        } catch ({code, message}) {
+            console.warn('无法打开日期选择',message);
+        }
+    }
+
+
 
     switch_Widget = (widget, index) => {
         switch (widget.type)
@@ -140,23 +116,12 @@ export default class TableLineComponent extends Component {
                 );
             case 'date':
                 return (
-                    <DatePicker
-                        style={{width: 125, paddingTop:10}}
-                        date={this.state.answers[index].Record_Value}
-                        mode="date"
-                        placeholder="选择日期"
-                        format="YYYY-MM-DD"
-                        minDate="1900-01-01"
-                        maxDate="2050-01-01"
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        customStyles={{
-                            dateInput: {
-                                marginLeft: 3
-                            }
-                        }}
-                        onDateChange={(date) => {this.changeInputValue(date, index)}}
-                    />
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                        <Button transparent onPress={() => this.openDatePicker(index)} >
+                            <Icon name={'md-calendar'} />
+                        </Button>
+                        <Input  type="text" value={this.state.answers[index].Record_Value} onChangeText={(value) => {this.changeInputValue(value, index)}}/>
+                    </View>
                 );
             default:
                 return (<Text style={{marginLeft:10}}>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Text, View, AsyncStorage, ListView ,Alert, ToastAndroid, NetInfo} from 'react-native';
-import {Container, Header, Title, Content, List, ListItem, Left, Right, Icon, Body, Button, SwipeRow,Footer, FooterTab, Spinner} from 'native-base';
+import {Container, Header, Title, Content, List, ListItem, Left, Right, Icon, Body, Button, SwipeRow,Footer, FooterTab,Segment, Spinner, Tab, Tabs, TabHeading, Row} from 'native-base';
 import {QuestionList} from "./questionList";
 import { modelList } from "./qlmodel";
 
@@ -29,8 +29,10 @@ export default class HomeScreen extends Component {
             uploaded_list: [],
             logged_user: null,
             isConnected: null,
-            uploading: false
-        }
+            loading: true,
+            display: 1
+        };
+        this.switchPage = this.switchPage.bind(this);
     }
 
     componentWillMount() {
@@ -78,7 +80,8 @@ export default class HomeScreen extends Component {
                     console.log(Uploaded);
                     this.setState({
                         list: notUpload,
-                        uploaded_list: Uploaded
+                        uploaded_list: Uploaded,
+                        loading: false
                     }, () => {
                         console.log(this.state);
                     })
@@ -155,7 +158,21 @@ export default class HomeScreen extends Component {
         })
     }
 
+    uploadExisted(id) {
+        Alert.alert(
+            '提示',
+            '该记录已经上传过，继续上传可能会造成重复。确定要继续上传吗？',
+            [
+                {text:'取消', onPress: () => console.log('取消了'), style: 'cancel'},
+                {text: '继续上传', onPress: () => {
+                        this.checkIfConnected(id);
+                    }}
+            ]
+        )
+    }
+
     uploadItem(id) {
+        ToastAndroid.show('正在上传', ToastAndroid.SHORT);
         console.log(id);
         AsyncStorage.getItem(id, (err, data) => {
             if (err) alert(err);
@@ -198,7 +215,7 @@ export default class HomeScreen extends Component {
                     .then((result) => {
                         console.log('success');
                         console.log(result);
-                        if (result.Return === 2) {
+                        if (result.Return === 2 || result.Return === 5) {
                             Alert.alert(
                                 '提示',
                                 '会话过期或其它设备登录，如需继续上传，您可能需要重新登录。',
@@ -218,28 +235,30 @@ export default class HomeScreen extends Component {
                         } else if (result.Return === 0) {
                             ToastAndroid.show('上传成功', ToastAndroid.SHORT);
                             const newData = JSON.parse(data);
-                            newData.status = 1;
-                            console.log(newData);
-                            AsyncStorage.setItem(id, JSON.stringify(newData), (err) => {
-                                if(err) {
-                                    console.log(err);
-                                } else {
-                                    console.log('状态已转换');
-                                    this.state.list.forEach((item, index )=> {
-                                        console.log(item);
-                                        if(item[0] === id) {
-                                            this.state.list.splice(index, 1);
-                                        }
-                                    });
-                                    this.state.uploaded_list.push([id, JSON.stringify(newData)]);
-                                    this.setState({
-                                        list: this.state.list,
-                                        uploaded_list: this.state.uploaded_list
-                                    }, () => {
-                                        console.log(this.state);
-                                    })
-                                }
-                            })
+                            if (newData.status !== 1) {
+                                newData.status = 1;
+                                console.log(newData);
+                                AsyncStorage.setItem(id, JSON.stringify(newData), (err) => {
+                                    if(err) {
+                                        console.log(err);
+                                    } else {
+                                        console.log('状态已转换');
+                                        this.state.list.forEach((item, index )=> {
+                                            console.log(item);
+                                            if(item[0] === id) {
+                                                this.state.list.splice(index, 1);
+                                            }
+                                        });
+                                        this.state.uploaded_list.push([id, JSON.stringify(newData)]);
+                                        this.setState({
+                                            list: this.state.list,
+                                            uploaded_list: this.state.uploaded_list
+                                        }, () => {
+                                            console.log(this.state);
+                                        })
+                                    }
+                                })
+                            }
                         } else if (result.Return === 1) {
                             ToastAndroid.show('上传失败，未知错误。', ToastAndroid.SHORT);
                         }
@@ -370,6 +389,14 @@ export default class HomeScreen extends Component {
         }
     }
 
+    switchPage(page) {
+        this.setState({
+            display: page
+        }, () => {
+            console.log('switched');
+        })
+    }
+
     render() {
         return (
             <Container>
@@ -394,89 +421,103 @@ export default class HomeScreen extends Component {
                         </Button>
                     </Right>
                 </Header>
+
                 <Content>
-                    <View style={{marginTop: 15, marginBottom: 10}}>
-                        <Title style={{color: '#888888'}}>
-                            {'本地未上传记录：'}
-                        </Title>
-                    </View>
                     {
-                        this.state.list.length === 0 ? (
-                            <Spinner color='blue' />
+                        this.state.display === 1 ? (
+                            <Container>
+                                <View style={{marginTop: 15, marginBottom: 10}}>
+                                    <Title style={{color: '#888888'}}>
+                                        {`本地未上传记录${this.state.list.length}条：`}
+                                    </Title>
+                                </View>
+                                {
+                                    this.state.loading ? (
+                                        <Spinner color='blue'/>
+                                    ) : (
+                                        <List
+                                            dataSource={this.ds.cloneWithRows(this.state.list)}
+                                            renderRow={(data) =>
+                                                <ListItem style={{alignItems: 'center'}} onPress={() => {
+                                                    this.props.navigation.navigate('Details', {
+                                                        id: data[0]
+                                                    })
+                                                }}>
+                                                    <Text> {`${JSON.parse(data[1]).updateTime.substr(0, 10)}录入，体检编号:${data[0]}`} </Text>
+                                                </ListItem>}
+                                            renderLeftHiddenRow={data =>
+                                                (<Button full onPress={() => {
+                                                    this.checkAndUpload(data[0])
+                                                }}>
+                                                    <Icon active name="md-arrow-round-up"/>
+                                                </Button>)}
+                                            renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                                                (<Button full danger
+                                                         onPress={_ => this.removeItem(data, secId, rowId, rowMap)}>
+                                                    <Icon active name="trash"/>
+                                                </Button>)}
+                                            leftOpenValue={75}
+                                            rightOpenValue={-75}
+                                        />
+                                    )
+                                }
+                            </Container>
                         ) : (
-                            <List
-                                dataSource={this.ds.cloneWithRows(this.state.list)}
-                                renderRow={(data) =>
-                                    <ListItem style={{alignItems: 'center'}} onPress={() => {
-                                        this.props.navigation.navigate('Details', {
-                                            id: data[0]
-                                        })
-                                    }}>
-                                        <Text> {`${JSON.parse(data[1]).updateTime.substr(0,10)}录入，体检编号:${data[0]}`} </Text>
-                                    </ListItem>}
-                                renderLeftHiddenRow={data =>
-                                    (<Button full onPress={() => {
-                                        this.checkAndUpload(data[0])
-                                    }}>
-                                        <Icon active name="md-arrow-round-up" />
-                                    </Button>)}
-                                renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                                    (<Button full danger onPress={_ => this.removeItem(data, secId, rowId, rowMap)}>
-                                        <Icon active name="trash" />
-                                    </Button>)}
-                                leftOpenValue={75}
-                                rightOpenValue={-75}
-                            />
+                            <Container>
+                                <View style={{marginTop: 15, marginBottom: 10}}>
+                                    <Title style={{color: '#888888'}}>
+                                        {`本地已上传记录${this.state.uploaded_list.length}条：`}
+                                    </Title>
+                                </View>
+                                {
+                                    this.state.loading ? (
+                                        <Spinner color='blue'/>
+                                    ) : (
+                                        <List
+                                            dataSource={this.ds.cloneWithRows(this.state.uploaded_list)}
+                                            renderRow={(data) =>
+                                                <ListItem style={{alignItems: 'center'}} onPress={() => {
+                                                    this.props.navigation.navigate('Details', {
+                                                        id: data[0]
+                                                    })
+                                                }}>
+                                                    <Text> {`${JSON.parse(data[1]).updateTime.substr(0, 10)}录入，体检编号:${data[0]}`} </Text>
+                                                </ListItem>}
+                                            renderLeftHiddenRow={data =>
+                                                (<Button full onPress={() => {
+                                                    this.uploadExisted(data[0])
+                                                }}>
+                                                    <Icon active name="md-arrow-round-up"/>
+                                                </Button>)}
+                                            renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                                                (<Button full danger
+                                                         onPress={_ => this.removeItem(data, secId, rowId, rowMap)}>
+                                                    <Icon active name="trash"/>
+                                                </Button>)}
+                                            leftOpenValue={75}
+                                            rightOpenValue={-75}
+                                        />
+                                    )
+                                }
+                            </Container>
                         )
                     }
-
-
-                    <View style={{marginTop: 15, marginBottom: 10}}>
-                        <Title style={{color: '#888888'}}>
-                            {'本地已上传记录：'}
-                        </Title>
-                    </View>
-                    {
-                        this.state.uploaded_list.length === 0 ? (
-                            <Spinner color='blue' />
-                        ) : (
-                            <List
-                                dataSource={this.ds.cloneWithRows(this.state.uploaded_list)}
-                                renderRow={(data) =>
-                                    <ListItem style={{alignItems: 'center'}} onPress={() => {
-                                        this.props.navigation.navigate('Details', {
-                                            id: data[0]
-                                        })
-                                    }}>
-                                        <Text> {`${JSON.parse(data[1]).updateTime.substr(0,10)}录入，体检编号:${data[0]}`} </Text>
-                                    </ListItem>}
-                                renderLeftHiddenRow={data =>
-                                    (<Button full onPress={() => {
-                                        this.checkIfConnected(data[0])
-                                    }}>
-                                        <Icon active name="md-arrow-round-up" />
-                                    </Button>)}
-                                renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                                    (<Button full danger onPress={_ => this.removeItem(data, secId, rowId, rowMap)}>
-                                        <Icon active name="trash" />
-                                    </Button>)}
-                                leftOpenValue={75}
-                                rightOpenValue={-75}
-                            />
-                        )
-                    }
-
-               {/* <Button
-                    title = 'Add New'
-                    onPress={() => this.props.navigation.navigate('Details', {
-                        pageInfo: this.state.Page1
-                    })}
-                />*/}
-
-
 
                 </Content>
                 <Footer style={{alignItems: 'center'}}>
+                    <Row>
+                        <FooterTab>
+                            <Button active={this.state.display === 1} onPress={() => this.switchPage(1)}>
+                                <Icon name="archive" />
+                                <Text style={{color: '#ffffff'}}>{'未上传'}</Text>
+                            </Button>
+                            <Button active={this.state.display === 2} onPress={() => this.switchPage(2)}>
+                                <Icon name="cloud" />
+                                <Text style={{color: '#ffffff'}}>{'已上传'}</Text>
+                            </Button>
+                        </FooterTab>
+                    </Row>
+                    {/*<Row>
                     <Text style={{color: '#ffffff'}}>
                         {
                             this.state.logged_user===null ? (
@@ -486,6 +527,7 @@ export default class HomeScreen extends Component {
                             )
                         }
                     </Text>
+                    </Row>*/}
                 </Footer>
             </Container>
         );
