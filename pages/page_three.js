@@ -90,7 +90,7 @@ export default class Page_3 extends Component {
         switch (widget.type)
         {
             case 'input':
-                return ( <NormalInputComponent index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} />);
+                return ( <NormalInputComponent content = {widget.content} index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} />);
 
             case 'radio':
                 return (
