@@ -67,7 +67,7 @@ export default class NormalInputComponent extends Component {
                 break;
             case 'threenum':
                 const threeReg = /^\d{0,3}$/;
-                if(twoReg.test(e) === false && e!=='') {
+                if(threeReg.test(e) === false && e!=='') {
                     this.setState({
                         value: e,
                         valid: false,

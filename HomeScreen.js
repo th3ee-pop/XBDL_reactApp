@@ -104,10 +104,16 @@ export default class HomeScreen extends Component {
                             if (err) {
                                 alert('删除失败');
                             } else {
+                                console.log('删除ing');
+                                console.log(id);
+                                console.log(id[1].status);
                                 rowMap[`${secId}${rowId}`].props.closeRow();
-                                if (id[1].status === 0) {
+                                if (JSON.parse(id[1]).status === 0) {
+                                    console.log(rowId);
                                     const newData = [...this.state.list];
+                                    console.log(newData);
                                     newData.splice(rowId, 1);
+                                    console.log(newData);
                                     this.setState({ list: newData }, () => {
                                         ToastAndroid.show('删除成功', ToastAndroid.SHORT);
                                     });

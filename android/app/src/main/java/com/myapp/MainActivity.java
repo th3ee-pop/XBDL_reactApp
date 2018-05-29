@@ -1,4 +1,4 @@
-package com.myapp;
+package com.drcubic.www.CNC;
 
 import com.facebook.react.ReactActivity;
 
