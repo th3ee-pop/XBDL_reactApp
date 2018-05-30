@@ -12,7 +12,7 @@ export default class NormalInputComponent extends Component {
         this.state = {
             value: '',
             valid: true,
-            info: ''
+            info: '',
         }
     }
 
@@ -94,6 +94,21 @@ export default class NormalInputComponent extends Component {
                     });
                 }
                 break;
+            case 'floatone':
+                const floatOneReg = /^\d{1,2}(\.\d)?$/;
+                if(floatOneReg.test(e) === false && e!=='') {
+                    this.setState({
+                        value: e,
+                        valid: false,
+                        info: '不合法的数字'
+                    })} else {
+                    this.setState({
+                        value: e,
+                        valid: true,
+                        info: ''
+                    });
+                }
+                break;
             case 'number':
                 const numReg = /^\d{8}$/;
                 console.log(Number(e));
@@ -125,7 +140,6 @@ export default class NormalInputComponent extends Component {
     }
 
     componentWillMount() {
-        console.log(this.props.content);
         this.setState({
             value: this.props.value
         });
@@ -143,7 +157,7 @@ export default class NormalInputComponent extends Component {
         return (
             <Content style={{top: 10}}>
                 <Form>
-                        <Label>
+                            <Label>
                             {id + ' ' + title}
                         </Label>
                     <Item>

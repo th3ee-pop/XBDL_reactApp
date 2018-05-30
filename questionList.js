@@ -387,12 +387,12 @@
                     {
                         'dataType': 'text',
                         'inform': '',
-                        'validType': 'fivenum'
+                        'validType': 'fivenum',
                     }
                 ],
                 'hidden': false,
                 'type': 'input',
-                'tittle': `去年你全家平均一个月的日常支出（不含特殊支出如买车住院等）约为：`
+                'tittle': `去年你全家--平均一个月--的日常支出（不含特殊支出如买车住院等）约为：`,
             },
             {
                 'id': '1.16',
@@ -759,7 +759,8 @@
                     ],
                     'column_type': [
                         'text', 'input', 'input', 'input'
-                    ]
+                    ],
+                    'validType': 'floatone'
                 }
             }
         ],
@@ -867,9 +868,10 @@
                 'hidden': false,
                 'tittle': '你目前或在戒烟前通常吸哪些烟，具体的量是多少？(如每天混吸，可最多选择三项)',
                 'configuration': {
-                    'header': ['香烟类型', '具体的数量'],
+                    'header': ['香烟类型', '具体的数量(支/天)'],
                     'column_title': ['过滤嘴香烟', '无滤嘴香烟', '手卷烟', '烟斗/水烟', '雪茄'],
-                    'column_type': ['text', 'input']
+                    'column_type': ['text', 'input'],
+                    'validType': 'twonum'
                 }
             },
             {
@@ -907,8 +909,8 @@
                     }
                 ],
                 'hidden': false,
-                'type': 'input',
-                'tittle': '你最近一次尝试戒烟是在多少个月以前？'
+                'type': 'year-input',
+                'tittle': '你最近一次尝试戒烟是在多久以前？'
             },
             {
                 'id': '4.10',
@@ -920,7 +922,7 @@
                     }
                 ],
                 'hidden': false,
-                'type': 'input',
+                'type': 'year-input',
                 'tittle': '你最近一次尝试戒烟时，坚持了多长时间未吸烟？'
             }
         ],
@@ -961,6 +963,7 @@
                         '其他饮品'],
                     'column_type': ['text', 'check', 'check', 'check', 'check', 'check', 'input'],
                     'special_row': [29],
+                    'validType': 'none'
                 },
                 'hidden': false,
                 'type': 'table',
@@ -998,7 +1001,8 @@
                 'configuration': {
                     'header': ['调味品类型', '使用天数'],
                     'column_title': ['一袋盐(重量见上题)', '一瓶酱油(500毫升)', '一瓶食用油(1000毫升)'],
-                    'column_type': ['text', 'input']
+                    'column_type': ['text', 'input'],
+                    'validType': 'threenum'
                 }
             },
             {
@@ -1063,7 +1067,7 @@
             {
                 'id': '5.7',
                 'content': [
-                    '从不/几乎从不吃辣',
+                    '从不/几乎从不吃辣 ->转至问题5.10',
                     '偶尔吃，但不到每周一次',
                     '每周1-2次',
                     '每周3-5次',
@@ -1519,7 +1523,8 @@
                     'column_title': [
                         '煤气/蒸汽/烟/雾', '粉尘（如：硅石/煤炭/棉花）', '纤维（如　石棉/纺织品）', '化学制品（如：苯/甲苯）'
                         ],
-                    'column_type': ['text', 'check', 'input']
+                    'column_type': ['text', 'check', 'input'],
+                    'validType': 'twonum'
                 },
                 'hidden': false,
                 'type': 'table',
@@ -1532,7 +1537,7 @@
                     '佩戴口罩',
                     '紧闭门窗',
                     '室内开启空气净化器等设备',
-                    '其他 ->转至6.14.a填写'
+                    '其他 ->转至6.15.a填写'
                 ],
                 'hiddenlist': [
                     ['6.15.a'],
@@ -1743,7 +1748,8 @@
                         '其它2',
                         '恶性肿瘤（癌症）'],
                     'column_type': ['text', 'check','input', 'check', 'check', 'date'],
-                    'special_row': [25, 26]
+                    'special_row': [25, 26],
+                    'validType': 'twonum'
                 },
                 'hidden': false,
                 'type': 'table',
@@ -1937,6 +1943,7 @@
                         '亲生子女(填写数量)'
                     ],
                     'column_type': ['check', 'check', 'input', 'input'],
+                    'validType': 'max20'
                 },
                 'hidden': false,
                 'type': 'table_2',
@@ -1962,7 +1969,7 @@
                     {
                         'dataType': 'text',
                         'inform': '',
-                        'validType': 'other'
+                        'validType': 'floatone'
                     }
                 ],
                 'hidden': false,
@@ -1993,6 +2000,11 @@
             }
         ],
         [
+            {
+                'id': '8.0.1',
+                'text': '如您是 非农林牧渔劳动者，请填写问题8.1-8.3',
+                'type': 'notification'
+            },
             {
                 'id': '8.1',
                 'content': [
@@ -2038,6 +2050,11 @@
                 'hidden': false,
                 'type': 'input',
                 'tittle': '你每天平均工作多少小时？（非农林牧渔劳动者填写）'
+            },
+            {
+                'id': '8.0.1',
+                'text': '如您是 农林牧渔劳动者，请填写问题8.1.o-8.3.5',
+                'type': 'notification'
             },
             {
                 'id': '8.1.o',
@@ -2316,7 +2333,8 @@
                     'column_title': [
                         '看电视/碟片', '看手机/pad', '读书/看报', '下棋/打牌/打麻将', '看电脑/写作/文件整理'
                     ],
-                    'column_type': ['text', 'check','check','check','check','check', 'input']
+                    'column_type': ['text', 'check','check','check','check','check', 'input'],
+                    'validType': 'hours'
                 },
                 'hidden': false,
                 'type': 'table',
@@ -2414,7 +2432,7 @@
                     }
                 ],
                 'hidden': false,
-                'type': 'input',
+                'type': 'year-input',
                 'tittle': '采取以上措施，几年前开始的？'
             },
             {
@@ -2428,7 +2446,7 @@
                     }
                 ],
                 'hidden': false,
-                'type': 'input',
+                'type': 'year-input',
                 'tittle': '到目前为止，采取以上措施累计持续多长时间了？'
             },
             {
@@ -2604,7 +2622,8 @@
                     'column_title': [
                         '首次', '第二次', '第三次', '第四次', '第五次'
                     ],
-                    'column_type': ['text',  'input', 'input', 'check']
+                    'column_type': ['text',  'input', 'input', 'check'],
+                    'validType': 'twonum'
                 },
                 'hidden': false,
                 'type': 'table',
@@ -2727,7 +2746,8 @@
                     'column_title': [
                         '子宫切除术', '卵巢（单侧或双侧）摘除术', '乳房肿块/肿瘤摘除术', '绝育术', '剖腹产'
                     ],
-                    'column_type': ['text',  'check', 'input']
+                    'column_type': ['text',  'check', 'input'],
+                    'validType': 'twonum'
                 },
                 'hidden': false,
                 'type': 'table',
@@ -2927,6 +2947,11 @@
                 'hidden': false,
                 'type': 'checkbox',
                 'tittle': '在你整个一生中，你是否出现过下述情况？'
+            },
+            {
+                'id': '10.12.a',
+                'text': '以下是有关您健康状况和生活质量的问题，请根据您的情况如实回答',
+                'type': 'notification'
             },
             {
                 'id': '10.13',

@@ -207,6 +207,7 @@ export default class HomeScreen extends Component {
                     "Record_Value": this.state.logged_user.name
                 });
 
+                console.log(allTableData);
                 fetch("http://39.106.142.184:9501/healthexamination/recordop/", {
                     method: 'PUT',
                     body: JSON.stringify({
@@ -288,8 +289,13 @@ export default class HomeScreen extends Component {
                    // this.disassembleTable(item);
                     sendData.push(...this.disassembleTable(item));
                 } else {
-                    if(item.Record_Value !== '')
-                    sendData.push(item);
+                    if (item.Record_Value !== '') {
+                        if (item.Record_Value === 'nothing') {
+
+                        } else {
+                            sendData.push(item);
+                        }
+                    }
                 }
             })
         });

@@ -99,7 +99,7 @@ export default class Table2Component extends Component {
                             {
                                 this.state.tableData.map((rowData, index) => (
 
-                                    <TableLineComponent method={'multi'} handleChange={this.handleChange} key={index} config={rowData} answer={this.state.answers[index]} index={index}/>
+                                    <TableLineComponent method={'multi'} handleChange={this.handleChange} key={index} config={rowData} answer={this.state.answers[index]} index={index} validType={this.props.configuration.validType}/>
                                 ))
                             }
                         </Table>

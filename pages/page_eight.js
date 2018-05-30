@@ -7,6 +7,7 @@ import RadioGroupComponent from '../components/radio-group';
 import MyDatePicker from '../components/date-picker';
 import CheckBoxComponent from '../components/check-box';
 import TableComponent from '../components/table';
+import InputYearComponent from '../components/input-year';
 
 export default class Page_8 extends Component {
 
@@ -108,6 +109,15 @@ export default class Page_8 extends Component {
             case 'table':
                 return (
                     <TableComponent index={index} handleChange={this.handleChange}  title = {widget.tittle} id = {widget.id} configuration = {widget.configuration} value={this.state.answers[index].Record_Value}/>
+                );
+            case 'year-input':
+                return (<InputYearComponent index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id}/>);
+            case 'notification':
+                return (<Separator style={{alignItems: 'center'}}>
+                        <Text>
+                            {widget.text}
+                        </Text>
+                    </Separator>
                 );
             default:
                 return (<Text>

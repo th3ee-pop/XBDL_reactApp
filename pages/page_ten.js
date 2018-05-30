@@ -28,6 +28,9 @@ export default class Page_10 extends Component {
 
 
     componentWillMount() {
+        console.log('mounting');
+        console.log(this.myQuestions);
+        console.log(this.props.answer);
         this.virtualState.answers = this.props.answer;
         this.setState({
             answers: this.props.answer
@@ -87,6 +90,9 @@ export default class Page_10 extends Component {
     };
 
     switch_Widget = (widget, index) => {
+        console.log(index);
+        console.log(widget.type);
+        console.log(this.state.answers[index]);
         switch (widget.type)
         {
             case 'input':
@@ -107,6 +113,13 @@ export default class Page_10 extends Component {
             case 'table':
                 return (
                     <TableComponent index={index} handleChange={this.handleChange}  title = {widget.tittle} id = {widget.id} configuration = {widget.configuration} value={this.state.answers[index].Record_Value}/>
+                );
+            case 'notification':
+                return (<Separator style={{alignItems: 'center'}}>
+                        <Text>
+                            {widget.text}
+                        </Text>
+                    </Separator>
                 );
             default:
                 return (<Text>

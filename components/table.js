@@ -43,7 +43,7 @@ export default class TableComponent extends Component {
                 for (let col = 0; col < type.length; col ++) {
                     tableData[row].push({
                         type: type[col],
-                        name: `${column[row]}_${header[col]}`
+                        name: `${column[row]}_${header[col]}`,
                     });
                 }
         }
@@ -103,7 +103,7 @@ export default class TableComponent extends Component {
                         {
                             this.state.tableData.map((rowData, index) => (
 
-                                <TableLineComponent method={'single'} handleChange={this.handleChange} key={index} config={rowData} answer={this.state.answers[index]} index={index}/>
+                                <TableLineComponent method={'single'} handleChange={this.handleChange} key={index} config={rowData} answer={this.state.answers[index]} index={index} validType={this.props.configuration.validType}/>
                             ))
                         }
                     </Table>

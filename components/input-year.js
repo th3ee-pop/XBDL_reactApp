@@ -12,24 +12,48 @@ export default class InputYearComponent extends Component {
         this.state = {
             year: '',
             month: '',
-            valid: true,
+            valid_year: true,
+            valid_month: true
         }
     }
 
 
     handleChange(e, unit) {
         if (unit === 0) {
-            this.setState({
-                year: e
-            }, () => {
-                this.props.handleChange(this.props.index, `${this.state.year},${this.state.month}`);
-            });
+            const yearReg = /^\d{0,2}$/;
+            if (yearReg.test(e) === false && e !== '') {
+                this.setState({
+                    year: e,
+                    valid_year: false
+                }, () => {
+                    this.props.handleChange(this.props.index, `${this.state.year},${this.state.month}`);
+                });
+            } else {
+                this.setState({
+                    year: e,
+                    valid_year: true
+                }, () => {
+                    this.props.handleChange(this.props.index, `${this.state.year},${this.state.month}`);
+                });
+            }
+
         } else {
-            this.setState({
-                month: e
-            }, ()=> {
-                this.props.handleChange(this.props.index, `${this.state.year},${this.state.month}`);
-            });
+            if (e !== '' && e > 12) {
+                this.setState({
+                    month: e,
+                    valid_month: false
+                }, ()=> {
+                    this.props.handleChange(this.props.index, `${this.state.year},${this.state.month}`);
+                });
+            } else {
+                this.setState({
+                    month: e,
+                    valid_month: true
+                }, ()=> {
+                    this.props.handleChange(this.props.index, `${this.state.year},${this.state.month}`);
+                });
+            }
+
         }
 
     }
@@ -63,9 +87,29 @@ export default class InputYearComponent extends Component {
                     </Label>
                     <Item>
                         <Input  type="text" value={this.state.year} onChangeText={(text) => {this.handleChange(text, 0)}}/>
-                        <Text>年</Text>
+                        {
+                            this.state.valid_year ? (
+                                <View/>
+                            ) : (<View>
+                                    <Text style={{color:'red'}}>
+                                        {'不合法的年数'}
+                                    </Text>
+                                </View>
+                            )
+                        }
+                        <Text>{'年，    '}</Text>
                         <Input  type="text" value={this.state.month} onChangeText={(text) => {this.handleChange(text, 1)}}/>
-                        <Text>月</Text>
+                        {
+                            this.state.valid_month ? (
+                                <View/>
+                            ) : (<View>
+                                    <Text style={{color:'red'}}>
+                                        {'不合法的月数'}
+                                    </Text>
+                                </View>
+                            )
+                        }
+                        <Text>个月</Text>
                     </Item>
                 </Form>
             </Content>

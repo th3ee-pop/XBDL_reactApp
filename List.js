@@ -166,6 +166,13 @@ export default class ExaminationView extends Component {
                         });
                         break;
                     }
+                    case 'notification': {
+                        answerBucket[child].push({
+                            "Record_ID": this.switchID(question.id),
+                            "Record_Value": 'nothing'
+                        });
+                        break;
+                    }
                     default: {
                         answerBucket[child].push({
                             "Record_ID": this.switchID(question.id),
