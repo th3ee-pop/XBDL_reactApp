@@ -37,32 +37,10 @@ export default class Page_2 extends Component {
 
     handleChange(index, answers) {
         this.virtualState.answers[index].Record_Value = answers;
-        console.log(this.virtualState);
         this.props.handleChange(1, this.virtualState.answers);
     }
 
 
-    setContent = () => {
-        AsyncStorage.setItem('PID2', JSON.stringify(this.virtualState), (error) => {
-            console.log(error);
-            console.log('111');
-        })
-    };
-
-    getContent = () => {
-        console.log('getting');
-        try {
-            AsyncStorage.getItem('PID2', (result) => {
-                alert(result);
-                console.log(result);
-                this.setState({
-                    answer: result
-                })
-            });
-        } catch (e) {
-            console.log(e);
-        }
-    };
 
     switch_Widget = (widget, index) => {
         switch (widget.type)

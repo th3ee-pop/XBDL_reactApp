@@ -25,7 +25,6 @@ export default class CheckBoxComponent extends Component {
         this.setState({
             options: this.props.value
         }, () => {
-            console.log(this.state);
         });
     }
 
@@ -33,7 +32,6 @@ export default class CheckBoxComponent extends Component {
         this.setState({
             options: props.value
         }, () => {
-            console.log(this.state);
         });
     }
 

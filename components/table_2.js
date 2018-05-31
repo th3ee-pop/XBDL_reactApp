@@ -63,8 +63,6 @@ export default class Table2Component extends Component {
         this.setState({
             answers: props.value,
             loading: false
-        }, () => {
-            console.log(this.state);
         })
     }
 

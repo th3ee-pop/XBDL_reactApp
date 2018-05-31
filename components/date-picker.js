@@ -17,8 +17,6 @@ export default class MyDatePicker extends Component {
     setDate(date) {
         this.setState({
             date: date
-        }, () => {
-            console.log(this.state)
         });
         this.props.handleChange(this.props.index, date);
     }
@@ -37,9 +35,6 @@ export default class MyDatePicker extends Component {
 
     async openDatePicker(option) {
         const dateArray = this.state.date.split('-');
-        console.log(parseInt(dateArray[0]));
-        console.log(parseInt(dateArray[1]));
-        console.log(parseInt(dateArray[2]));
         try {
             let {action, year, month, day} = await DatePickerAndroid.open({
                 date: new Date(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2])),

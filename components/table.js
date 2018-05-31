@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet , View, ScrollView, TextInput, ActivityIndicator} from 'react-native';
 import {Content, Form, Input, Label, Item, Text } from 'native-base';
-import CheckBox from 'react-native-check-box';
-import DatePicker from 'react-native-datepicker'
 import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
-import TableInputComponent from './table_components/table-input';
 import TableLineComponent from './table_components/table-line';
 
 

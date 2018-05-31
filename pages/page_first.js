@@ -16,7 +16,8 @@ export default class Page_1 extends Component {
         super(props);
         this.state = {
             answers: {
-            }
+            },
+            hidden: []
         };
         this.virtualState= {
             answers: {
@@ -24,88 +25,65 @@ export default class Page_1 extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.generateHideSignal = this.generateHideSignal.bind(this);
     }
 
 
     componentWillMount() {
         this.virtualState.answers = this.props.answer;
+        const hiddenArray = [];
+        this.myQuestions.forEach(question => {
+            hiddenArray.push({
+                'ID': question.id,
+                'hidden': question.hidden
+            })
+        });
+        console.log(hiddenArray);
         this.setState({
-            answers: this.props.answer
+            answers: this.props.answer,
+            hidden: hiddenArray
         }, () => {
+            console.log(this.state);
         })
-        /*AsyncStorage.getItem('PID1').then((result) => {
-            if(result) {
-                console.log('had');
-                this.myQuestions.forEach(question => {
-                    this.state.answers[question.id] = JSON.parse(result).answers[question.id];
-                    this.virtualState.answers[question.id] = JSON.parse(result).answers[question.id];
-                    console.log(JSON.parse(result)[question.id])
-                });
-                this.setState({
-                    answers: this.state.answers
-                }, () => {
-                    console.log(this.state);
-                })
-            } else {
-                console.log('no');
-                this.initialAnswers(this.myQuestions);
-                this.setState({
-                    answers: this.virtualState.answers
-                }, ()=> {
-                })
-            }
-        });*/
     }
 
     componentWillReceiveProps(props) {
-        console.log(props);
         this.virtualState.answers = props.answer;
         this.setState({
             answers: props.answer
-        }, () => {
-            console.log(this.state.answers);
         })
     }
 
     handleChange(index, answers) {
         this.virtualState.answers[index].Record_Value = answers;
-        console.log(this.virtualState);
         this.props.handleChange(0, this.virtualState.answers);
     }
 
-
-    setContent = () => {
-        AsyncStorage.setItem('PID1', JSON.stringify(this.virtualState), (error) => {
-            console.log(error);
-            console.log('111');
+    generateHideSignal(index, id) {
+        console.log(index, id);
+        id.forEach(item => {
+            if (item > 0) {
+                this.state.hidden[item].hidden = true
+            } else {
+                this.state.hidden[-item].hidden = false
+            }
+        });
+        this.setState({
+            hidden: this.state.hidden
+        }, ()=> {
+            console.log(this.state.hidden);
         })
-    };
-
-    getContent = () => {
-        console.log('getting');
-        try {
-            AsyncStorage.getItem('PID1', (result) => {
-                alert(result);
-                console.log(result);
-                this.setState({
-                    answer: result
-                })
-            });
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
+    }
 
     switch_Widget = (widget, index) => {
         switch (widget.type)
         {
             case 'input':
-                return ( <NormalInputComponent index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} content = {widget.content}/>);
+                return ( <NormalInputComponent index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} content = {widget.content} hidden = {this.state.hidden[index].hidden}/>);
 
             case 'radio':
                 return (
-                    <RadioGroupComponent index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} options = {widget.content}/>
+                    <RadioGroupComponent index={index} generateHideSignal={this.generateHideSignal} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} options = {widget.content} hidden = {this.state.hidden[index].hidden} hiddenList = {widget.hiddenlist ? widget.hiddenlist : null }/>
                 );
             case 'date':
                 return (
@@ -128,7 +106,6 @@ export default class Page_1 extends Component {
     };
 
     render() {
-        console.log(this.props.answer);
         return (
             <Container>
                 {/*<View>

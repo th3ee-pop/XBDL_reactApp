@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, ToastAndroid } from 'react-native';
+import { AsyncStorage, ToastAndroid , Alert} from 'react-native';
 import { Container, Tab, Tabs, ScrollableTab, Button, Text, Header, Left, Body, Right, Content, Title, Icon, Separator} from 'native-base';
 import moment from 'moment';
 import {QuestionList} from './questionList';
@@ -38,12 +38,8 @@ export default class ExaminationView extends Component {
         this.generateCheckBox = this.generateCheckBox.bind(this);
     }
 
-    componentWillUpdate() {
-        console.log('update');
-    }
 
     componentWillMount() {
-        console.log(this.props.navigation.getParam('id', 'NO-ID'));
         const id = this.props.navigation.getParam('id', 'NO-ID');
         if (id !== 'NO-ID') {
             AsyncStorage.getItem(id, (err, data) => {
@@ -183,13 +179,9 @@ export default class ExaminationView extends Component {
                 }
             })
         }
-        console.log(answerBucket);
         this.virtualState.answers =answerBucket;
         this.setState({
             answers: answerBucket
-        }, () => {
-            console.log(this.state);
-            console.log(this.virtualState);
         })
     }
 
@@ -441,7 +433,6 @@ export default class ExaminationView extends Component {
 
     handleChange(index, answer) {
         this.virtualState.answers[index] = answer;
-        // console.log(this.virtualState.answers);
     }
 
     generateRadio(question) {
@@ -467,7 +458,6 @@ export default class ExaminationView extends Component {
     }
 
     generateTable(question) {
-        console.log(question.configuration);
         const tableAnswer = [];
         const config = question.configuration;
         for (let row = 0; row< config.column_title.length; row ++) {
@@ -498,12 +488,10 @@ export default class ExaminationView extends Component {
                 tableAnswer[row][0].Record_Value = ''
             })
         }
-        console.log(tableAnswer);
         return tableAnswer;
     }
 
     generateTable_2(question) {
-        console.log(question.configuration);
         const tableAnswer = [];
         const config = question.configuration;
         for (let row = 0; row< config.column_title.length; row ++) {
@@ -526,7 +514,6 @@ export default class ExaminationView extends Component {
                 }
             }
         }
-        console.log(tableAnswer);
         return tableAnswer;
     }
 
@@ -547,14 +534,32 @@ export default class ExaminationView extends Component {
     }
 
     setContent = () => {
-        console.log(this.virtualState.answers[0][0].Record_Value);
+        const invalidArray = [];
         const saveId = this.virtualState.answers[0][0].Record_Value;
+        const Idnumber = this.virtualState.answers[0][5].Record_Value;
+        const saveName = this.virtualState.answers[0][1].Record_Value;
+        const idReg =  /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
         if (saveId.length !== 8) {
-            alert('体检编号必须为8位');
+            invalidArray.push('体检编号必须为8位');
+        }
+        if (idReg.test(Idnumber) === false || Idnumber === '') {
+            invalidArray.push('未输入合法的身份证信息');
+        }
+        if (saveName === '') {
+            invalidArray.push('未输入姓名');
+        }
+        if (invalidArray.length !== 0) {
+            Alert.alert(
+                '提示',
+                `当前表单存在以下问题:
+                ${invalidArray.join('，')}。为保证体检表有效，请完善后再暂存。`,
+                [
+                    {text:'取消', onPress: () => console.log('取消了'), style: 'cancel'},
+                ]
+            )
         } else {
              this.virtualState.status = 0;
              this.virtualState.updateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-             console.log(this.virtualState);
              AsyncStorage.setItem(saveId, JSON.stringify(this.virtualState), (error) => {
                  if (error) {
                      alert(error);

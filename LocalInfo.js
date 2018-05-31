@@ -33,8 +33,6 @@ export default class LocalInfo extends Component {
             } else {
                 this.setState({
                     logged_user: JSON.parse(result)
-                }, () =>{
-                    console.log(this.state);
                 })
             }
         })
@@ -43,8 +41,6 @@ export default class LocalInfo extends Component {
     handleChange(e, key) {
         this.setState({
             [key]: e
-        }, () => {
-            console.log(this.state);
         })
     }
 
@@ -64,7 +60,6 @@ export default class LocalInfo extends Component {
            )
                .then((res) => res.json())
                .then((jsonData) => {
-                   console.log(jsonData);
                    if(jsonData.Return === 1) {
                        ToastAndroid.show('用户名或密码错误', ToastAndroid.SHORT);
                    } else {
@@ -75,7 +70,6 @@ export default class LocalInfo extends Component {
                                this.setState({
                                    logged_user:jsonData
                                }, () => {
-                                   console.log(this.state);
                                    ToastAndroid.show('登录成功', ToastAndroid.SHORT);
                                    this.props.navigation.navigate('Home');
                                })
@@ -85,7 +79,7 @@ export default class LocalInfo extends Component {
 
                })
                .catch((err) => {
-                   console.log(err);
+                   ToastAndroid.show(err, ToastAndroid.SHORT);
                })
         }
     }
@@ -98,7 +92,6 @@ export default class LocalInfo extends Component {
                 this.setState({
                     logged_user: null
                 }, () => {
-                    console.log('登出了');
                     ToastAndroid.show('已登出', ToastAndroid.SHORT);
                 })
             }

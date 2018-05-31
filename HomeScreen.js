@@ -22,6 +22,7 @@ export default class HomeScreen extends Component {
     constructor(props) {
         super (props);
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.us = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             Page1: '基本信息',
             Page2: '现病史',
@@ -38,14 +39,10 @@ export default class HomeScreen extends Component {
     componentWillMount() {
         AsyncStorage.getItem('_user', (err, user) => {
             if(err) {
-                console.log(err)
             } else {
                 if(user) {
-                    console.log(JSON.parse(user));
                     this.setState({
                         logged_user: JSON.parse(user)
-                    }, () => {
-                        console.log(this.state);
                     })
                 }
             }
@@ -58,7 +55,6 @@ export default class HomeScreen extends Component {
             })
         });
         AsyncStorage.getAllKeys((err, keys) => {
-            console.log(keys);
             keys = keys.filter((id) => {
                 if(!isNaN(Number(id)))
                     return id;
@@ -67,7 +63,6 @@ export default class HomeScreen extends Component {
                 if(err) {
                     alert(err);
                 } else {
-                    console.log(result);
                     const notUpload = result.filter((item) => {
                         if(JSON.parse(item[1]).status === 0)
                         return item;
@@ -76,14 +71,10 @@ export default class HomeScreen extends Component {
                         if(JSON.parse(item[1]).status === 1)
                         return item;
                     });
-                    console.log(notUpload);
-                    console.log(Uploaded);
                     this.setState({
                         list: notUpload,
                         uploaded_list: Uploaded,
                         loading: false
-                    }, () => {
-                        console.log(this.state);
                     })
                 }
             })
@@ -104,16 +95,10 @@ export default class HomeScreen extends Component {
                             if (err) {
                                 alert('删除失败');
                             } else {
-                                console.log('删除ing');
-                                console.log(id);
-                                console.log(id[1].status);
                                 rowMap[`${secId}${rowId}`].props.closeRow();
                                 if (JSON.parse(id[1]).status === 0) {
-                                    console.log(rowId);
                                     const newData = [...this.state.list];
-                                    console.log(newData);
                                     newData.splice(rowId, 1);
-                                    console.log(newData);
                                     this.setState({ list: newData }, () => {
                                         ToastAndroid.show('删除成功', ToastAndroid.SHORT);
                                     });
@@ -133,7 +118,6 @@ export default class HomeScreen extends Component {
     }
     //remove item from localStorage.
     checkIfConnected(id) {
-        console.log(this.state);
         if (this.state.isConnected === true) {
             this.checkAndUpload(id);
         } else {
@@ -179,11 +163,9 @@ export default class HomeScreen extends Component {
 
     uploadItem(id) {
         ToastAndroid.show('正在上传', ToastAndroid.SHORT);
-        console.log(id);
         AsyncStorage.getItem(id, (err, data) => {
             if (err) alert(err);
             else {
-                console.log(JSON.parse(data));
                 const itemData = JSON.parse(data).answers;
                 const allTableData = this.generateAvailable(itemData);
                 allTableData.unshift({
@@ -207,7 +189,6 @@ export default class HomeScreen extends Component {
                     "Record_Value": this.state.logged_user.name
                 });
 
-                console.log(allTableData);
                 fetch("http://39.106.142.184:9501/healthexamination/recordop/", {
                     method: 'PUT',
                     body: JSON.stringify({
@@ -220,8 +201,6 @@ export default class HomeScreen extends Component {
                 })
                     .then(response => response.json())
                     .then((result) => {
-                        console.log('success');
-                        console.log(result);
                         if (result.Return === 2 || result.Return === 5) {
                             Alert.alert(
                                 '提示',
@@ -244,14 +223,11 @@ export default class HomeScreen extends Component {
                             const newData = JSON.parse(data);
                             if (newData.status !== 1) {
                                 newData.status = 1;
-                                console.log(newData);
                                 AsyncStorage.setItem(id, JSON.stringify(newData), (err) => {
                                     if(err) {
-                                        console.log(err);
+                                        ToastAndroid.show(err, ToastAndroid.SHORT);
                                     } else {
-                                        console.log('状态已转换');
                                         this.state.list.forEach((item, index )=> {
-                                            console.log(item);
                                             if(item[0] === id) {
                                                 this.state.list.splice(index, 1);
                                             }
@@ -260,8 +236,6 @@ export default class HomeScreen extends Component {
                                         this.setState({
                                             list: this.state.list,
                                             uploaded_list: this.state.uploaded_list
-                                        }, () => {
-                                            console.log(this.state);
                                         })
                                     }
                                 })
@@ -270,7 +244,6 @@ export default class HomeScreen extends Component {
                             ToastAndroid.show('上传失败，未知错误。', ToastAndroid.SHORT);
                         }
                     }).catch(err => {
-                        console.log(err);
                     ToastAndroid.show('您当前不处于网络环境下或网络不佳', ToastAndroid.SHORT);
                 })
             }
@@ -281,12 +254,7 @@ export default class HomeScreen extends Component {
         const sendData = [];
         data.forEach((page, index) => {
             page.forEach((item, id1) => {
-                /*sendData.push({
-                    "Record_ID": `ID_${index + 1}`,
-                    "Record_Value": 'finished'
-                });*/
                 if(Array.isArray(item.Record_Value)) {
-                   // this.disassembleTable(item);
                     sendData.push(...this.disassembleTable(item));
                 } else {
                     if (item.Record_Value !== '') {
@@ -303,19 +271,14 @@ export default class HomeScreen extends Component {
     }
 
     disassembleTable(data) {
-        // console.log(data.Record_Value);
         if(Array.isArray(data.Record_Value[0])) {
-            console.log('table');
             const tableData = data.Record_Value;
-            console.log(data.Record_ID);
             switch (data.Record_ID) {
                 case 'ID5_1': {
                     tableData.forEach((row, index) => {
                         if (index === 29) {
                             const checkRow = row.splice(1, 5);
                             checkRow.forEach((d, col) => {
-                                console.log(d);
-                                console.log(col);
                                 if(d.Record_Value === true) {
                                     row.push({
                                         "Record_ID": `ID5_1_${index + 1}`,
@@ -350,7 +313,6 @@ export default class HomeScreen extends Component {
                                 }
                             })
                     });
-                  //  console.log(tableData);
                     break;
                 }
                 case 'ID7_8': {
@@ -359,7 +321,6 @@ export default class HomeScreen extends Component {
                             row.splice(0, 1);
                         }
                     });
-                   // console.log(tableData);
                     break;
                 }
                 case 'ID8_13': {
@@ -374,7 +335,6 @@ export default class HomeScreen extends Component {
                             }
                         })
                     });
-                   // console.log(tableData);
                     break;
                 }
                 default: {
@@ -388,7 +348,6 @@ export default class HomeScreen extends Component {
             tableData.forEach((row) => {
                 tableDataPair.push(...row);
             });
-            console.log(tableDataPair);
             return tableDataPair;
         } else {
             const goodData = [];
@@ -404,8 +363,6 @@ export default class HomeScreen extends Component {
     switchPage(page) {
         this.setState({
             display: page
-        }, () => {
-            console.log('switched');
         })
     }
 
@@ -447,7 +404,7 @@ export default class HomeScreen extends Component {
                                     this.state.loading ? (
                                         <Spinner color='blue'/>
                                     ) : (
-                                        <List
+                                        <List key={'list1'}
                                             dataSource={this.ds.cloneWithRows(this.state.list)}
                                             renderRow={(data) =>
                                                 <ListItem style={{alignItems: 'center'}} onPress={() => {
@@ -455,7 +412,7 @@ export default class HomeScreen extends Component {
                                                         id: data[0]
                                                     })
                                                 }}>
-                                                    <Text> {`${JSON.parse(data[1]).updateTime.substr(0, 10)}录入，体检编号:${data[0]}`} </Text>
+                                                    <Text> {`${JSON.parse(data[1]).updateTime.substr(0, 10)}录入，编号:${data[0]}`} </Text>
                                                 </ListItem>}
                                             renderLeftHiddenRow={data =>
                                                 (<Button full onPress={() => {
@@ -485,15 +442,15 @@ export default class HomeScreen extends Component {
                                     this.state.loading ? (
                                         <Spinner color='blue'/>
                                     ) : (
-                                        <List
-                                            dataSource={this.ds.cloneWithRows(this.state.uploaded_list)}
+                                        <List key={'list2'}
+                                            dataSource={this.us.cloneWithRows(this.state.uploaded_list)}
                                             renderRow={(data) =>
                                                 <ListItem style={{alignItems: 'center'}} onPress={() => {
                                                     this.props.navigation.navigate('Details', {
                                                         id: data[0]
                                                     })
                                                 }}>
-                                                    <Text> {`${JSON.parse(data[1]).updateTime.substr(0, 10)}录入，体检编号:${data[0]}`} </Text>
+                                                    <Text> {`${JSON.parse(data[1]).updateTime.substr(0, 10)}录入，编号:${data[0]}`} </Text>
                                                 </ListItem>}
                                             renderLeftHiddenRow={data =>
                                                 (<Button full onPress={() => {

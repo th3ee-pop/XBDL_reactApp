@@ -41,8 +41,6 @@ export default class TableLineComponent extends Component {
             tableData: props.config,
             answers: props.answer,
             valid: validArray
-        }, () => {
-            console.log(this.state);
         })
 
     }
@@ -84,11 +82,7 @@ export default class TableLineComponent extends Component {
     };
 
     async openDatePicker(index) {
-        console.log(index);
         const dateArray = this.state.answers[index].Record_Value.split('-');
-        console.log(parseInt(dateArray[0]));
-        console.log(parseInt(dateArray[1]));
-        console.log(parseInt(dateArray[2]));
         try {
             let {action, year, month, day} = await DatePickerAndroid.open({
                 date: new Date(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2])),
@@ -109,8 +103,6 @@ export default class TableLineComponent extends Component {
     }
 
     checkValid(value, index) {
-        console.log(this.props.validType);
-        console.log(value);
         switch (this.props.validType) {
             case 'twonum':
                 const twoReg = /^\d{0,2}$/;

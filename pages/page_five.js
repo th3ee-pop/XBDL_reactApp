@@ -28,15 +28,10 @@ export default class Page_5 extends Component {
 
 
     componentWillMount() {
-        console.log(this.state);
-        console.log(this.props.answer);
-        console.log('mounting');
         this.virtualState.answers = this.props.answer;
         this.setState({
             answers: this.props.answer
         }, () => {
-            console.log(this.state.answers);
-            console.log(this.virtualState.answers);
         })
     }
 
@@ -46,28 +41,6 @@ export default class Page_5 extends Component {
         this.props.handleChange(4, this.virtualState.answers);
     }
 
-
-    setContent = () => {
-        AsyncStorage.setItem('PID2', JSON.stringify(this.virtualState), (error) => {
-            console.log(error);
-            console.log('111');
-        })
-    };
-
-    getContent = () => {
-        console.log('getting');
-        try {
-            AsyncStorage.getItem('PID2', (result) => {
-                alert(result);
-                console.log(result);
-                this.setState({
-                    answer: result
-                })
-            });
-        } catch (e) {
-            console.log(e);
-        }
-    };
 
 
     switch_Widget = (widget, index) => {

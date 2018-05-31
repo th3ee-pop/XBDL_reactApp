@@ -18,7 +18,6 @@ export default class NormalInputComponent extends Component {
 
 
     handleChange(e) {
-        console.log(this.props.content[0].validType);
         switch (this.props.content[0].validType) {
             case 'idc':
                 const idReg =  /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
@@ -140,6 +139,7 @@ export default class NormalInputComponent extends Component {
     }
 
     componentWillMount() {
+        console.log(this.props.hidden);
         this.setState({
             value: this.props.value
         });
@@ -153,29 +153,29 @@ export default class NormalInputComponent extends Component {
 
 
     render() {
-        const { func , value, title, id } = this.props;
+        const { func , value, title, id, hidden} = this.props;
         return (
-            <Content style={{top: 10}}>
+            this.props.hidden === false ? ( <Content style={{top: 10}}>
                 <Form>
-                            <Label>
-                            {id + ' ' + title}
-                        </Label>
+                    <Label>
+                        {id + ' ' + title}
+                    </Label>
                     <Item>
                         <Input type="text" value={this.state.value} onChangeText={(text) => {this.handleChange(text)}}/>
                         {
                             this.state.valid ? (
                                 <View/>
                             ) : (<View>
-                                <Text style={{color:'red'}}>
-                                    {this.state.info}
-                                </Text>
+                                    <Text style={{color:'red'}}>
+                                        {this.state.info}
+                                    </Text>
                                 </View>
                             )
                         }
 
                     </Item>
                 </Form>
-            </Content>
+            </Content>):(<View/>)
         )
-    }
+       }
 }
