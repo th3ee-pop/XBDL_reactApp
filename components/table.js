@@ -78,35 +78,34 @@ export default class TableComponent extends Component {
 
 
     render() {
-        return (
-            <Content style={{marginTop: 10}}>
+        return (this.props.hidden === false ? (<Content style={{marginTop: 10}}>
 
-            <View>
+                <View>
 
-                <Form>
-                    <Label>
-                        { this.props.id + ' ' + this.props.title}
-                    </Label>
-                    {
-                        this.state.loading ? (
-                            <View style={{alignItems: 'center', height: 100}}>
-                                <ActivityIndicator size="small" color="#C0C0C0"/>
-                                <Text style={{color:"#C0C0C0"}}>表格正在加载……</Text>
-                            </View>
-                        ) : ( <View/> )
-                    }
-                    <Table borderStyle={{borderColor: 'transparent', paddingBottom: 15}}>
-                        <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
+                    <Form>
+                        <Label>
+                            { this.props.id + ' ' + this.props.title}
+                        </Label>
                         {
-                            this.state.tableData.map((rowData, index) => (
-
-                                <TableLineComponent method={'single'} handleChange={this.handleChange} key={index} config={rowData} answer={this.state.answers[index]} index={index} validType={this.props.configuration.validType}/>
-                            ))
+                            this.state.loading ? (
+                                <View style={{alignItems: 'center', height: 100}}>
+                                    <ActivityIndicator size="small" color="#C0C0C0"/>
+                                    <Text style={{color:"#C0C0C0"}}>表格正在加载……</Text>
+                                </View>
+                            ) : ( <View/> )
                         }
-                    </Table>
-                </Form>
-            </View>
-            </Content>
+                        <Table borderStyle={{borderColor: 'transparent', paddingBottom: 15}}>
+                            <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
+                            {
+                                this.state.tableData.map((rowData, index) => (
+
+                                    <TableLineComponent method={'single'} handleChange={this.handleChange} key={index} config={rowData} answer={this.state.answers[index]} index={index} validType={this.props.configuration.validType}/>
+                                ))
+                            }
+                        </Table>
+                    </Form>
+                </View>
+            </Content>) : (<View/>)
         )
     }
 }

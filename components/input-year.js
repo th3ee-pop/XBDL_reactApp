@@ -79,8 +79,7 @@ export default class InputYearComponent extends Component {
 
     render() {
         const { func , value, title, id } = this.props;
-        return (
-            <Content style={{top: 10}}>
+        return (this.props.hidden === false ? (<Content style={{top: 10}}>
                 <Form>
                     <Label>
                         {id + ' ' + title}
@@ -112,7 +111,8 @@ export default class InputYearComponent extends Component {
                         <Text>个月</Text>
                     </Item>
                 </Form>
-            </Content>
+            </Content>) : (<View/>)
+
         )
     }
 }
