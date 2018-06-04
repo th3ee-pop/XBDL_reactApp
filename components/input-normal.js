@@ -9,6 +9,7 @@ export default class NormalInputComponent extends Component {
     constructor(props) {
         super (props);
         this.handleChange = this.handleChange.bind(this);
+        this.sendHideSignal = this.sendHideSignal.bind(this);
         this.state = {
             value: '',
             valid: true,
@@ -135,11 +136,28 @@ export default class NormalInputComponent extends Component {
         /*this.setState({
             value: e
         });*/
+        if (this.props.hiddenList && this.props.hide_value) {
+            if (e === this.props.hide_value) {
+                this.sendHideSignal(this.props.id, this.props.hiddenList[0]);
+            } else {
+                const recoverList = this.props.hiddenList[0].map(item => -item);
+                console.log(recoverList);
+                this.sendHideSignal(this.props.id, recoverList);
+            }
+        }
        this.props.handleChange(this.props.index, e);
     }
 
+    sendHideSignal(index, id) {
+        this.props.generateHideSignal(index, id);
+    }
+
     componentWillMount() {
-        console.log(this.props.hidden);
+        if (this.props.hiddenList && this.props.hide_value) {
+            if (this.props.value === this.props.hide_value) {
+                this.sendHideSignal(this.props.id, this.props.hiddenList[0]);
+            }
+        }
         this.setState({
             value: this.props.value
         });

@@ -43,9 +43,9 @@ export default class MyDatePicker extends Component {
             if (action !== DatePickerAndroid.dismissedAction) {
                 let date = '';
                 if (month < 9) {
-                    date = `${year}-0${month+1}-${day}`;
+                    date = `${year}-0${month+1}-${day > 9?day:'0'+day}`;
                 } else {
-                   date = `${year}-${month+1}-${day}`;
+                   date = `${year}-${month+1}-${day > 9?day:'0'+day}`;
                 }
 
                 this.setDate(date);
@@ -59,7 +59,7 @@ export default class MyDatePicker extends Component {
         const { title, id } = this.props;
 
         return (
-            <Content style={{top: 10, height: 80}}>
+            this.props.hidden === false ? (<Content style={{top: 10, height: 80}}>
                 <Form>
                     <Label>
                         {id + ' ' + title}
@@ -70,26 +70,8 @@ export default class MyDatePicker extends Component {
                         </Button>
                         <Input  type="text" value={this.state.date} onChangeText={(text) => {this.setDate(text)}}/>
                     </View>
-
-                    {/*<DatePicker
-                        style={{width: 200, paddingTop:15, left: 20}}
-                        date={this.state.date}
-                        mode="date"
-                        placeholder="选择日期"
-                        format="YYYY-MM-DD"
-                        minDate="1900-01-01"
-                        maxDate="2050-01-01"
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        customStyles={{
-                            dateInput: {
-                                marginLeft: 3
-                            }
-                        }}
-                        onDateChange={(date) => {this.setDate(date)}}
-                    />*/}
                 </Form>
-            </Content>
+            </Content>): (<View/>)
         )
     }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AsyncStorage, ToastAndroid , Alert} from 'react-native';
-import { Container, Tab, Tabs, ScrollableTab, Button, Text, Header, Left, Body, Right, Content, Title, Icon, Separator} from 'native-base';
+import { Container, Tab, Tabs, ScrollableTab, Button, Text, Header, Left, Body, Right, Content, Title, Icon, Separator, View} from 'native-base';
 import moment from 'moment';
 import {QuestionList} from './questionList';
 import Page_1 from './pages/page_first';
@@ -26,7 +26,8 @@ export default class ExaminationView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            answers: ''
+            answers: '',
+            hide_woman: true
         };
         this.virtualState = {
             answers: ''
@@ -36,8 +37,20 @@ export default class ExaminationView extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.generateRadio = this.generateRadio.bind(this);
         this.generateCheckBox = this.generateCheckBox.bind(this);
+        this.hideWoman = this.hideWoman.bind(this);
     }
 
+    hideWoman(e) {
+        if (e > 0) {
+            this.setState({
+                hide_woman: false
+            })
+        } else {
+            this.setState({
+                hide_woman: true
+            })
+        }
+    }
 
     componentWillMount() {
         const id = this.props.navigation.getParam('id', 'NO-ID');
@@ -592,34 +605,34 @@ export default class ExaminationView extends Component {
                     <Right />
                 </Header>
                 <Tabs renderTabBar={()=> <ScrollableTab />}>
-                    <Tab heading="一般信息">
-                        <Page_1 answer = {this.state.answers[0]} handleChange={this.handleChange}/>
+                    <Tab heading="一般信息" key={'1'}>
+                        <Page_1 answer = {this.state.answers[0]} handleChange={this.handleChange} hideWoman={this.hideWoman}/>
                     </Tab>
-                    <Tab heading="饮茶及咖啡情况">
+                    <Tab heading="饮茶及咖啡情况" key={'2'}>
                         <Page_2 answer = {this.state.answers[1]} handleChange={this.handleChange}/>
                     </Tab>
-                    <Tab heading="饮酒情况">
+                    <Tab heading="饮酒情况" key={'3'}>
                         <Page_3 answer = {this.state.answers[2]} handleChange={this.handleChange}/>
                     </Tab>
-                    <Tab heading="吸烟情况">
+                    <Tab heading="吸烟情况" key={'4'}>
                         <Page_4 answer = {this.state.answers[3]} handleChange={this.handleChange}/>
                     </Tab>
-                    <Tab heading="膳食情况">
+                    <Tab heading="膳食情况" key={'5'}>
                         <Page_5 answer = {this.state.answers[4]} handleChange={this.handleChange}/>
                     </Tab>
-                    <Tab heading="空气污染">
+                    <Tab heading="空气污染" key={'6'}>
                         <Page_6 answer = {this.state.answers[5]} handleChange={this.handleChange}/>
                     </Tab>
-                    <Tab heading="健康状况">
+                    <Tab heading="健康状况" key={'7'}>
                         <Page_7 answer = {this.state.answers[6]} handleChange={this.handleChange}/>
                     </Tab>
-                    <Tab heading="体力活动">
+                    <Tab heading="体力活动" key={'8'}>
                         <Page_8 answer = {this.state.answers[7]} handleChange={this.handleChange}/>
                     </Tab>
-                    <Tab heading="女性生育史">
-                        <Page_9 answer = {this.state.answers[8]} handleChange={this.handleChange}/>
+                    <Tab heading="女性生育史" key={'9'} >
+                        <Page_9 answer = {this.state.answers[8]} handleChange={this.handleChange} hidden={this.state.hide_woman}/>
                     </Tab>
-                    <Tab heading="精神及生活质量">
+                    <Tab heading="精神及生活质量" key={'10'}>
                         <Page_10 answer = {this.state.answers[9]} handleChange={this.handleChange}/>
                     </Tab>
                 </Tabs>

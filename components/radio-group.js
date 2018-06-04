@@ -19,8 +19,6 @@ export default class RadioGroupComponent extends Component {
     }
 
     handleChange(e) {
-        console.log(e);
-        console.log(this.props.hiddenList);
         this.state.value[e].Record_Value = !this.state.value[e].Record_Value;
         this.state.value.forEach((d, index) => {
             if (index !== e) {
@@ -29,6 +27,8 @@ export default class RadioGroupComponent extends Component {
         });
         if (this.props.hiddenList !== null) {
             this.sendHideSignal(e, this.props.hiddenList[e]);
+        } else if (this.props.id === '1.3') {
+            this.props.hideWoman(e);
         }
         this.setState({
             value: this.state.value
@@ -44,7 +44,21 @@ export default class RadioGroupComponent extends Component {
 
     componentWillMount() {
         if (this.props.hiddenList) {
-            console.log(this.props.hiddenList);
+
+            this.props.value.forEach((option, index) => {
+                if (option.Record_Value === true) {
+                    console.log(`${this.props.id}有需要隐藏的问题，现在隐藏了${index}选项涉及的问题`);
+                    this.sendHideSignal(index, this.props.hiddenList[index]);
+                }
+            })
+        } else if (this.props.id === '1.3') {
+            console.log('涉及性别因素');
+            this.props.value.forEach((option, index) => {
+                if(option.Record_Value === true) {
+                    console.log(`当前选项为${index}`);
+                    this.props.hideWoman(index);
+                }
+            })
         }
         let selected = null;
         this.props.value.forEach((option, index) => {
@@ -56,11 +70,17 @@ export default class RadioGroupComponent extends Component {
             value: this.props.value,
             selected: selected
         }, ()=> {
-            console.log(this.state.selected);
         });
     }
 
     componentWillReceiveProps(props) {
+        this.props.value.forEach((item, index) => {
+            if(item.Record_Value !== props.value[index].Record_Value && this.props.hiddenList !== null) {
+                console.log('检测到值的变化');
+                console.log(`${this.props.id}是一个涉及隐藏的问题，现在隐藏了${index}选项涉及的问题`);
+                this.sendHideSignal(index, this.props.hiddenList[index])
+            }
+        });
         let selected = null;
         props.value.forEach((option, index) => {
             if (option.Record_Value === true) {
@@ -71,12 +91,8 @@ export default class RadioGroupComponent extends Component {
             value: props.value,
             selected: selected
         }, () => {
-            console.log(this.state.selected);
-           /* console.log(selected);
-            console.log(props.id);
-            if(props.hiddenList !== null && selected !== null) {
-                this.sendHideSignal(selected, props.hiddenList[selected])
-            }*/
+            /*console.log(this.props.value);
+            console.log(props.value);*/
         });
     }
 

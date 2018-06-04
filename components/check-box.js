@@ -38,7 +38,7 @@ export default class CheckBoxComponent extends Component {
     render() {
         const {id, title, options} = this.props;
         return (
-            <Content style={{top: 10, marginBottom: 10}}>
+            this.props.hidden === false ? ( <Content style={{top: 10, marginBottom: 10}}>
                 <Form>
                     <Label>
                         {id + ' ' + title}
@@ -51,7 +51,7 @@ export default class CheckBoxComponent extends Component {
                                         rightText={option}
                                         style={{flex: 1, padding: 5}}
                                         isChecked={this.state.options[index].Record_Value} onClick={() => {
-                                            this.searchOption(index);
+                                        this.searchOption(index);
                                     }}/>
                                 </View>
                             ))
@@ -60,7 +60,8 @@ export default class CheckBoxComponent extends Component {
 
 
                 </Form>
-            </Content>
+            </Content>) : (<View/>)
+
         )
     }
 }

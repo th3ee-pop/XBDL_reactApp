@@ -39,7 +39,6 @@ export default class Page_4 extends Component {
                 'hidden': question.hidden
             })
         });
-        console.log(hiddenArray);
         this.setState({
             answers: this.props.answer,
             hidden: hiddenArray
@@ -61,18 +60,15 @@ export default class Page_4 extends Component {
 
 
     generateHideSignal(index, id) {
-        console.log(index, id);
         id.forEach(item => {
             if (item > 0) {
-                this.state.hidden[item].hidden = true
+                this.state.hidden[item].hidden = true;
             } else {
                 this.state.hidden[-item].hidden = false
             }
         });
         this.setState({
             hidden: this.state.hidden
-        }, ()=> {
-            console.log(this.state.hidden);
         })
     }
 

@@ -38,11 +38,16 @@ export default class Page_3 extends Component {
                 'hidden': question.hidden
             })
         });
-        console.log(hiddenArray);
         this.setState({
             answers: this.props.answer,
             hidden: hiddenArray
-        }, () => {
+        })
+    }
+
+    componentWillReceiveProps(props) {
+        this.virtualState.answers = props.answer;
+        this.setState({
+            answers: props.answer
         })
     }
 
@@ -52,18 +57,15 @@ export default class Page_3 extends Component {
     }
 
     generateHideSignal(index, id) {
-        console.log(index, id);
         id.forEach(item => {
             if (item > 0) {
-                this.state.hidden[item].hidden = true
+                this.state.hidden[item].hidden = true;
             } else {
                 this.state.hidden[-item].hidden = false
             }
         });
         this.setState({
             hidden: this.state.hidden
-        }, ()=> {
-            console.log(this.state.hidden);
         })
     }
 
@@ -79,15 +81,15 @@ export default class Page_3 extends Component {
                 );
             case 'date':
                 return (
-                    <MyDatePicker index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id}/>
+                    <MyDatePicker index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} hidden = {this.state.hidden[index].hidden}/>
                 );
             case 'checkbox':
                 return (
-                    <CheckBoxComponent index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} options = {widget.content}/>
+                    <CheckBoxComponent index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} options = {widget.content} hidden = {this.state.hidden[index].hidden}/>
                 );
             case 'table':
                 return (
-                    <TableComponent index={index} handleChange={this.handleChange}  title = {widget.tittle} id = {widget.id} configuration = {widget.configuration} value={this.state.answers[index].Record_Value}/>
+                    <TableComponent index={index} handleChange={this.handleChange}  title = {widget.tittle} id = {widget.id} configuration = {widget.configuration} value={this.state.answers[index].Record_Value} hidden = {this.state.hidden[index].hidden}/>
                 );
             default:
                 return (<Text>

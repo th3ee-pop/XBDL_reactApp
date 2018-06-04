@@ -26,6 +26,7 @@ export default class Page_1 extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.generateHideSignal = this.generateHideSignal.bind(this);
+        this.hideWomanInfo = this.hideWomanInfo.bind(this);
     }
 
 
@@ -38,12 +39,9 @@ export default class Page_1 extends Component {
                 'hidden': question.hidden
             })
         });
-        console.log(hiddenArray);
         this.setState({
             answers: this.props.answer,
             hidden: hiddenArray
-        }, () => {
-            console.log(this.state);
         })
     }
 
@@ -63,16 +61,23 @@ export default class Page_1 extends Component {
         console.log(index, id);
         id.forEach(item => {
             if (item > 0) {
-                this.state.hidden[item].hidden = true
+                this.state.hidden[item].hidden = true;
             } else {
                 this.state.hidden[-item].hidden = false
             }
         });
         this.setState({
             hidden: this.state.hidden
-        }, ()=> {
-            console.log(this.state.hidden);
         })
+    }
+
+    hideWomanInfo(e) {
+        console.log(e);
+        if (e === 0) {
+            this.props.hideWoman(0);
+        } else {
+            this.props.hideWoman(1);
+        }
     }
 
     switch_Widget = (widget, index) => {
@@ -83,19 +88,19 @@ export default class Page_1 extends Component {
 
             case 'radio':
                 return (
-                    <RadioGroupComponent index={index} generateHideSignal={this.generateHideSignal} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} options = {widget.content} hidden = {this.state.hidden[index].hidden} hiddenList = {widget.hiddenlist ? widget.hiddenlist : null }/>
+                    <RadioGroupComponent index={index} hideWoman={this.hideWomanInfo} generateHideSignal={this.generateHideSignal} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} options = {widget.content} hidden = {this.state.hidden[index].hidden} hiddenList = {widget.hiddenlist ? widget.hiddenlist : null }/>
                 );
             case 'date':
                 return (
-                    <MyDatePicker index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id}/>
+                    <MyDatePicker index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} hidden = {this.state.hidden[index].hidden}/>
                 );
             case 'checkbox':
                 return (
-                    <CheckBoxComponent index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} options = {widget.content}/>
+                    <CheckBoxComponent index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} options = {widget.content} hidden = {this.state.hidden[index].hidden}/>
                 );
             case 'table':
                 return (
-                    <TableComponent index={index} handleChange={this.handleChange}  title = {widget.tittle} id = {widget.id} configuration = {widget.configuration} value={this.state.answers[index].Record_Value}/>
+                    <TableComponent index={index} handleChange={this.handleChange}  title = {widget.tittle} id = {widget.id} configuration = {widget.configuration} value={this.state.answers[index].Record_Value} hidden = {this.state.hidden[index].hidden}/>
                 );
             default:
                 return (<Text>

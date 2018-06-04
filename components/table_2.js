@@ -76,10 +76,8 @@ export default class Table2Component extends Component {
 
     render() {
         return (
-            <Content style={{marginTop: 10}}>
-
+            this.props.hidden === false ? (<Content style={{marginTop: 10}}>
                 <View>
-
                     <Form>
                         <Label>
                             { this.props.id + ' ' + this.props.title}
@@ -103,7 +101,7 @@ export default class Table2Component extends Component {
                         </Table>
                     </Form>
                 </View>
-            </Content>
+            </Content>): (<View/>)
         )
     }
 }
