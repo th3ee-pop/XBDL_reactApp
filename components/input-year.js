@@ -9,6 +9,7 @@ export default class InputYearComponent extends Component {
     constructor(props) {
         super (props);
         this.handleChange = this.handleChange.bind(this);
+        this.transToMonth = this.transToMonth.bind(this);
         this.state = {
             year: '',
             month: '',
@@ -26,14 +27,14 @@ export default class InputYearComponent extends Component {
                     year: e,
                     valid_year: false
                 }, () => {
-                    this.props.handleChange(this.props.index, `${this.state.year},${this.state.month}`);
+                    this.props.handleChange(this.props.index, this.transToMonth(this.state.year, this.state.month).toString());
                 });
             } else {
                 this.setState({
                     year: e,
                     valid_year: true
                 }, () => {
-                    this.props.handleChange(this.props.index, `${this.state.year},${this.state.month}`);
+                    this.props.handleChange(this.props.index, this.transToMonth(this.state.year, this.state.month).toString());
                 });
             }
 
@@ -43,14 +44,14 @@ export default class InputYearComponent extends Component {
                     month: e,
                     valid_month: false
                 }, ()=> {
-                    this.props.handleChange(this.props.index, `${this.state.year},${this.state.month}`);
+                    this.props.handleChange(this.props.index, this.transToMonth(this.state.year, this.state.month).toString());
                 });
             } else {
                 this.setState({
                     month: e,
                     valid_month: true
                 }, ()=> {
-                    this.props.handleChange(this.props.index, `${this.state.year},${this.state.month}`);
+                    this.props.handleChange(this.props.index, this.transToMonth(this.state.year, this.state.month).toString());
                 });
             }
 
@@ -58,22 +59,45 @@ export default class InputYearComponent extends Component {
 
     }
 
+    transToMonth(year?, month?) {
+        console.log(year);
+        console.log(month);
+        if (year && !month) {
+            return parseInt(year)*12;
+        } else if (!year && month) {
+            return parseInt(month);
+        }  else if (year && month){
+            return parseInt(year)*12 + parseInt(month);
+        } else {
+            return 0;
+        }
+    }
+
     componentWillMount() {
+        console.log(this.props.value);
         if (this.props.value !== '') {
-            const timeArray = this.props.value.split(',');
+            console.log('valid');
+            const monthNum = parseInt(this.props.value);
+            const year = parseInt(monthNum/12);
+            const month = monthNum%12;
             this.setState({
-                year: timeArray[0],
-                month: timeArray[1]
+                year: year.toString(),
+                month: month.toString()
             });
         }
     }
 
     componentWillReceiveProps(props) {
-        const timeArray = props.value.split(',');
-        this.setState({
-            year: timeArray[0],
-            month: timeArray[1]
-        });
+        console.log(props.value);
+        if (props.value !== '') {
+            const monthNum = parseInt(props.value);
+            const year = parseInt(monthNum/12);
+            const month = monthNum%12;
+            this.setState({
+                year: year.toString(),
+                month: month.toString()
+            });
+        }
     }
 
 

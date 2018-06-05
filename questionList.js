@@ -903,7 +903,7 @@
                 'content': [
                     {
                         'dataType': 'text',
-                        'inform': '月',
+                        'inform': '',
                         'validType': 'threenum'
                     }
                 ],
@@ -916,7 +916,7 @@
                 'content': [
                     {
                         'dataType': 'text',
-                        'inform': '月',
+                        'inform': '',
                         'validType': 'threenum'
                     }
                 ],

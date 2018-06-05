@@ -798,7 +798,7 @@ export class modelList {
                     }
                 ],
                 'hidden': false,
-                'type': 'input',
+                'type': 'year-input',
                 'tittle': '若你过去曾吸烟现在已不吸，那你戒烟有多久了？（单位：月）'
             },
             {
@@ -884,12 +884,12 @@ export class modelList {
                 'content': [
                     {
                         'dataType': 'text',
-                        'inform': '月',
+                        'inform': '',
                         'validType': 'threenum'
                     }
                 ],
                 'hidden': false,
-                'type': 'input',
+                'type': 'year-input',
                 'tittle': '你最近一次尝试戒烟是在多少个月以前？'
             },
             {
@@ -897,12 +897,12 @@ export class modelList {
                 'content': [
                     {
                         'dataType': 'text',
-                        'inform': '月',
+                        'inform': '',
                         'validType': 'threenum'
                     }
                 ],
                 'hidden': false,
-                'type': 'input',
+                'type': 'year-input',
                 'tittle': '你最近一次尝试戒烟时，坚持了多长时间未吸烟？'
             }
         ],
@@ -2265,7 +2265,7 @@ export class modelList {
                     }
                 ],
                 'hidden': false,
-                'type': 'input',
+                'type': 'year-input',
                 'tittle': '采取以上措施，几年前开始的？'
             },
             {
@@ -2279,7 +2279,7 @@ export class modelList {
                     }
                 ],
                 'hidden': false,
-                'type': 'input',
+                'type': 'year-input',
                 'tittle': '到目前为止，采取以上措施累计持续多长时间了？'
             },
             {
