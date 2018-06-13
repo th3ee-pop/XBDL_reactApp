@@ -27,10 +27,15 @@ export default class ExaminationView extends Component {
         super(props);
         this.state = {
             answers: '',
-            hide_woman: true
+            hide_woman: false,
+            completion: [],
+            complete_Rate: null
         };
         this.virtualState = {
-            answers: ''
+            answers: '',
+            completion: [],
+            hide_state: [],
+            complete_Rate: null
         };
         this.generateTable = this.generateTable.bind(this);
         this.generateTable_2 = this.generateTable_2.bind(this);
@@ -38,16 +43,20 @@ export default class ExaminationView extends Component {
         this.generateRadio = this.generateRadio.bind(this);
         this.generateCheckBox = this.generateCheckBox.bind(this);
         this.hideWoman = this.hideWoman.bind(this);
+        this.getPageCompletion = this.getPageCompletion.bind(this);
     }
 
     hideWoman(e) {
+        console.log(this.virtualState.completion);
         if (e > 0) {
             this.setState({
-                hide_woman: false
+                hide_woman: false,
+                completion: this.state.completion
             })
         } else {
             this.setState({
-                hide_woman: true
+                hide_woman: true,
+                completion: this.state.completion
             })
         }
     }
@@ -58,9 +67,15 @@ export default class ExaminationView extends Component {
             AsyncStorage.getItem(id, (err, data) => {
                 if (data) {
                     this.virtualState.answers = JSON.parse(data).answers;
+                    this.virtualState.completion = JSON.parse(data).completion;
+                    this.virtualState.complete_Rate = JSON.parse(data).complete_Rate;
+                    this.virtualState.hide_state = JSON.parse(data).hide_state;
                     this.setState({
-                        answers: JSON.parse(data).answers
+                        answers: JSON.parse(data).answers,
+                        completion: this.virtualState.completion,
+                        complete_Rate: this.virtualState.complete_Rate
                     }, () => {
+                        console.log(this.virtualState.hide_state);
                     })
                 } else {
                     console.log('new');
@@ -72,8 +87,16 @@ export default class ExaminationView extends Component {
         const answerBucket = [];
         for (let child = 0; child < this.allQuestions.length; child ++) {
             answerBucket.push([]);
+            this.virtualState.completion.push({
+                answered: 0,
+                overall: this.allQuestions[child].length
+            });
+            this.virtualState.hide_state.push([]);
             this.allQuestions[child].forEach(question => {
-
+                this.virtualState.hide_state[child].push({
+                    'ID': question.id,
+                    'hide': question.hidden
+                });
                 switch (question.type) {
                     case 'table': {
                         switch (question.id) {
@@ -194,7 +217,12 @@ export default class ExaminationView extends Component {
         }
         this.virtualState.answers =answerBucket;
         this.setState({
-            answers: answerBucket
+            answers: answerBucket,
+            completion: this.virtualState.completion,
+            complete_Rate: 0
+        }, () => {
+            console.log(this.state);
+            console.log(this.virtualState);
         })
     }
 
@@ -444,8 +472,31 @@ export default class ExaminationView extends Component {
         return IdArray;
     }
 
-    handleChange(index, answer) {
+    handleChange(index, answer, hide) {
         this.virtualState.answers[index] = answer;
+        this.virtualState.hide_state[index] = hide;
+        console.log(this.virtualState.hide_state);
+    }
+
+    getPageCompletion(page, overall, answered) {
+        this.virtualState.completion[page].overall = overall;
+        this.virtualState.completion[page].answered = answered;
+        this.state.completion[page] = this.virtualState.completion[page];
+        let allOverall = 0;
+        let allAnswered = 0;
+        this.virtualState.completion.forEach(item => {
+            allOverall = allOverall + item.overall;
+            allAnswered = allAnswered + item.answered
+        });
+        console.log(allOverall);
+        console.log(allAnswered);
+        this.virtualState.complete_Rate = Math.round((allAnswered/allOverall)*100) + '%';
+        this.setState({
+            completion: this.state.completion,
+            complete_Rate: this.virtualState.complete_Rate
+        }, () => {
+            console.log(this.state);
+        })
     }
 
     generateRadio(question) {
@@ -469,6 +520,8 @@ export default class ExaminationView extends Component {
         }
         return checkAnswer;
     }
+
+
 
     generateTable(question) {
         const tableAnswer = [];
@@ -600,40 +653,40 @@ export default class ExaminationView extends Component {
                         </Button>
                     </Left>
                     <Body>
-                    <Title>{'健康体检调查表'}</Title>
+                    <Title>{`健康体检调查表 (${this.state.complete_Rate})`}</Title>
                     </Body>
                     <Right />
                 </Header>
                 <Tabs renderTabBar={()=> <ScrollableTab />}>
-                    <Tab heading="一般信息" key={'1'}>
-                        <Page_1 answer = {this.state.answers[0]} handleChange={this.handleChange} hideWoman={this.hideWoman}/>
+                    <Tab heading={`一般信息 (${this.state.completion[0].answered}/${this.state.completion[0].overall})`} key={'1'}>
+                        <Page_1 answer = {this.state.answers[0]} handleChange={this.handleChange} hideWoman={this.hideWoman} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading="饮茶及咖啡情况" key={'2'}>
-                        <Page_2 answer = {this.state.answers[1]} handleChange={this.handleChange}/>
+                    <Tab heading={`饮茶及咖啡情况 (${this.state.completion[1].answered}/${this.state.completion[1].overall})`} key={'2'}>
+                        <Page_2 answer = {this.state.answers[1]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading="饮酒情况" key={'3'}>
-                        <Page_3 answer = {this.state.answers[2]} handleChange={this.handleChange}/>
+                    <Tab heading={`饮酒情况 (${this.state.completion[2].answered}/${this.state.completion[2].overall})`} key={'3'}>
+                        <Page_3 answer = {this.state.answers[2]} handleChange={this.handleChange}  submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading="吸烟情况" key={'4'}>
-                        <Page_4 answer = {this.state.answers[3]} handleChange={this.handleChange}/>
+                    <Tab heading={`吸烟情况 (${this.state.completion[3].answered}/${this.state.completion[3].overall})`} key={'4'}>
+                        <Page_4 answer = {this.state.answers[3]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading="膳食情况" key={'5'}>
-                        <Page_5 answer = {this.state.answers[4]} handleChange={this.handleChange}/>
+                    <Tab heading={`膳食情况 (${this.state.completion[4].answered}/${this.state.completion[4].overall})`} key={'5'}>
+                        <Page_5 answer = {this.state.answers[4]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading="空气污染" key={'6'}>
-                        <Page_6 answer = {this.state.answers[5]} handleChange={this.handleChange}/>
+                    <Tab heading={`空气污染 (${this.state.completion[5].answered}/${this.state.completion[5].overall})`} key={'6'}>
+                        <Page_6 answer = {this.state.answers[5]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading="健康状况" key={'7'}>
-                        <Page_7 answer = {this.state.answers[6]} handleChange={this.handleChange}/>
+                    <Tab heading={`健康状况 (${this.state.completion[6].answered}/${this.state.completion[6].overall})`} key={'7'}>
+                        <Page_7 answer = {this.state.answers[6]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading="体力活动" key={'8'}>
-                        <Page_8 answer = {this.state.answers[7]} handleChange={this.handleChange}/>
+                    <Tab heading={`体力活动 (${this.state.completion[7].answered}/${this.state.completion[7].overall})`} key={'8'}>
+                        <Page_8 answer = {this.state.answers[7]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading="女性生育史" key={'9'} >
-                        <Page_9 answer = {this.state.answers[8]} handleChange={this.handleChange} hidden={this.state.hide_woman}/>
+                    <Tab heading={`女性生育史 (${this.state.completion[8].answered}/${this.state.completion[8].overall})`} key={'9'} >
+                        <Page_9 answer = {this.state.answers[8]} handleChange={this.handleChange} hidden={this.state.hide_woman} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading="精神及生活质量" key={'10'}>
-                        <Page_10 answer = {this.state.answers[9]} handleChange={this.handleChange}/>
+                    <Tab heading={`精神及生活质量 (${this.state.completion[9].answered}/${this.state.completion[9].overall})`} key={'10'}>
+                        <Page_10 answer = {this.state.answers[9]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
                 </Tabs>
                 <Button full onPress={this.setContent}>

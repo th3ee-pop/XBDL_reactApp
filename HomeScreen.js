@@ -167,6 +167,21 @@ export default class HomeScreen extends Component {
             if (err) alert(err);
             else {
                 const itemData = JSON.parse(data).answers;
+                const itemHideState = JSON.parse(data).hide_state;
+                itemHideState[7].forEach((item, index) => {
+                    if(item.ID === '8.0.1' || item.ID === '8.0.2') {
+                        itemHideState[7].splice(index, 1);
+                    }
+                });
+                itemHideState[9].splice(14, 1);
+                console.log(itemHideState);
+                console.log(this.tableModel.questions);
+                itemHideState.forEach((page, page_index) => {
+                    page.forEach((item, item_index) => {
+                        this.tableModel.questions[page_index][item_index].hidden = itemHideState[page_index][item_index].hidden
+                    })
+                });
+                console.log(this.tableModel.questions);
                 const allTableData = this.generateAvailable(itemData);
                 allTableData.unshift({
                     "Record_ID": 'ID0_0',
@@ -189,6 +204,13 @@ export default class HomeScreen extends Component {
                     "Record_Value": this.state.logged_user.name
                 });
 
+                console.log(allTableData);
+                allTableData.forEach(item => {
+                    if(item.Record_ID === 'ID6_8_1_a') {
+                        item.Record_ID = 'ID6_8_1.a'
+                    }
+                });
+                console.log(allTableData);
                 fetch("http://39.106.142.184:9501/healthexamination/recordop/", {
                     method: 'PUT',
                     body: JSON.stringify({
@@ -241,6 +263,7 @@ export default class HomeScreen extends Component {
                                 })
                             }
                         } else if (result.Return === 1) {
+                            console.log(result);
                             ToastAndroid.show('上传失败，未知错误。', ToastAndroid.SHORT);
                         }
                     }).catch(err => {

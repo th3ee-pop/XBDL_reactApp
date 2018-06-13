@@ -26,6 +26,8 @@ export default class Page_9 extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.generateHideSignal = this.generateHideSignal.bind(this);
+        this.getCompletion = this.getCompletion.bind(this);
+        this.checkIfAnswered = this.checkIfAnswered.bind(this);
     }
 
 
@@ -38,22 +40,106 @@ export default class Page_9 extends Component {
                 'hidden': question.hidden
             })
         });
+        console.log(this.props.hidden);
+        if(this.props.hidden === true) {
+            hiddenArray.forEach(item => {
+                item.hidden = true
+            })
+        } else {
+            hiddenArray.forEach(item => {
+                item.hidden = false
+            })
+        }
         this.setState({
             answers: this.props.answer,
             hidden: hiddenArray
+        }, () => {
+            console.log(this.state.hidden);
+            this.getCompletion();
         })
     }
 
     componentWillReceiveProps(props) {
         this.virtualState.answers = props.answer;
-        this.setState({
-            answers: props.answer
-        })
+        console.log(this.props.hidden);
+        console.log(props.hidden);
+        if (props.hidden !== this.props.hidden && props.hidden === true) {
+           this.state.hidden.forEach(item => {
+               item.hidden = true
+           });
+        } else if (props.hidden !== this.props.hidden && props.hidden === false) {
+            this.state.hidden.forEach(item => {
+                item.hidden = false
+            });
+        }
+
+        if (this.props.hidden !== props.hidden) {
+            this.setState({
+                answers: props.answer,
+                hidden: this.state.hidden
+            }, () => {
+                console.log(this.state.hidden);
+                this.getCompletion();
+            });
+        }
     }
 
     handleChange(index, answers) {
         this.virtualState.answers[index].Record_Value = answers;
-        this.props.handleChange(8, this.virtualState.answers);
+        this.props.handleChange(8, this.virtualState.answers, this.state.hidden);
+        this.getCompletion();
+    }
+
+    getCompletion() {
+        const validAnswer = [];
+        const hasAnswer = [];
+        this.state.hidden.forEach((item, index) => {
+            if (!item.hidden) {
+                const answer = {
+                    id: item.ID,
+                    index: index
+                };
+                validAnswer.push(answer);
+            }
+        });
+        validAnswer.forEach((item) => {
+            if(Array.isArray(this.state.answers[item.index].Record_Value)) {
+                if (this.checkIfAnswered(this.virtualState.answers[item.index].Record_Value)) {
+                    console.log(item);
+                    hasAnswer.push(item);
+                }
+            } else {
+                if(this.state.answers[item.index].Record_Value) {
+                    console.log(this.state.answers[item.index].Record_Value);
+                    hasAnswer.push(item);
+                }
+            }
+        });
+        console.log(validAnswer);
+        console.log(hasAnswer);
+        this.props.submitCompletion(8, validAnswer.length, hasAnswer.length);
+    }
+
+    checkIfAnswered(answer) {
+        if (Array.isArray(answer[0])) {
+            let answeredNum = 0;
+            answer.forEach((row, index)=> {
+                for (let col = 1; col < row.length; col ++) {
+                    if (row[col].Record_Value){
+                        console.log(row[col].Record_Value);
+                        answeredNum ++;
+                    }
+                }
+            });
+            return (answeredNum !==0)
+        } else {
+            let num = 0;
+            answer.forEach(item => {
+                if(item.Record_Value)
+                    num ++;
+            });
+            return (num !== 0);
+        }
     }
 
     generateHideSignal(index, id) {
@@ -66,6 +152,9 @@ export default class Page_9 extends Component {
         });
         this.setState({
             hidden: this.state.hidden
+        }, ()=> {
+            console.log(this.state.hidden);
+            console.log(this.state.answers);
         })
     }
 

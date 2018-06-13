@@ -1208,7 +1208,7 @@ export class modelList {
                 'tittle': '现在你家里做饭或烧水时，通常用哪一种燃料？'
             },
             {
-                'id': '6.8.1',
+                'id': '6.8.a',
                 'content': [
                     '无烟煤',
                     '有烟煤',

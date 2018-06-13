@@ -27,6 +27,8 @@ export default class Page_1 extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.generateHideSignal = this.generateHideSignal.bind(this);
         this.hideWomanInfo = this.hideWomanInfo.bind(this);
+        this.getCompletion = this.getCompletion.bind(this);
+        this.checkIfAnswered = this.checkIfAnswered.bind(this);
     }
 
 
@@ -42,6 +44,8 @@ export default class Page_1 extends Component {
         this.setState({
             answers: this.props.answer,
             hidden: hiddenArray
+        }, ()=> {
+            this.getCompletion()
         })
     }
 
@@ -54,7 +58,52 @@ export default class Page_1 extends Component {
 
     handleChange(index, answers) {
         this.virtualState.answers[index].Record_Value = answers;
-        this.props.handleChange(0, this.virtualState.answers);
+        console.log(this.state.hidden);
+        this.props.handleChange(0, this.virtualState.answers, this.state.hidden);
+        this.getCompletion();
+    }
+
+    getCompletion() {
+        const validAnswer = [];
+        const hasAnswer = [];
+        this.state.hidden.forEach((item, index) => {
+            if (!item.hidden) {
+                const answer = {
+                    id: item.ID,
+                    index: index
+                };
+                validAnswer.push(answer);
+            }
+        });
+        validAnswer.forEach((item) => {
+            if(Array.isArray(this.state.answers[item.index].Record_Value)) {
+                if (this.checkIfAnswered(this.state.answers[item.index].Record_Value)) {
+                    hasAnswer.push(item);
+                }
+            } else {
+                if(this.state.answers[item.index].Record_Value) {
+                    hasAnswer.push(item);
+                }
+            }
+        });
+        console.log(validAnswer);
+        console.log(hasAnswer);
+        this.props.submitCompletion(0, validAnswer.length, hasAnswer.length);
+    }
+
+    checkIfAnswered(answer) {
+        if (Array.isArray(answer[0])) {
+            console.log('这是一个表格');
+            console.log(answer);
+            return true;
+        } else {
+            let num = 0;
+            answer.forEach(item => {
+                if(item.Record_Value)
+                    num ++;
+            });
+            return (num !== 0);
+        }
     }
 
     generateHideSignal(index, id) {
@@ -68,6 +117,9 @@ export default class Page_1 extends Component {
         });
         this.setState({
             hidden: this.state.hidden
+        }, () => {
+            console.log(this.state.hidden);
+            console.log(this.state.answers);
         })
     }
 
