@@ -204,12 +204,18 @@ export default class HomeScreen extends Component {
                     "Record_Value": this.state.logged_user.name
                 });
 
-                console.log(allTableData);
-                allTableData.forEach(item => {
-                    if(item.Record_ID === 'ID6_8_1_a') {
-                        item.Record_ID = 'ID6_8_1.a'
+                for (let i = 0; i < allTableData.length; i++) {
+                    if (allTableData[i].Record_ID.substr(0, 7) === 'ID7_8_a' || allTableData[i].Record_ID.substr(0, 7) === 'ID7_8_c' ||allTableData[i].Record_ID.substr(0, 7) === 'ID7_8_d') {
+                        if(!allTableData[i].Record_Value)
+                        {
+                            allTableData.splice(i, 1);
+                            i = i-1;
+                        }
                     }
-                });
+                }
+
+                // 填坑1
+
                 console.log(allTableData);
                 fetch("http://39.106.142.184:9501/healthexamination/recordop/", {
                     method: 'PUT',

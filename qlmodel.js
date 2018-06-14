@@ -255,7 +255,7 @@ export class modelList {
                 'tittle': '如果信仰其他宗教，具体是？'
             },
             {
-                'id': '1.9.c',
+                'id': '1.9.1',
                 'content': [
                     '是',
                     '否'
@@ -269,7 +269,7 @@ export class modelList {
                 'tittle': '你是否封斋？'
             },
             {
-                'id': '1.9.c.1.a',
+                'id': '1.9.1.a',
                 'content': [
                     {
                         'dataType': 'text',
@@ -282,7 +282,7 @@ export class modelList {
                 'tittle': '你从几岁开始封斋？'
             },
             {
-                'id': '1.9.c.1.b',
+                'id': '1.9.1.b',
                 'content': [
                     {
                         'dataType': 'text',
@@ -392,7 +392,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'input',
-                'tittle': '去年你全家平均一个月的日常支出（不含特殊支出如买车住院等）约为：'
+                'tittle': '去年你全家平均一个月的日常支出（不含特殊支出如买房买车住院等）约为：'
             },
             {
                 'id': '1.16',
@@ -454,7 +454,7 @@ export class modelList {
                 'content': [
                     '从不或几乎从不喝茶',
                     '只在特殊场合下（如节假日或做客时）偶尔喝',
-                    '一年当中只在几个月里常饮（如农忙或夏季），而其他季节一般不饮',
+                    '一年当中只在特殊季节喝(如农忙或夏季)',
                     '一年当中不分季节，每个月都喝，但频度不到每周一次',
                     '一年当中不分季节，基本上每周都饮 ->转至问题2.3'
                 ],
@@ -975,8 +975,8 @@ export class modelList {
             {
                 'id': '5.7',
                 'content': [
-                    '从不/几乎从不吃辣',
-                    '偶尔吃，但不到每周一次',
+                    '从不/几乎从不吃辣 ->转至问题5.10',
+                    '偶尔吃，但不到每周一次 ->转至问题5.10',
                     '每周1-2次',
                     '每周3-5次',
                     '每天或几乎每天都吃'
@@ -1190,7 +1190,7 @@ export class modelList {
                 'id': '6.8',
                 'content': [
                     '煤气/天然气',
-                    '煤（请回答问题6.8.a）',
+                    '煤（请回答问题6.8.1）',
                     '柴/炭',
                     '电（包括微波炉/电磁炉）',
                     '其他油'
@@ -1208,7 +1208,7 @@ export class modelList {
                 'tittle': '现在你家里做饭或烧水时，通常用哪一种燃料？'
             },
             {
-                'id': '6.8.a',
+                'id': '6.8.1',
                 'content': [
                     '无烟煤',
                     '有烟煤',
@@ -1899,7 +1899,7 @@ export class modelList {
                 'tittle': '你每天平均工作多少小时？（非农林牧渔劳动者填写）'
             },
             {
-                'id': '8.1.o',
+                'id': '8.1.0',
                 'content': [
                     '否 ->转至问题8.3.1',
                     '是'
@@ -2449,6 +2449,19 @@ export class modelList {
                 'tittle': '人工流产多少次？（单位：次，若无填0）'
             },
             {
+                'id': '9.5.e',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '药物流产多少次？（单位：次，若无填0）'
+            },
+            {
                 'id': '9.6',
                 'type': 'table96',
                 'hidden': false
@@ -2684,7 +2697,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'input',
-                'tittle': '通常情况下，你平均每天睡几个小时（包括午睡）？'
+                'tittle': '通常情况下，你平均每晚睡几个小时？'
             },
             {
                 'id': '10.9',
@@ -2697,7 +2710,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'radio',
-                'tittle': '在过去一年里，你平均多久熬一次夜（24:00以后上床睡觉）'
+                'tittle': '在过去一年里，你平均多久熬一次夜（24:00以后上床睡觉）？'
             },
             {
                 'id': '10.10',
@@ -2749,7 +2762,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'checkbox',
-                'tittle': '在你整个一生中，你是否经历过下述情况，并且持续时间至少有两周？'
+                'tittle': '在过去一年时间里，你是否经历过下述情况，并且持续时间至少有两周？'
             },
             {
                 'id': '10.12',
@@ -2761,7 +2774,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'checkbox',
-                'tittle': '在你整个一生中，你是否出现过下述情况？'
+                'tittle': '在过去一年时间里，你是否出现过下述情况？'
             },
             {
                 'id': '10.13',
@@ -2774,7 +2787,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'radio',
-                'tittle': '总的来说，您认为您的健康状况：'
+                'tittle': '总的来说，您认为您现在的健康状况：'
             },
             {
                 'id': '10.14',
@@ -2787,7 +2800,7 @@ export class modelList {
                     [  ], [ '10.15', '10.16']
                 ] ,
                 'type': 'radio',
-                'tittle': '在过去一年里，您是否患上一些长期疾病？（注：长期疾病是指某一疾病已影响您已有一段很长的时间或您因某一疾病而有一段很长的时间已受到困扰）'
+                'tittle': '您是否患上一些长期疾病？（注：长期疾病是指某一疾病已影响您已有一段很长的时间或您因某一疾病而有一段很长的时间已受到困扰）'
             },
             {
 
@@ -2810,7 +2823,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'radio',
-                'tittle': '如有，您有否因这些疾病而限制了您的日常活动？'
+                'tittle': '您的日常活动有没有因这些疾病而受到限制？'
             },
             {
                 'id': '10.17',
@@ -2821,7 +2834,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'radio',
-                'tittle': '因疾病影响中等强度的活动，如搬桌子、打太极拳、扫地、做操等：'
+                'tittle': '以您目前的健康状况，是否影响中等强度的活动，如搬桌子、扫地、做操、打太极拳等？'
             },
             {
                 'id': '10.18',
@@ -2832,7 +2845,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'radio',
-                'tittle': '因疾病影响步行上楼梯：'
+                'tittle': '以您目前的健康状况，是否影响步行上楼梯'
             },
             {
                 'id': '10.19',
@@ -2842,7 +2855,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'radio',
-                'tittle': '因为身体健康的原因，在工作或日常活动中感到力不从心？'
+                'tittle': '最近一个月，因为身体健康的原因，在工作或日常活动中感到力不从心？'
             },
             {
                 'id': '10.20',
@@ -2852,7 +2865,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'radio',
-                'tittle': '因为身体健康的原因而令您的工作或活动受到限制？'
+                'tittle': '最近一个月，因为身体健康的原因而令您的工作或活动受到限制？'
             },
             {
                 'id': '10.21',
@@ -2862,7 +2875,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'radio',
-                'tittle': '因为情绪方面的原因（比如感到沮丧或者焦虑）而令您的工作或日常活动中感到力不从心？'
+                'tittle': '最近一个月，因为情绪方面的原因（比如感到沮丧或者焦虑）而令您的工作或日常活动中感到力不从心？'
             },
             {
                 'id': '10.22',
@@ -2872,7 +2885,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'radio',
-                'tittle': '因为情绪方面的原因（比如感到沮丧或者焦虑）而令您的工作或活动受到限制？'
+                'tittle': '最近一个月，因为情绪方面的原因（比如感到沮丧或者焦虑）而令您的工作或活动受到限制？'
             },
             {
                 'id': '10.23',
@@ -2885,7 +2898,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'radio',
-                'tittle': '因身体上的疼痛影响您的日常工作吗（包括上班和家务劳动）？'
+                'tittle': '最近一个月，因身体上的疼痛影响您的日常工作吗（包括上班和家务劳动）？'
             },
             {
                 'id': '10.24',
@@ -2898,7 +2911,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'radio',
-                'tittle': '您有多少时间感到心平气和'
+                'tittle': '最近一个月，您有多少时间感到心平气和？'
             },
             {
                 'id': '10.25',
@@ -2911,7 +2924,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'radio',
-                'tittle': '您有多少时间感到精力充沛'
+                'tittle': '最近一个月，您有多少时间感到精力充沛？'
             },
             {
                 'id': '10.26',
@@ -2924,7 +2937,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'radio',
-                'tittle': '您有多少时间感到心情不好，闷闷不乐'
+                'tittle': '最近一个月，您有多少时间感到心情不好，闷闷不乐？'
             },
             {
                 'id': '10.27',
@@ -2937,7 +2950,7 @@ export class modelList {
                 ],
                 'hidden': false,
                 'type': 'radio',
-                'tittle': '您觉得有多少时间您的身体或者情绪问题妨碍了您的社交活动（比如探亲、访友等）？'
+                'tittle': '最近一个月，您觉得有多少时间您的身体或者情绪问题妨碍了您的社交活动（比如探亲、访友等）？'
             }
         ]
     ];

@@ -56,11 +56,15 @@ export default class TableLineComponent extends Component {
     changeOptionSingle = (index, method) => {
         this.state.answers[index].Record_Value = !this.state.answers[index].Record_Value;
         if (method === 'single') {
+            console.log('单选');
+            console.log(index);
             this.state.answers.forEach((option, opt_index) => {
                 if (opt_index !== index && typeof option.Record_Value === "boolean") {
                     this.state.answers[opt_index].Record_Value = false;
                 }
             });
+        } else if (method === 'multi') {
+            console.log('多选');
         }
         this.setState({
             answers: this.state.answers
@@ -68,6 +72,7 @@ export default class TableLineComponent extends Component {
             this.props.handleChange(this.props.index, this.state.answers);
         })
     };
+
 
 
 

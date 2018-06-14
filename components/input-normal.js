@@ -50,6 +50,21 @@ export default class NormalInputComponent extends Component {
                     });
                 }
                 break;
+            case 'home-phone':
+                const homePhoneReg = /^(0[0-9]{2,3}-)?([2-9][0-9]{6,7})+(-[0-9]{1,4})?$/;
+                if(homePhoneReg.test(e) === false) {
+                    this.setState({
+                        value: e,
+                        valid: false,
+                        info: '电话号码有误'
+                    })} else {
+                    this.setState({
+                        value: e,
+                        valid: true,
+                        info: ''
+                    });
+                }
+                break;
             case 'twonum':
                 const twoReg = /^\d{0,2}$/;
                 if(twoReg.test(e) === false && e!=='') {
@@ -80,8 +95,24 @@ export default class NormalInputComponent extends Component {
                     });
                 }
                 break;
+            case 'fivenum':
+                const fiveReg = /^\d{0,5}$/;
+                if(fiveReg.test(e) === false && e!=='') {
+                    this.setState({
+                        value: e,
+                        valid: false,
+                        info: '不合法的数字'
+                    })} else {
+                    this.setState({
+                        value: e,
+                        valid: true,
+                        info: ''
+                    });
+                }
+                break;
             case 'onenum':
-                if(e > 7) {
+                const oneReg = /^\d+(\.\d+)?$/;
+                if(e > 7 || !oneReg.test(e)) {
                     this.setState({
                         value: e,
                         valid: false,
