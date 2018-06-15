@@ -87,14 +87,11 @@ export default class Page_2 extends Component {
                 }
             }
         });
-        console.log(validAnswer);
-        console.log(hasAnswer);
         this.props.submitCompletion(1, validAnswer.length, hasAnswer.length);
     }
 
     checkIfAnswered(answer) {
         if (Array.isArray(answer[0])) {
-            console.log('这是一个表格');
             return true;
         } else {
             let num = 0;
@@ -117,8 +114,6 @@ export default class Page_2 extends Component {
         this.setState({
             hidden: this.state.hidden
         },()=> {
-            console.log(this.state.hidden);
-            console.log(this.state.answers);
         })
     }
 

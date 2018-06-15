@@ -23,7 +23,6 @@ export default class Page_10 extends Component {
             answers: {
             }
         };
-
         this.handleChange = this.handleChange.bind(this);
         this.generateHideSignal = this.generateHideSignal.bind(this);
         this.getCompletion = this.getCompletion.bind(this);
@@ -86,8 +85,6 @@ export default class Page_10 extends Component {
                 }
             }
         });
-        console.log(validAnswer);
-        console.log(hasAnswer);
         this.props.submitCompletion(9, validAnswer.length, hasAnswer.length);
     }
 
@@ -124,8 +121,6 @@ export default class Page_10 extends Component {
         this.setState({
             hidden: this.state.hidden
         }, ()=> {
-            console.log(this.state.hidden);
-            console.log(this.state.answers);
         })
     }
 

@@ -30,6 +30,7 @@ export default class TableLineComponent extends Component {
         this.openDatePicker = this.openDatePicker.bind(this);
         this.switch_Widget = this.switch_Widget.bind(this);
         this.checkValid = this.checkValid.bind(this);
+        this.changeDateValue = this.changeDateValue.bind(this);
     }
     componentWillMount() {
         const props = this.props;
@@ -41,6 +42,8 @@ export default class TableLineComponent extends Component {
             tableData: props.config,
             answers: props.answer,
             valid: validArray
+        }, () => {
+            console.log(this.state.valid);
         })
 
     }
@@ -81,7 +84,31 @@ export default class TableLineComponent extends Component {
         this.setState({
             answers: this.state.answers
         }, () => {
+            console.log(this.state.valid);
             this.checkValid(value, index);
+            this.props.handleChange(this.props.index, this.state.answers);
+        });
+    };
+
+    changeDateValue =  (value, index) => {
+        console.log('改变日期');
+        this.state.answers[index].Record_Value = value;
+        this.setState({
+            answers: this.state.answers
+        }, () => {
+            console.log(this.state.valid);
+            const DateReg =  new RegExp("[\\u4E00-\\u9FFF]+","g");
+            if(DateReg.test(value) === true && value!=='') {
+                this.state.valid[index] = false;
+                this.setState({
+                    valid: this.state.valid
+                })
+            } else {
+                this.state.valid[index] = true;
+                this.setState({
+                    valid: this.state.valid
+                })
+            }
             this.props.handleChange(this.props.index, this.state.answers);
         });
     };
@@ -100,7 +127,7 @@ export default class TableLineComponent extends Component {
                 } else {
                     date = `${year}-${month+1}-${day}`;
                 }
-                this.changeInputValue(date, index);
+                this.changeDateValue(date, index);
             }
         } catch ({code, message}) {
             console.warn('无法打开日期选择',message);
@@ -138,12 +165,19 @@ export default class TableLineComponent extends Component {
                 }
                 break;
             case 'hours':
-                if(value > 24 && value !== '') {
+                const hoursReg = /^\d{0,2}$/;
+                if(hoursReg.test(value)=== false && value !== '') {
                     this.state.valid[index] = false;
                     this.setState({
                         valid: this.state.valid
                     })
-                } else {
+                } else if (hoursReg.test(value) === true && value > 24) {
+                    this.state.valid[index] = false;
+                    this.setState({
+                        valid: this.state.valid
+                    })
+                } else
+                    {
                     this.state.valid[index] = true;
                     this.setState({
                         valid: this.state.valid
@@ -151,12 +185,19 @@ export default class TableLineComponent extends Component {
                 }
                 break;
             case 'max20':
-                if(value > 20 && value !== '') {
+                const ageReg = /^\d{0,2}$/;
+                if(ageReg.test(value) === false && value !== '') {
                     this.state.valid[index] = false;
                     this.setState({
                         valid: this.state.valid
                     })
-                } else {
+                } else if (ageReg.test(value) === true && value > 20) {
+                    this.state.valid[index] = false;
+                    this.setState({
+                        valid: this.state.valid
+                    })
+                }
+                    else {
                     this.state.valid[index] = true;
                     this.setState({
                         valid: this.state.valid
@@ -177,6 +218,19 @@ export default class TableLineComponent extends Component {
                     })
                 }
                 break;
+            case 'noChinese':
+                if (/[\u4E00-\u9FA5]/i.test(value) === false && value !== '') {
+                    this.state.valid[index] = false;
+                    this.setState({
+                        valid: this.state.valid
+                    })
+                } else {
+                    this.state.valid[index] = true;
+                    this.setState({
+                        valid: this.state.valid
+                    })
+                }
+                break;
             default:
                 break;
         }
@@ -185,6 +239,7 @@ export default class TableLineComponent extends Component {
 
 
     switch_Widget = (widget, index) => {
+
         switch (widget.type)
         {
             case 'input':
@@ -211,7 +266,10 @@ export default class TableLineComponent extends Component {
                         <Button transparent onPress={() => this.openDatePicker(index)} >
                             <Icon name={'md-calendar'} />
                         </Button>
-                        <Input  type="text" value={this.state.answers[index].Record_Value} onChangeText={(value) => {this.changeInputValue(value, index)}}/>
+                        <Input  type="text" value={this.state.answers[index].Record_Value} onChangeText={(value) => {this.changeDateValue(value, index)}}/>
+                        {this.state.valid[index] ? (<View/>) : (<Text style={{color:'red'}}>
+                            {'  所填内容有误'}
+                        </Text>)}
                     </View>
                 );
             default:

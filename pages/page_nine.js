@@ -61,8 +61,6 @@ export default class Page_9 extends Component {
 
     componentWillReceiveProps(props) {
         this.virtualState.answers = props.answer;
-        console.log(this.props.hidden);
-        console.log(props.hidden);
         if (props.hidden !== this.props.hidden && props.hidden === true) {
            this.state.hidden.forEach(item => {
                item.hidden = true
@@ -115,8 +113,6 @@ export default class Page_9 extends Component {
                 }
             }
         });
-        console.log(validAnswer);
-        console.log(hasAnswer);
         this.props.submitCompletion(8, validAnswer.length, hasAnswer.length);
     }
 
@@ -153,8 +149,6 @@ export default class Page_9 extends Component {
         this.setState({
             hidden: this.state.hidden
         }, ()=> {
-            console.log(this.state.hidden);
-            console.log(this.state.answers);
         })
     }
 

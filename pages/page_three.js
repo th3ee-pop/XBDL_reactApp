@@ -86,8 +86,6 @@ export default class Page_3 extends Component {
                 }
             }
         });
-        console.log(validAnswer);
-        console.log(hasAnswer);
         this.props.submitCompletion(2, validAnswer.length, hasAnswer.length);
     }
 
@@ -124,8 +122,7 @@ export default class Page_3 extends Component {
         this.setState({
             hidden: this.state.hidden
         },()=> {
-            console.log(this.state.hidden);
-            console.log(this.state.answers);
+
         })
     }
 

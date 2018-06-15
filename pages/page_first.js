@@ -86,15 +86,11 @@ export default class Page_1 extends Component {
                 }
             }
         });
-        console.log(validAnswer);
-        console.log(hasAnswer);
         this.props.submitCompletion(0, validAnswer.length, hasAnswer.length);
     }
 
     checkIfAnswered(answer) {
         if (Array.isArray(answer[0])) {
-            console.log('这是一个表格');
-            console.log(answer);
             return true;
         } else {
             let num = 0;
@@ -118,8 +114,6 @@ export default class Page_1 extends Component {
         this.setState({
             hidden: this.state.hidden
         }, () => {
-            console.log(this.state.hidden);
-            console.log(this.state.answers);
         })
     }
 

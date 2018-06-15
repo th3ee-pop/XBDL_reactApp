@@ -962,7 +962,7 @@
                         '其他饮品'],
                     'column_type': ['text', 'check', 'check', 'check', 'check', 'check', 'input'],
                     'special_row': [29],
-                    'validType': 'none',
+                    'validType': 'twonum',
                     'validColumn': 6
                 },
                 'hidden': false,

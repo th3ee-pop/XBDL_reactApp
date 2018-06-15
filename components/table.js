@@ -98,7 +98,9 @@ export default class TableComponent extends Component {
                             <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
                             {
                                 this.state.tableData.map((rowData, index) => (
-                                    <TableLineComponent method={this.props.id === '7.8' ? 'multi': 'single'} handleChange={this.handleChange} key={index} config={rowData} answer={this.state.answers[index]} index={index} validType={this.props.configuration.validType}/>
+                                    <TableLineComponent method={this.props.id === '7.8' ? 'multi': 'single'} handleChange={this.handleChange} key={index} config={rowData} answer={this.state.answers[index]} index={index}
+                                                        validType={this.props.configuration.validType}
+                                    />
                                 ))
                             }
                         </Table>

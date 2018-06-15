@@ -75,12 +75,8 @@ export default class ExaminationView extends Component {
                         completion: this.virtualState.completion,
                         complete_Rate: this.virtualState.complete_Rate
                     }, () => {
-                        console.log(this.virtualState.hide_state);
                     })
-                } else {
-                    console.log('new');
                 }
-
             });
         }
 
@@ -221,8 +217,6 @@ export default class ExaminationView extends Component {
             completion: this.virtualState.completion,
             complete_Rate: 0
         }, () => {
-            console.log(this.state);
-            console.log(this.virtualState);
         })
     }
 
@@ -475,7 +469,6 @@ export default class ExaminationView extends Component {
     handleChange(index, answer, hide) {
         this.virtualState.answers[index] = answer;
         this.virtualState.hide_state[index] = hide;
-        console.log(this.virtualState.hide_state);
     }
 
     getPageCompletion(page, overall, answered) {
@@ -495,7 +488,6 @@ export default class ExaminationView extends Component {
             completion: this.state.completion,
             complete_Rate: this.virtualState.complete_Rate
         }, () => {
-            console.log(this.state);
         })
     }
 
