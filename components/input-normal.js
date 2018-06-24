@@ -83,10 +83,25 @@ export default class NormalInputComponent extends Component {
             case 'threenum':
                 const threeReg = /^\d{0,3}$/;
                 if(threeReg.test(e) === false && e!=='') {
+                this.setState({
+                    value: e,
+                    valid: false,
+                    info: '不合法的数字'
+                })} else {
+                this.setState({
+                    value: e,
+                    valid: true,
+                    info: ''
+                });
+            }
+            break;
+            case 'insurance_num':
+                const insReg = /^\d{0,18}$/;
+                if(insReg.test(e) === false && e!=='') {
                     this.setState({
                         value: e,
                         valid: false,
-                        info: '不合法的数字'
+                        info: '不合法的编号'
                     })} else {
                     this.setState({
                         value: e,

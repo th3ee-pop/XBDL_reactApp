@@ -173,7 +173,7 @@ export default class HomeScreen extends Component {
                         itemHideState[7].splice(index, 1);
                     }
                 });
-                itemHideState[9].splice(14, 1);
+                itemHideState[8].splice(14, 1);
                 console.log(itemHideState);
                 console.log(this.tableModel.questions);
                 itemHideState.forEach((page, page_index) => {
@@ -183,6 +183,7 @@ export default class HomeScreen extends Component {
                 });
                 console.log(this.tableModel.questions);
                 const allTableData = this.generateAvailable(itemData);
+                console.log(allTableData);
                 allTableData.unshift({
                     "Record_ID": 'ID0_0',
                     "Record_Value": this.tableModel.questions
@@ -212,11 +213,21 @@ export default class HomeScreen extends Component {
                             i = i-1;
                         }
                     }
+                    if (allTableData[i].Record_ID.substr(0, 4) === 'ID9_') {
+                       const IDarray = allTableData[i].Record_ID.split('_');
+                       IDarray[0]='ID10';
+                       allTableData[i].Record_ID = IDarray.join('_');
+                    } else if (allTableData[i].Record_ID.substr(0, 4) === 'ID10') {
+                        const IDarray = allTableData[i].Record_ID.split('_');
+                        IDarray[0]='ID9';
+                        allTableData[i].Record_ID = IDarray.join('_');
+                    }
                 }
 
                 // 填坑1
 
                 console.log(allTableData);
+                console.log(this.tableModel.questions);
                 fetch("http://39.106.142.184:9501/healthexamination/recordop/", {
                     method: 'PUT',
                     body: JSON.stringify({

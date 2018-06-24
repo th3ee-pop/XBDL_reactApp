@@ -32,6 +32,7 @@ export default class Page_2 extends Component {
 
 
     componentWillMount() {
+        console.log(this.props);
         this.virtualState.answers = this.props.answer;
         const hiddenArray = [];
         this.myQuestions.forEach(question => {

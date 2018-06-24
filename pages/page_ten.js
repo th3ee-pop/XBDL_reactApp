@@ -10,7 +10,7 @@ import TableComponent from '../components/table';
 
 export default class Page_10 extends Component {
 
-    myQuestions = new QuestionList().questions[9];
+    myQuestions = new QuestionList().questions[8];
 
     constructor(props) {
         super(props);
@@ -31,6 +31,7 @@ export default class Page_10 extends Component {
 
 
     componentWillMount() {
+        console.log(this.props);
         this.virtualState.answers = this.props.answer;
         const hiddenArray = [];
         this.myQuestions.forEach(question => {
@@ -56,7 +57,7 @@ export default class Page_10 extends Component {
 
     handleChange(index, answers) {
         this.virtualState.answers[index].Record_Value = answers;
-        this.props.handleChange(9, this.virtualState.answers, this.state.hidden);
+        this.props.handleChange(8, this.virtualState.answers, this.state.hidden);
         this.getCompletion();
     }
 
@@ -85,7 +86,7 @@ export default class Page_10 extends Component {
                 }
             }
         });
-        this.props.submitCompletion(9, validAnswer.length, hasAnswer.length);
+        this.props.submitCompletion(8, validAnswer.length, hasAnswer.length);
     }
 
     checkIfAnswered(answer) {

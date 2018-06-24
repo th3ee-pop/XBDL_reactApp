@@ -159,12 +159,6 @@ export default class Page_1 extends Component {
     render() {
         return (
             <Container>
-                {/*<View>
-                    <Button light onPress={this.setContent}><Text> setDate </Text></Button>
-                </View>
-                <View>
-                    <Button light onPress={this.getContent}><Text> getDate </Text></Button>
-                </View>*/}
                 <Content>
                     {
                         this.myQuestions.map((d, index) => (

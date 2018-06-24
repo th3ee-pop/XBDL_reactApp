@@ -75,7 +75,7 @@
                     {
                         'dataType': 'text',
                         'inform': '',
-                        'validType': 'other'
+                        'validType': 'insurance_num'
                     }
                 ],
                 'hidden': false,
@@ -1492,7 +1492,7 @@
             {
                 'id': '6.13',
                 'content': [
-                    '从______年起，不再出现 ->转至6.13.c填写具体时间',
+                    '从______年起，不再出现 ->转至6.13.a填写具体时间',
                     '目前仍有'
                 ],
                 'hiddenlist': [
@@ -1519,7 +1519,7 @@
             {
                 'id': '6.14',
                 'configuration': {
-                    'header': ['烟雾种类', '曾经暴露超过6个月', '若是，累计暴露时间'],
+                    'header': ['烟雾种类', '曾经暴露超过6个月(若是，请打勾，若否，则不选)', '若是，累计暴露时间(月)'],
                     'column_title': [
                         '煤气/蒸汽/烟/雾', '粉尘（如：硅石/煤炭/棉花）', '纤维（如　石棉/纺织品）', '化学制品（如：苯/甲苯）'
                         ],
@@ -1718,8 +1718,8 @@
             {
                 'id': '7.8',
                 'configuration': {
-                    'header': ['疾病名称', '是否患病', '首次诊断年龄', '目前是否仍接受治疗', '是否住过院', '如是，上次住院日期'],
-                    'column_title': ['糖尿病',
+                    'header': ['疾病名称', '是否患病(若是，请打勾)', '首次诊断年龄', '目前是否仍接受治疗(若是，请打勾)', '是否住过院(若是，请打勾)', '如是，上次住院日期'],
+     'column_title': ['糖尿病',
                         '急性心梗（冠心病的一种）',
                         '心绞痛（冠心病的一种）',
                         '其他缺血性心脏病',
@@ -2193,8 +2193,8 @@
                     '步行',
                     '骑摩托车',
                     '骑自行车',
-                    '公共交通（车、地铁、渡船）',
                     '私家车/出租',
+                    '公共交通（车、地铁、渡船）',
                     '通常在家里或在家附近上班  ->转至问题8.6'
                 ],
                 'hiddenlist': [
@@ -2472,313 +2472,6 @@
             {
                 'id': '9.1',
                 'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hiddenlist': [
-                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-                ],
-                'hidden': false,
-                'type': 'input',
-                'hide_value': '99',
-                'tittle': '你第一次来月经时的实足年龄是多大？（单位：岁；若无，请填 99 并转问题9.7）'
-            },
-            {
-                'id': '9.2',
-                'content': [
-                    '尚未闭经 ->转至问题9.2.a',
-                    '目前正处于更年期',
-                    '已完全闭经 ->转至问题9.2.b'
-                ],
-                'hiddenlist': [
-                    [3,-2],
-                    [2, 3],
-                    [2,-3]
-                ],
-                'hidden': false,
-                'type': 'radio',
-                'tittle': '你目前是否已完全闭经？'
-            },
-            {
-                'id': '9.2.a',
-                'content': [
-                    '是',
-                    '否'
-                ],
-                'hidden': false,
-                'type': 'radio',
-                'tittle': '你今天是否在月经期？'
-            },
-            {
-                'id': '9.2.b',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '如已经闭经，闭经的年龄是？（单位：岁）'
-            },
-            {
-                'id': '9.3',
-                'content': [
-                    '否',
-                    '是 ->转至问题9.3.a'
-                ],
-                'hiddenlist': [
-                    [5],
-                    [-5]
-                ],
-                'hidden': false,
-                'type': 'radio',
-                'tittle': '你是否用过或正在服用雌激素替代治疗药物缓解更年期症状？'
-            },
-            {
-                'id': '9.3.a',
-                'content': [
-                    '雌激素替代治疗',
-                    '传统中药',
-                    '其他药物'
-                ],
-                'hidden': false,
-                'type': 'checkbox',
-                'tittle': '请说明药物种类？'
-            },
-            {
-                'id': '9.4',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hiddenlist': [
-                    [7,8, 9, 10, 11, 12]
-                ],
-                'hidden': false,
-                'type': 'input',
-                'hide_value': '0',
-                'tittle': '你到现在为止一共怀孕过多少次？（单位：次，若无，填 0，并转至问题9.7）'
-            },
-            {
-                'id': '9.5.a',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hiddenlist': [
-                    [8, 9, 10, 11, 12],
-                ],
-                'hide_value': '0',
-                'hidden': false,
-                'type': 'input',
-                'tittle': '活产多少次？（单位：次，若无填0,并转9.7）'
-            },
-            {
-                'id': '9.5.b',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '死产多少次？（单位：次，若无填0）'
-            },
-            {
-                'id': '9.5.c',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '自然流产多少次？（单位：次，若无填0）'
-            },
-            {
-                'id': '9.5.d',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '人工流产多少次？（单位：次，若无填0）'
-            },
-            {
-                'id': '9.5.e',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '药物流产多少次？（单位：次，若无填0）'
-            },
-            {
-                'id': '9.6',
-                'configuration': {
-                    'header': ['活产次数', '生育时年龄(岁)', '母乳喂养时间(月)', '多/双胞胎'],
-                    'column_title': [
-                        '首次', '第二次', '第三次', '第四次', '第五次'
-                    ],
-                    'column_type': ['text',  'input', 'input', 'check'],
-                    'validType': 'twonum'
-                },
-                'hidden': false,
-                'type': 'table',
-                'tittle': '你每次活产生育时的年龄以及孩子出生后母乳喂养的情况时怎样的？(喂养时间若无，请填写00)'
-            },
-            {
-                'id': '9.7',
-                'content': [
-                    '从未用过 ->转至问题9.10',
-                    '曾经用过 ->转至问题9.7.a',
-                    '目前仍用'
-                ],
-                'hiddenlist': [
-                    [14, 15, 16],
-                    [-14, -15, -16],
-                    [14, -15, -16]
-                ],
-                'hidden': false,
-                'type': 'radio',
-                'tittle': '你是否服用过口服避孕药？'
-            },
-            {
-                'id': '9.7.a',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '你最近一次停用口服避孕药时龄是多少岁？（单位：岁）'
-            },
-            {
-                'id': '9.8',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '你首次开始服避孕药的年龄是多大？（单位：岁）'
-            },
-            {
-                'id': '9.9',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '到目前为止，你使用口服避孕药累积年限有多长？（单位：年）'
-            },
-            {
-                'id': '9.10',
-                'content': [
-                    '从未用过 ->转至问题9.13',
-                    '曾经用过 ->转至问题9.10.a',
-                    '目前仍用'
-                ],
-                'hiddenlist': [
-                    [18, 19, 20],
-                    [-18, -19, -20],
-                    [18, -19, -20]
-                ],
-                'hidden': false,
-                'type': 'radio',
-                'tittle': '你是否使用过避孕环？'
-            },
-            {
-                'id': '9.10.a',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '请说明最近一次停用时的年龄？（单位：岁）'
-            },
-            {
-                'id': '9.11',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '你首次放置避孕环的年龄？（单位：岁）'
-            },
-            {
-                'id': '9.12',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '到目前为止，你一共累积使用了多少年的避孕环？（单位：年）'
-            },
-            {
-                'id': '9.13',
-                'configuration': {
-                    'header': ['手术种类', '接受过手术', '若是，手术年龄？'],
-                    'column_title': [
-                        '子宫切除术', '卵巢（单侧或双侧）摘除术', '乳房肿块/肿瘤摘除术', '绝育术', '剖腹产'
-                    ],
-                    'column_type': ['text',  'check', 'input'],
-                    'validType': 'twonum'
-                },
-                'hidden': false,
-                'type': 'table',
-                'tittle': '你是否接受过以下与妇科相关的手术？'
-            },
-        ],
-        [
-            {
-                'id': '10.1',
-                'content': [
                     '非常满意',
                     '基本满意',
                     '一般',
@@ -2790,7 +2483,7 @@
                 'tittle': '你对目前生活状况的满意程度如何？'
             },
             {
-                'id': '10.2',
+                'id': '9.2',
                 'content': [
                     '夫妻分居/离异/离婚',
                     '失业/下岗/退休',
@@ -2808,7 +2501,7 @@
                 'tittle': '请回忆一下，在过去两年里, 你是否经历过以下对你的生活有重大影响的事件?'
             },
             {
-                'id': '10.3',
+                'id': '9.3',
                 'content': [
                     '通常需要半小时以上方可入睡（包括半夜醒来后）',
                     '早上很早醒来，并难以重新入睡',
@@ -2822,10 +2515,10 @@
                 ],
                 'hidden': false,
                 'type': 'checkbox',
-                'tittle': '最近一个月，你是否每周至少有三天出现下列睡眠问题？(排除外出旅游/倒时差等特殊情况）（若都没有，请转问题10.5）'
+                'tittle': '最近一个月，你是否每周至少有三天出现下列睡眠问题？(排除外出旅游/倒时差等特殊情况）（若都没有，请转问题9.5）'
             },
             {
-                'id': '10.4',
+                'id': '9.4',
                 'content': [
                     {
                         'dataType': 'text',
@@ -2838,7 +2531,7 @@
                 'tittle': '你上面提到的睡眠问题持续有多久了？（年）'
             },
             {
-                'id': '10.5',
+                'id': '9.5',
                 'content': [
                     '一年四季,经常',
                     '有，但只在某些季节',
@@ -2856,7 +2549,7 @@
                 'tittle': '你是否有午睡的习惯？'
             },
             {
-                'id': '10.6',
+                'id': '9.6',
                 'content': [
                     '半小时以内',
                     '半小时到一小时',
@@ -2868,7 +2561,7 @@
                 'tittle': '如果有午睡的习惯，你通常午睡多长时间？'
             },
             {
-                'id': '10.7',
+                'id': '9.7',
                 'content': [
                     '是，经常有',
                     '是，有时有',
@@ -2880,7 +2573,7 @@
             },
 
             {
-                'id': '10.8',
+                'id': '9.8',
                 'content': [
                     {
                         'dataType': 'text',
@@ -2893,7 +2586,7 @@
                 'tittle': '通常情况下，你平均每晚睡几个小时？'
             },
             {
-                'id': '10.9',
+                'id': '9.9',
                 'content': [
                     '每天',
                     '每周4-6次',
@@ -2906,10 +2599,10 @@
                 'tittle': '在过去一年里，你平均多久熬一次夜（24:00以后上床睡觉）？'
             },
             {
-                'id': '10.10',
+                'id': '9.10',
                 'content': [
                     '否',
-                    '是  ->转至问题10.10.a'
+                    '是  ->转至问题9.10.a'
                 ],
                 'hiddenlist': [
                     [10 , 11],
@@ -2920,7 +2613,7 @@
                 'tittle': '在你现在或前一份工作中，是否需要上夜班？'
             },
             {
-                'id': '10.10.a',
+                'id': '9.10.a',
                 'content': [
                     {
                         'dataType': 'text',
@@ -2930,10 +2623,10 @@
                 ],
                 'hidden': false,
                 'type': 'input',
-                'tittle': '隔几天上一次夜班？ （单位：天）->转至问题10.10.b'
+                'tittle': '隔几天上一次夜班？ （单位：天）->转至问题9.10.b'
             },
             {
-                'id': '10.10.b',
+                'id': '9.10.b',
                 'content': [
                     {
                         'dataType': 'text',
@@ -2946,7 +2639,7 @@
                 'tittle': '这种情况持续了多少年？'
             },
             {
-                'id': '10.11',
+                'id': '9.11',
                 'content': [
                     '总感觉心情很压抑，活得很痛苦，无论做什么事和活动都不能让自己高兴起来',
                     '对平时自己非常喜欢做的事情或者活动完全失去兴趣',
@@ -2958,7 +2651,7 @@
                 'tittle': '在过去一年时间里，你是否经历过下述情况，并且持续时间至少有两周？'
             },
             {
-                'id': '10.12',
+                'id': '9.12',
                 'content': [
                     '总感觉紧张不安和恐慌，整天提心吊胆害怕出事，持续时间至少有一个月，严重影响日常生活和工作',
                     '身体某部位常感到有原因不明的隐痛或不适，持续时间至少达3个月，并且影响日常生活',
@@ -2970,13 +2663,13 @@
                 'tittle': '在过去一年时间里，你是否出现过下述情况？'
             },
             {
-                'id': '10.12.a',
+                'id': '9.12.a',
                 'text': '以下是有关您健康状况和生活质量的问题，请根据您的情况如实回答',
                 'type': 'notification',
                 'hidden': false
             },
             {
-                'id': '10.13',
+                'id': '9.13',
                 'content': [
                     '非常好',
                     '很好',
@@ -2989,10 +2682,10 @@
                 'tittle': '总的来说，您认为您的健康状况：'
             },
             {
-                'id': '10.14',
+                'id': '9.14',
                 'content': [
-                    '有 ->转至问题10.15',
-                    '没有 ->转至问题10.17'
+                    '有 ->转至问题9.15',
+                    '没有 ->转至问题9.17'
                 ],
                 'hidden': false,
                 'hiddenlist': [
@@ -3003,7 +2696,7 @@
             },
             {
 
-                'id': '10.15',
+                'id': '9.15',
                 'content': [
                     '<1年',
                     '1-5年',
@@ -3015,7 +2708,7 @@
                 'tittle': '您患这些长期疾病多长时间了？'
             },
             {
-                'id': '10.16',
+                'id': '9.16',
                 'content': [
                     '有 ',
                     '没有 '
@@ -3025,7 +2718,7 @@
                 'tittle': '您的日常活动有没有因这些疾病而受到限制？'
             },
             {
-                'id': '10.17',
+                'id': '9.17',
                 'content': [
                     '有很大限制',
                     '有一点限制',
@@ -3036,7 +2729,7 @@
                 'tittle': '以您目前的健康状况，是否影响中等强度的活动，如搬桌子、扫地、做操、打太极拳等？'
             },
             {
-                'id': '10.18',
+                'id': '9.18',
                 'content': [
                     '有很大限制',
                     '有一点限制',
@@ -3047,7 +2740,7 @@
                 'tittle': '以您目前的健康状况，是否影响步行上楼梯？'
             },
             {
-                'id': '10.19',
+                'id': '9.19',
                 'content': [
                     '会',
                     '不会'
@@ -3057,7 +2750,7 @@
                 'tittle': '最近一个月，因为身体健康的原因，在工作或日常活动中感到力不从心？'
             },
             {
-                'id': '10.20',
+                'id': '9.20',
                 'content': [
                     '会',
                     '不会'
@@ -3067,7 +2760,7 @@
                 'tittle': '最近一个月，因为身体健康的原因而令您的工作或活动受到限制？'
             },
             {
-                'id': '10.21',
+                'id': '9.21',
                 'content': [
                     '会',
                     '不会'
@@ -3077,7 +2770,7 @@
                 'tittle': '最近一个月，因为情绪方面的原因（比如感到沮丧或者焦虑）而令您的工作或日常活动中感到力不从心？'
             },
             {
-                'id': '10.22',
+                'id': '9.22',
                 'content': [
                     '会',
                     '不会'
@@ -3087,7 +2780,7 @@
                 'tittle': '最近一个月，因为情绪方面的原因（比如感到沮丧或者焦虑）而令您的工作或活动受到限制？'
             },
             {
-                'id': '10.23',
+                'id': '9.23',
                 'content': [
                     '毫无影响',
                     '有很少影响',
@@ -3100,7 +2793,7 @@
                 'tittle': '最近一个月，因身体上的疼痛影响您的日常工作吗（包括上班和家务劳动）？'
             },
             {
-                'id': '10.24',
+                'id': '9.24',
                 'content': [
                     '常常如此',
                     '大部分时间',
@@ -3113,7 +2806,7 @@
                 'tittle': '最近一个月，您有多少时间感到心平气和？'
             },
             {
-                'id': '10.25',
+                'id': '9.25',
                 'content': [
                     '常常如此',
                     '大部分时间',
@@ -3126,7 +2819,7 @@
                 'tittle': '最近一个月，您有多少时间感到精力充沛？'
             },
             {
-                'id': '10.26',
+                'id': '9.26',
                 'content': [
                     '常常如此',
                     '大部分时间',
@@ -3139,7 +2832,7 @@
                 'tittle': '最近一个月，您有多少时间感到心情不好，闷闷不乐？'
             },
             {
-                'id': '10.27',
+                'id': '9.27',
                 'content': [
                     '常常如此',
                     '大部分时间',
@@ -3151,6 +2844,313 @@
                 'type': 'radio',
                 'tittle': '最近一个月，您觉得有多少时间您的身体或者情绪问题妨碍了您的社交活动（比如探亲、访友等）？'
             }
+        ],
+        [
+            {
+                'id': '10.1',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hiddenlist': [
+                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                ],
+                'hidden': false,
+                'type': 'input',
+                'hide_value': '99',
+                'tittle': '你第一次来月经时的实足年龄是多大？（单位：岁；若无，请填 99 并转问题10.7）'
+            },
+            {
+                'id': '10.2',
+                'content': [
+                    '尚未闭经 ->转至问题10.2.a',
+                    '目前正处于更年期',
+                    '已完全闭经 ->转至问题10.2.b'
+                ],
+                'hiddenlist': [
+                    [3,-2],
+                    [2, 3],
+                    [2,-3]
+                ],
+                'hidden': false,
+                'type': 'radio',
+                'tittle': '你目前是否已完全闭经？'
+            },
+            {
+                'id': '10.2.a',
+                'content': [
+                    '是',
+                    '否'
+                ],
+                'hidden': false,
+                'type': 'radio',
+                'tittle': '你今天是否在月经期？'
+            },
+            {
+                'id': '10.2.b',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '如已经闭经，闭经的年龄是？（单位：岁）'
+            },
+            {
+                'id': '10.3',
+                'content': [
+                    '是 ->转至问题10.3.a',
+                    '否'
+                ],
+                'hiddenlist': [
+                    [-5],
+                    [5]
+                ],
+                'hidden': false,
+                'type': 'radio',
+                'tittle': '你是否用过或正在服用雌激素替代治疗药物缓解更年期症状？'
+            },
+            {
+                'id': '10.3.a',
+                'content': [
+                    '雌激素替代治疗',
+                    '传统中药',
+                    '其他药物'
+                ],
+                'hidden': false,
+                'type': 'checkbox',
+                'tittle': '请说明药物种类？'
+            },
+            {
+                'id': '10.4',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hiddenlist': [
+                    [7,8, 9, 10, 11, 12]
+                ],
+                'hidden': false,
+                'type': 'input',
+                'hide_value': '0',
+                'tittle': '你到现在为止一共怀孕过多少次？（单位：次，若无，填 0，并转至问题10.7）'
+            },
+            {
+                'id': '10.5.a',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hiddenlist': [
+                    [8, 9, 10, 11, 12],
+                ],
+                'hide_value': '0',
+                'hidden': false,
+                'type': 'input',
+                'tittle': '活产多少次？（单位：次，若无填0,并转10.7）'
+            },
+            {
+                'id': '10.5.b',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '死产多少次？（单位：次，若无填0）'
+            },
+            {
+                'id': '10.5.c',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '自然流产多少次？（单位：次，若无填0）'
+            },
+            {
+                'id': '10.5.d',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '人工流产多少次？（单位：次，若无填0）'
+            },
+            {
+                'id': '10.5.e',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '药物流产多少次？（单位：次，若无填0）'
+            },
+            {
+                'id': '10.6',
+                'configuration': {
+                    'header': ['活产次数', '生育时年龄(岁)', '母乳喂养时间(月)', '多/双胞胎(若是，请打勾)'],
+                    'column_title': [
+                        '首次', '第二次', '第三次', '第四次', '第五次'
+                    ],
+                    'column_type': ['text',  'input', 'input', 'check'],
+                    'validType': 'twonum'
+                },
+                'hidden': false,
+                'type': 'table',
+                'tittle': '你每次活产生育时的年龄以及孩子出生后母乳喂养的情况时怎样的？(喂养时间若无，请填写00)'
+            },
+            {
+                'id': '10.7',
+                'content': [
+                    '从未用过 ->转至问题10.10',
+                    '曾经用过 ->转至问题10.7.a',
+                    '目前仍用'
+                ],
+                'hiddenlist': [
+                    [14, 15, 16],
+                    [-14, -15, -16],
+                    [14, -15, -16]
+                ],
+                'hidden': false,
+                'type': 'radio',
+                'tittle': '你是否服用过口服避孕药？'
+            },
+            {
+                'id': '10.7.a',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '你最近一次停用口服避孕药时龄是多少岁？（单位：岁）'
+            },
+            {
+                'id': '10.8',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '你首次开始服避孕药的年龄是多大？（单位：岁）'
+            },
+            {
+                'id': '10.9',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '到目前为止，你使用口服避孕药累积年限有多长？（单位：年）'
+            },
+            {
+                'id': '10.10',
+                'content': [
+                    '从未用过 ->转至问题10.13',
+                    '曾经用过 ->转至问题10.10.a',
+                    '目前仍用'
+                ],
+                'hiddenlist': [
+                    [18, 19, 20],
+                    [-18, -19, -20],
+                    [18, -19, -20]
+                ],
+                'hidden': false,
+                'type': 'radio',
+                'tittle': '你是否使用过避孕环？'
+            },
+            {
+                'id': '10.10.a',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '请说明最近一次停用时的年龄？（单位：岁）'
+            },
+            {
+                'id': '10.11',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '你首次放置避孕环的年龄？（单位：岁）'
+            },
+            {
+                'id': '10.12',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '到目前为止，你一共累积使用了多少年的避孕环？（单位：年）'
+            },
+            {
+                'id': '10.13',
+                'configuration': {
+                    'header': ['手术种类', '接受过手术(若是，请打勾)', '若是，手术年龄？'],
+                    'column_title': [
+                        '子宫切除术', '卵巢（单侧或双侧）摘除术', '乳房肿块/肿瘤摘除术', '绝育术', '剖腹产'
+                    ],
+                    'column_type': ['text',  'check', 'input'],
+                    'validType': 'twonum'
+                },
+                'hidden': false,
+                'type': 'table',
+                'tittle': '你是否接受过以下与妇科相关的手术？'
+            },
         ]
     ];
 }
