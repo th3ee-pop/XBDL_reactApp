@@ -97,8 +97,9 @@ export default class TableLineComponent extends Component {
             answers: this.state.answers
         }, () => {
             console.log(this.state.valid);
-            const DateReg =  new RegExp("[\\u4E00-\\u9FFF]+","g");
-            if(DateReg.test(value) === true && value!=='') {
+            const DateReg =  /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$/;
+            console.log(DateReg.test(value));
+            if(DateReg.test(value) === false && value!=='') {
                 this.state.valid[index] = false;
                 this.setState({
                     valid: this.state.valid
@@ -268,7 +269,7 @@ export default class TableLineComponent extends Component {
                         </Button>
                         <Input  type="text" value={this.state.answers[index].Record_Value} onChangeText={(value) => {this.changeDateValue(value, index)}}/>
                         {this.state.valid[index] ? (<View/>) : (<Text style={{color:'red'}}>
-                            {'  所填内容有误'}
+                            {'  日期格式有误'}
                         </Text>)}
                     </View>
                 );

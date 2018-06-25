@@ -51,7 +51,7 @@ export default class NormalInputComponent extends Component {
                 }
                 break;
             case 'home-phone':
-                const homePhoneReg = /^(0[0-9]{2,3}-)?([2-9][0-9]{6,7})+(-[0-9]{1,4})?$/;
+                const homePhoneReg = /^\d{0,12}$/;
                 if(homePhoneReg.test(e) === false) {
                     this.setState({
                         value: e,
