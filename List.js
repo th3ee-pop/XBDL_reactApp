@@ -153,14 +153,14 @@ export default class ExaminationView extends Component {
                                 });
                                 break;
                             }
-                            case '10.6': {
+                            case '9.6': {
                                 answerBucket[child].push({
                                     "Record_ID": this.switchID(question.id),
                                     "Record_Value": this.table96Id(question)
                                 });
                                 break;
                             }
-                            case '10.13': {
+                            case '9.13': {
                                 answerBucket[child].push({
                                     "Record_ID": this.switchID(question.id),
                                     "Record_Value": this.table913Id(question)
@@ -428,17 +428,17 @@ export default class ExaminationView extends Component {
         for (let row = 0; row < config.column_title.length; row++) {
             IdArray.push([]);
             IdArray[row].push({
-                "Record_ID": `ID10_6_0_${row + 1}`,
+                "Record_ID": `ID9_6_0_${row + 1}`,
                 "Record_Value": config.column_title[row]
             });
             for (let col = 1; col < config.header.length - 1; col++) {
                 IdArray[row].push({
-                    "Record_ID": `ID10_6_${String.fromCharCode(96 + col)}_${row + 1}`,
+                    "Record_ID": `ID9_6_${String.fromCharCode(96 + col)}_${row + 1}`,
                     "Record_Value": ''
                 })
             }
             IdArray[row].push({
-                "Record_ID": `ID10_6_c_${row+1}`,
+                "Record_ID": `ID9_6_c_${row+1}`,
                 "Record_Value": false
             })
         }
@@ -451,15 +451,15 @@ export default class ExaminationView extends Component {
         for (let row = 0; row < config.column_title.length; row++) {
             IdArray.push([]);
             IdArray[row].push({
-                "Record_ID": `ID10_13_0_${row + 1}`,
+                "Record_ID": `ID9_13_0_${row + 1}`,
                 "Record_Value": config.column_title[row]
             });
                 IdArray[row].push({
-                    "Record_ID": `ID10_13_${row + 1}`,
+                    "Record_ID": `ID9_13_${row + 1}`,
                     "Record_Value": false
                 });
             IdArray[row].push({
-                "Record_ID": `ID10_13_a_${row+1}`,
+                "Record_ID": `ID9_13_a_${row+1}`,
                 "Record_Value": ''
             })
         }
@@ -675,11 +675,11 @@ export default class ExaminationView extends Component {
                     <Tab heading={`八、体力活动 (${this.state.completion[7].answered}/${this.state.completion[7].overall})`} key={'8'}>
                         <Page_8 answer = {this.state.answers[7]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading={`九、精神及生活质量 (${this.state.completion[8].answered}/${this.state.completion[8].overall})`} key={'9'}>
-                        <Page_10 answer = {this.state.answers[8]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
+                    <Tab heading={`九、女性生育史 (${this.state.completion[8].answered}/${this.state.completion[8].overall})`} key={'9'} >
+                        <Page_9 answer = {this.state.answers[8]} handleChange={this.handleChange} hidden={this.state.hide_woman} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading={`十、女性生育史 (${this.state.completion[9].answered}/${this.state.completion[9].overall})`} key={'10'} >
-                        <Page_9 answer = {this.state.answers[9]} handleChange={this.handleChange} hidden={this.state.hide_woman} submitCompletion={this.getPageCompletion}/>
+                    <Tab heading={`十、精神及生活质量 (${this.state.completion[9].answered}/${this.state.completion[9].overall})`} key={'10'}>
+                        <Page_10 answer = {this.state.answers[9]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
                 </Tabs>
                 <Button full onPress={this.setContent}>

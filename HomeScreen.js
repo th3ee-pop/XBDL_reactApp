@@ -173,7 +173,7 @@ export default class HomeScreen extends Component {
                         itemHideState[7].splice(index, 1);
                     }
                 });
-                itemHideState[8].splice(14, 1);
+                itemHideState[9].splice(14, 1);
                 console.log(itemHideState);
                 console.log(this.tableModel.questions);
                 itemHideState.forEach((page, page_index) => {
@@ -212,15 +212,6 @@ export default class HomeScreen extends Component {
                             allTableData.splice(i, 1);
                             i = i-1;
                         }
-                    }
-                    if (allTableData[i].Record_ID.substr(0, 4) === 'ID9_') {
-                       const IDarray = allTableData[i].Record_ID.split('_');
-                       IDarray[0]='ID10';
-                       allTableData[i].Record_ID = IDarray.join('_');
-                    } else if (allTableData[i].Record_ID.substr(0, 4) === 'ID10') {
-                        const IDarray = allTableData[i].Record_ID.split('_');
-                        IDarray[0]='ID9';
-                        allTableData[i].Record_ID = IDarray.join('_');
                     }
                 }
 
