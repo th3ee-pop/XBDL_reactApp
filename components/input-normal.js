@@ -96,7 +96,7 @@ export default class NormalInputComponent extends Component {
             }
             break;
             case 'insurance_num':
-                const insReg = /^\d{0,18}$/;
+                const insReg = /^[a-zA-Z\d]{0,18}$/;
                 if(insReg.test(e) === false && e!=='') {
                     this.setState({
                         value: e,

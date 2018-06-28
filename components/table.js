@@ -53,6 +53,11 @@ export default class TableComponent extends Component {
             })
         }
         this.virtualState.answers = props.value;
+        console.log(props.value);
+        if (props.id === '7.8') {
+            if (props.value[27][1].Record_Value)
+            this.props.generateHideSignal('7.8', [-13]);
+        }
         this.setState({
             tableHead: header,
             tableData: tableData,
@@ -63,6 +68,15 @@ export default class TableComponent extends Component {
     }
 
     handleChange(index, answer) {
+        console.log(this.props.id);
+        if(this.props.id === '7.8') {
+            console.log(this.props.index);
+            console.log(answer[0]);
+            if (answer[0].Record_ID === 'ID7_8_0_28') {
+                console.log(answer[1].Record_Value);
+                answer[1].Record_Value ? this.props.generateHideSignal( '7.8' , [-13, -14]) : this.props.generateHideSignal( '7.8' , [13, 14])
+            }
+        }
         this.virtualState.answers[index] = answer;
         this.props.handleChange(this.props.index, this.virtualState.answers);
     }

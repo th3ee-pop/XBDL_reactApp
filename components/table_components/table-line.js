@@ -42,8 +42,6 @@ export default class TableLineComponent extends Component {
             tableData: props.config,
             answers: props.answer,
             valid: validArray
-        }, () => {
-            console.log(this.state.valid);
         })
 
     }

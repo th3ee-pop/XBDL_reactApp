@@ -1779,7 +1779,7 @@
                     [14],
                     [-14]
                 ],
-                'hidden': false,
+                'hidden': true,
                 'type': 'checkbox',
                 'tittle': '如果有肿瘤，是以下哪个部位？ (如多于一处，请选首发的肿瘤部位)'
             },
@@ -1792,7 +1792,7 @@
                         'validType': 'other'
                     }
                 ],
-                'hidden': false,
+                'hidden': true,
                 'type': 'input',
                 'tittle': '上题中如果肿瘤发生在其它位置，是在哪？'
             },
