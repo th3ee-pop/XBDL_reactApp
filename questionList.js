@@ -1719,7 +1719,7 @@
                 'id': '7.8',
                 'configuration': {
                     'header': ['疾病名称', '是否患病(若是，请打勾)', '首次诊断年龄', '目前是否仍接受治疗(若是，请打勾)', '是否住过院(若是，请打勾)', '如是，上次住院日期'],
-     'column_title': ['糖尿病',
+                    'column_title': ['糖尿病',
                         '急性心梗（冠心病的一种）',
                         '心绞痛（冠心病的一种）',
                         '其他缺血性心脏病',
@@ -1749,7 +1749,7 @@
                         '恶性肿瘤（癌症）'],
                     'column_type': ['text', 'check','input', 'check', 'check', 'date'],
                     'special_row': [25, 26],
-                    'validType': 'twonum'
+                    'validType': 'twonum',
                 },
                 'hidden': false,
                 'type': 'table',

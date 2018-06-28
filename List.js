@@ -78,6 +78,34 @@ export default class ExaminationView extends Component {
                     })
                 }
             });
+        } else {
+            AsyncStorage.getAllKeys((err, keys) => {
+                keys = keys.filter((id) => {
+                    if(!isNaN(Number(id)))
+                        return id;
+                });
+                AsyncStorage.multiGet(keys, (err, result) => {
+                    if(err) {
+                        alert(err);
+                    } else {
+                        if (result.length > 0) {
+                            const lastAnswer = result[result.length-1][1];
+                            console.log(this.state.answers);
+                            const usefulAnswer = JSON.parse(lastAnswer).answers;
+                            this.state.answers[0][2] = usefulAnswer[0][2];
+                            this.state.answers[0][9] = usefulAnswer[0][9];
+                            this.state.answers[0][10] = usefulAnswer[0][10];
+                            this.setState({
+                                answers: this.state.answers
+                            }, () => {
+                                console.log(this.state.answers);
+                            })
+                        }
+                    }
+                })
+
+
+            });
         }
 
         const answerBucket = [];
@@ -467,6 +495,7 @@ export default class ExaminationView extends Component {
     }
 
     handleChange(index, answer, hide) {
+        console.log(this.virtualState.answers);
         this.virtualState.answers[index] = answer;
         this.virtualState.hide_state[index] = hide;
     }
@@ -481,8 +510,6 @@ export default class ExaminationView extends Component {
             allOverall = allOverall + item.overall;
             allAnswered = allAnswered + item.answered
         });
-        console.log(allOverall);
-        console.log(allAnswered);
         this.virtualState.complete_Rate = Math.round((allAnswered/allOverall)*100) + '%';
         this.setState({
             completion: this.state.completion,
