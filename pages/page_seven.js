@@ -29,6 +29,7 @@ export default class Page_7 extends Component {
         this.generateHideSignal = this.generateHideSignal.bind(this);
         this.getCompletion = this.getCompletion.bind(this);
         this.checkIfAnswered = this.checkIfAnswered.bind(this);
+        this.checkTable78 = this.checkTable78.bind(this);
     }
 
 
@@ -41,12 +42,13 @@ export default class Page_7 extends Component {
                 'hidden': question.hidden
             })
         });
+
         this.setState({
             answers: this.props.answer,
             hidden: hiddenArray
         }, () => {
             this.getCompletion();
-        })
+        });
     }
 
     componentWillReceiveProps(props) {
@@ -57,9 +59,30 @@ export default class Page_7 extends Component {
     }
 
     handleChange(index, answers) {
+        console.log(index, answers);
+        console.log(this.state.hidden);
+       /* if (index === 12) {
+            this.checkTable78(answers);
+        }*/
         this.virtualState.answers[index].Record_Value = answers;
         this.props.handleChange(6, this.virtualState.answers, this.state.hidden);
         this.getCompletion();
+    }
+
+    checkTable78(answers) {
+        if(answers[27][1].Record_Value) {
+            this.state.hidden[13].hidden = false;
+            this.state.hidden[14].hidden = false;
+            this.setState({
+                hidden: this.state.hidden
+            })
+        } else {
+            this.state.hidden[13].hidden = true;
+            this.state.hidden[14].hidden = true;
+            this.setState({
+                hidden: this.state.hidden
+            })
+        }
     }
 
     getCompletion() {
@@ -113,6 +136,7 @@ export default class Page_7 extends Component {
     }
 
     generateHideSignal(index, id) {
+        console.log(id);
         id.forEach(item => {
             if (item > 0) {
                 this.state.hidden[item].hidden = true;
@@ -123,6 +147,7 @@ export default class Page_7 extends Component {
         this.setState({
             hidden: this.state.hidden
         }, ()=> {
+            console.log(this.state.hidden);
         })
     }
 
@@ -146,7 +171,7 @@ export default class Page_7 extends Component {
                 );
             case 'table':
                 return (
-                    <TableComponent index={index} handleChange={this.handleChange}  title = {widget.tittle} id = {widget.id} configuration = {widget.configuration} value={this.state.answers[index].Record_Value} hidden = {this.state.hidden[index].hidden}/>
+                    <TableComponent index={index} handleChange={this.handleChange} generateHideSignal={this.generateHideSignal}  title = {widget.tittle} id = {widget.id} configuration = {widget.configuration} value={this.state.answers[index].Record_Value} hidden = {this.state.hidden[index].hidden}/>
                 );
             case 'table_2':
                 return (

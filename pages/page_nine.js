@@ -54,7 +54,7 @@ export default class Page_9 extends Component {
             answers: this.props.answer,
             hidden: hiddenArray
         }, () => {
-            console.log(this.state.hidden);
+            console.log(this.state);
             this.getCompletion();
         })
     }

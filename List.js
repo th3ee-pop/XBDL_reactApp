@@ -78,6 +78,34 @@ export default class ExaminationView extends Component {
                     })
                 }
             });
+        } else {
+            AsyncStorage.getAllKeys((err, keys) => {
+                keys = keys.filter((id) => {
+                    if(!isNaN(Number(id)))
+                        return id;
+                });
+                AsyncStorage.multiGet(keys, (err, result) => {
+                    if(err) {
+                        alert(err);
+                    } else {
+                        if (result.length > 0) {
+                            const lastAnswer = result[result.length-1][1];
+                            console.log(this.state.answers);
+                            const usefulAnswer = JSON.parse(lastAnswer).answers;
+                            this.state.answers[0][2] = usefulAnswer[0][2];
+                            this.state.answers[0][9] = usefulAnswer[0][9];
+                            this.state.answers[0][10] = usefulAnswer[0][10];
+                            this.setState({
+                                answers: this.state.answers
+                            }, () => {
+                                console.log(this.state.answers);
+                            })
+                        }
+                    }
+                })
+
+
+            });
         }
 
         const answerBucket = [];
@@ -467,6 +495,7 @@ export default class ExaminationView extends Component {
     }
 
     handleChange(index, answer, hide) {
+        console.log(this.virtualState.answers);
         this.virtualState.answers[index] = answer;
         this.virtualState.hide_state[index] = hide;
     }
@@ -481,8 +510,6 @@ export default class ExaminationView extends Component {
             allOverall = allOverall + item.overall;
             allAnswered = allAnswered + item.answered
         });
-        console.log(allOverall);
-        console.log(allAnswered);
         this.virtualState.complete_Rate = Math.round((allAnswered/allOverall)*100) + '%';
         this.setState({
             completion: this.state.completion,
@@ -618,6 +645,7 @@ export default class ExaminationView extends Component {
         } else {
              this.virtualState.status = 0;
              this.virtualState.updateTime = moment().format('YYYY-MM-DD HH:mm:ss');
+             console.log(this.virtualState);
              AsyncStorage.setItem(saveId, JSON.stringify(this.virtualState), (error) => {
                  if (error) {
                      alert(error);
@@ -650,34 +678,34 @@ export default class ExaminationView extends Component {
                     <Right />
                 </Header>
                 <Tabs renderTabBar={()=> <ScrollableTab />}>
-                    <Tab heading={`一般信息 (${this.state.completion[0].answered}/${this.state.completion[0].overall})`} key={'1'}>
-                        <Page_1 answer = {this.state.answers[0]} handleChange={this.handleChange} hideWoman={this.hideWoman} submitCompletion={this.getPageCompletion}/>
+                    <Tab heading={`一、一般信息 (${this.state.completion[0].answered}/${this.state.completion[0].overall})`} key={'1'}>
+                        <Page_1 title={"一"} answer = {this.state.answers[0]} handleChange={this.handleChange} hideWoman={this.hideWoman} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading={`饮茶及咖啡情况 (${this.state.completion[1].answered}/${this.state.completion[1].overall})`} key={'2'}>
+                    <Tab heading={`二、饮茶及咖啡情况 (${this.state.completion[1].answered}/${this.state.completion[1].overall})`} key={'2'}>
                         <Page_2 answer = {this.state.answers[1]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading={`饮酒情况 (${this.state.completion[2].answered}/${this.state.completion[2].overall})`} key={'3'}>
+                    <Tab heading={`三、饮酒情况 (${this.state.completion[2].answered}/${this.state.completion[2].overall})`} key={'3'}>
                         <Page_3 answer = {this.state.answers[2]} handleChange={this.handleChange}  submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading={`吸烟情况 (${this.state.completion[3].answered}/${this.state.completion[3].overall})`} key={'4'}>
+                    <Tab heading={`四、吸烟情况 (${this.state.completion[3].answered}/${this.state.completion[3].overall})`} key={'4'}>
                         <Page_4 answer = {this.state.answers[3]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading={`膳食情况 (${this.state.completion[4].answered}/${this.state.completion[4].overall})`} key={'5'}>
+                    <Tab heading={`五、膳食情况 (${this.state.completion[4].answered}/${this.state.completion[4].overall})`} key={'5'}>
                         <Page_5 answer = {this.state.answers[4]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading={`空气污染 (${this.state.completion[5].answered}/${this.state.completion[5].overall})`} key={'6'}>
+                    <Tab heading={`六、空气污染 (${this.state.completion[5].answered}/${this.state.completion[5].overall})`} key={'6'}>
                         <Page_6 answer = {this.state.answers[5]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading={`健康状况 (${this.state.completion[6].answered}/${this.state.completion[6].overall})`} key={'7'}>
+                    <Tab heading={`七、健康状况 (${this.state.completion[6].answered}/${this.state.completion[6].overall})`} key={'7'}>
                         <Page_7 answer = {this.state.answers[6]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading={`体力活动 (${this.state.completion[7].answered}/${this.state.completion[7].overall})`} key={'8'}>
+                    <Tab heading={`八、体力活动 (${this.state.completion[7].answered}/${this.state.completion[7].overall})`} key={'8'}>
                         <Page_8 answer = {this.state.answers[7]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading={`女性生育史 (${this.state.completion[8].answered}/${this.state.completion[8].overall})`} key={'9'} >
+                    <Tab heading={`九、女性生育史 (${this.state.completion[8].answered}/${this.state.completion[8].overall})`} key={'9'} >
                         <Page_9 answer = {this.state.answers[8]} handleChange={this.handleChange} hidden={this.state.hide_woman} submitCompletion={this.getPageCompletion}/>
                     </Tab>
-                    <Tab heading={`精神及生活质量 (${this.state.completion[9].answered}/${this.state.completion[9].overall})`} key={'10'}>
+                    <Tab heading={`十、精神及生活质量 (${this.state.completion[9].answered}/${this.state.completion[9].overall})`} key={'10'}>
                         <Page_10 answer = {this.state.answers[9]} handleChange={this.handleChange} submitCompletion={this.getPageCompletion}/>
                     </Tab>
                 </Tabs>

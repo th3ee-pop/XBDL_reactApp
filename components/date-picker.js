@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Header, Content, Form, Item, Input, Label , Icon, Button, View} from 'native-base';
+import { Container, Header, Content, Form, Item, Input, Label , Icon, Button, View, Text} from 'native-base';
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker'
 import { DatePickerAndroid } from 'react-native';
@@ -8,16 +8,25 @@ export default class MyDatePicker extends Component {
     constructor(props){
         super(props);
         this.state = {
-            date:""
+            date:"",
+            valid: true
         };
         this.setDate = this.setDate.bind(this);
         this.openDatePicker = this.openDatePicker.bind(this);
     }
 
     setDate(date) {
-        this.setState({
-            date: date
-        });
+        const dateReg = /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$/;
+        if(dateReg.test(date) === false && date!=='') {
+            this.setState({
+                date: date,
+                valid: false,
+            })} else {
+            this.setState({
+                date: date,
+                valid: true,
+            });
+        }
         this.props.handleChange(this.props.index, date);
     }
 
@@ -69,6 +78,16 @@ export default class MyDatePicker extends Component {
                             <Icon name={'md-calendar'} />
                         </Button>
                         <Input  type="text" value={this.state.date} onChangeText={(text) => {this.setDate(text)}}/>
+                        {
+                            this.state.valid ? (
+                                <View/>
+                            ) : (<View>
+                                    <Text style={{color:'red'}}>
+                                        {'日期格式有误'}
+                                    </Text>
+                                </View>
+                            )
+                        }
                     </View>
                 </Form>
             </Content>): (<View/>)
