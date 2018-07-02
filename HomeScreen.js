@@ -12,20 +12,23 @@ export default class HomeScreen extends Component {
     };
 
     tableModel = new modelList();
+    // 这里的tableModel用于在进行上传时，提供网页端题目隐藏情况的questionList，相当于网页端初始化体检表的时候，存的那个json。
+
     authMap = {
         1: '总管理员',
         2: '本省管理员',
         3: '高级用户',
         4: '普通用户'
     };
+    // 这里建立一个dictionary，便于知道现在的用户权限。
 
     constructor(props) {
         super (props);
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.us = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        // 用于初始化已上传和未上传两个list。
+
         this.state = {
-            Page1: '基本信息',
-            Page2: '现病史',
             list: [],
             uploaded_list: [],
             logged_user: null,
@@ -33,9 +36,19 @@ export default class HomeScreen extends Component {
             loading: true,
             display: 1
         };
+        // 当前页面的功能是显示本地有的所有体检表记录，因此保护以下state:
+        // list[]: 所有未上传的体检表列表
+        // uploaded_list[]: 所有已经上传的体检表列表
+        // logged_user: 当前登录的用户
+        // isConnected: 是否连接了网络
+        // loading: 用于显示加载“加载中”图标
+        // display: 用于判断当前显示“已上传”还是“未上传”
+
         this.switchPage = this.switchPage.bind(this);
     }
 
+
+    // 钩子函数，用于在组件加载完成前实现相应功能。
     componentWillMount() {
         AsyncStorage.getItem('_user', (err, user) => {
             if(err) {
@@ -47,13 +60,18 @@ export default class HomeScreen extends Component {
                 }
             }
         });
-        // check if the user has logged
+        // 从AsyncStorage(类似于浏览器的localStorage，区别在于移动端的storage操作都是异步的，这点在编程时要注意)
+        // 如果用户已经登录，获得当前用户的登录信息
+
 
         NetInfo.isConnected.fetch().done((isConnected) => {
             this.setState({
                 isConnected: isConnected
             })
         });
+        // 检查是否连接了网络
+
+
         AsyncStorage.getAllKeys((err, keys) => {
             keys = keys.filter((id) => {
                 if(!isNaN(Number(id)))
@@ -75,15 +93,16 @@ export default class HomeScreen extends Component {
                         list: notUpload,
                         uploaded_list: Uploaded,
                         loading: false
+                    }, ()=> {
+                        console.log(this.state.uploaded_list);
                     })
                 }
             })
-
-
         });
-        // get the localStorage and divide them into two groups.
+        // 这里是获得所有本地存储的记录，并根据status字段，判断它是上传过的还是未上传的，并更新到相应的list数组
     }
 
+    //删除本地记录的方法
     removeItem(id, secId, rowId, rowMap) {
         Alert.alert(
             '提示',
@@ -116,7 +135,9 @@ export default class HomeScreen extends Component {
         )
 
     }
-    //remove item from localStorage.
+
+
+    //上传的第一步，先检查有没有连接网络，有的话，进行下一步check，否则提示“没有网络”
     checkIfConnected(id) {
         if (this.state.isConnected === true) {
             this.checkAndUpload(id);
@@ -125,6 +146,7 @@ export default class HomeScreen extends Component {
         }
     }
 
+    //上传的第二步，检查当前用户有没有登录，有的话，进行下一步，否则提示错误。
     checkAndUpload(id) {
         AsyncStorage.getItem('_user', (err, data) => {
             if (err) {
@@ -148,6 +170,7 @@ export default class HomeScreen extends Component {
         })
     }
 
+    // 上传已上传过的条目时，进行提示。
     uploadExisted(id) {
         Alert.alert(
             '提示',
@@ -161,6 +184,7 @@ export default class HomeScreen extends Component {
         )
     }
 
+    // 发送http请求的上传函数
     uploadItem(id) {
         ToastAndroid.show('正在上传', ToastAndroid.SHORT);
         AsyncStorage.getItem(id, (err, data) => {
@@ -168,21 +192,28 @@ export default class HomeScreen extends Component {
             else {
                 const itemData = JSON.parse(data).answers;
                 const itemHideState = JSON.parse(data).hide_state;
+                // 从选中的本地记录中，获得数据和题目隐藏的情况
+
                 itemHideState[7].forEach((item, index) => {
                     if(item.ID === '8.0.1' || item.ID === '8.0.2') {
                         itemHideState[7].splice(index, 1);
                     }
                 });
                 itemHideState[9].splice(14, 1);
-                console.log(itemHideState);
-                console.log(this.tableModel.questions);
+                // 去掉表单中的那几个文字性描述，他们是否隐藏不应该体现在网页端。只有第八和第十部分有，是app中新加入的。详见page_eight.js。
+
+
                 itemHideState.forEach((page, page_index) => {
                     page.forEach((item, item_index) => {
                         this.tableModel.questions[page_index][item_index].hidden = itemHideState[page_index][item_index].hidden
                     })
                 });
-                console.log(this.tableModel.questions);
+                // 将我们一开始初始化的json中的hidden情况一一对应填好。
+
+
                 const allTableData = this.generateAvailable(itemData);
+                // 生成那些要发送的答案对儿
+
                 allTableData.unshift({
                     "Record_ID": 'ID0_0',
                     "Record_Value": this.tableModel.questions
@@ -203,6 +234,8 @@ export default class HomeScreen extends Component {
                     "Record_ID": 'ID0_5',
                     "Record_Value": this.state.logged_user.name
                 });
+                // 加入我们一开始初始化的用于隐藏json，完成状态，省份，完成时间，完成者的信息
+
 
                 for (let i = 0; i < allTableData.length; i++) {
                     if (allTableData[i].Record_ID.substr(0, 7) === 'ID7_8_a' || allTableData[i].Record_ID.substr(0, 7) === 'ID7_8_c' ||allTableData[i].Record_ID.substr(0, 7) === 'ID7_8_d') {
@@ -213,10 +246,8 @@ export default class HomeScreen extends Component {
                         }
                     }
                 }
+                // 填坑，这里网页端的table7_8的存储有点问题，我必须过滤掉所有不是true的选项。
 
-                // 填坑1
-
-                console.log(allTableData);
                 fetch("http://39.106.142.184:9501/healthexamination/recordop/", {
                     method: 'PUT',
                     body: JSON.stringify({
@@ -245,7 +276,7 @@ export default class HomeScreen extends Component {
                                             });
                                         }}
                                 ]
-                            )
+                            ) // 发送http请求，如果返回token相关的问题，则提示需要登录
                         } else if (result.Return === 0) {
                             ToastAndroid.show('上传成功', ToastAndroid.SHORT);
                             const newData = JSON.parse(data);
@@ -267,11 +298,12 @@ export default class HomeScreen extends Component {
                                         })
                                     }
                                 })
-                            }
+                            } // 上传成功，进行相应处理——已上传的如果再上传，则条目依然在uploaded_list，没有上传的则移出list，放进uploaded_list
                         } else if (result.Return === 1) {
                             console.log(result);
                             ToastAndroid.show('上传失败，未知错误。', ToastAndroid.SHORT);
-                        }
+                        } // 上传失败的情况，由于后端对于所有上传失败返回都是1，所以只能提示未知错误(经过实践，大概率是Record_ID不正确)
+
                     }).catch(err => {
                     ToastAndroid.show('您当前不处于网络环境下或网络不佳', ToastAndroid.SHORT);
                 })
@@ -279,6 +311,7 @@ export default class HomeScreen extends Component {
         })
     }
 
+    // 用于将格式化的存储数据，拆散成一个个发送给后端的答案ID对儿
     generateAvailable(data) {
         const sendData = [];
         data.forEach((page, index) => {
@@ -299,9 +332,12 @@ export default class HomeScreen extends Component {
         return sendData;
     }
 
+    // 对于非input和date形式的数据，我们需要特殊处理，因为单选多选和表格涉及的答案都不止一个。
     disassembleTable(data) {
         if(Array.isArray(data.Record_Value[0])) {
             const tableData = data.Record_Value;
+
+            // 首先是表格类，非常复杂，我们得根据各个表格的id情况去填写对应的id和值。
             switch (data.Record_ID) {
                 case 'ID5_1': {
                     tableData.forEach((row, index) => {
@@ -386,15 +422,17 @@ export default class HomeScreen extends Component {
                 }
             });
             return goodData;
-        }
+        } // 对于单选和多选来说，直接筛选出true的选项发送即可
     }
 
+    // 切换当前的list
     switchPage(page) {
         this.setState({
             display: page
         })
     }
 
+    // 相当于html的内容
     render() {
         return (
             <Container>
@@ -441,7 +479,7 @@ export default class HomeScreen extends Component {
                                                         id: data[0]
                                                     })
                                                 }}>
-                                                    <Text> {`${JSON.parse(data[1]).updateTime.substr(0, 10)}录入，编号:${data[0]}`} </Text>
+                                                    <Text> {`${JSON.parse(data[1]).updateTime.substr(0, 10)}录入，编号:${data[0]}，完成度:${JSON.parse(data[1]).complete_Rate}`} </Text>
                                                 </ListItem>}
                                             renderLeftHiddenRow={data =>
                                                 (<Button full onPress={() => {
@@ -479,7 +517,7 @@ export default class HomeScreen extends Component {
                                                         id: data[0]
                                                     })
                                                 }}>
-                                                    <Text> {`${JSON.parse(data[1]).updateTime.substr(0, 10)}录入，编号:${data[0]}`} </Text>
+                                                    <Text> {`${JSON.parse(data[1]).updateTime.substr(0, 10)}录入，编号:${data[0]}，完成度:${JSON.parse(data[1]).complete_Rate}`} </Text>
                                                 </ListItem>}
                                             renderLeftHiddenRow={data =>
                                                 (<Button full onPress={() => {
@@ -515,17 +553,6 @@ export default class HomeScreen extends Component {
                             </Button>
                         </FooterTab>
                     </Row>
-                    {/*<Row>
-                    <Text style={{color: '#ffffff'}}>
-                        {
-                            this.state.logged_user===null ? (
-                                '未登录'
-                            ) : (
-                                `当前用户:${this.state.logged_user.name}    所属省份:${this.state.logged_user.province}    权限:${this.authMap[this.state.logged_user.group]}`
-                            )
-                        }
-                    </Text>
-                    </Row>*/}
                 </Footer>
             </Container>
         );
