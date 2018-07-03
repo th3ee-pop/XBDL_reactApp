@@ -93,8 +93,6 @@ export default class HomeScreen extends Component {
                         list: notUpload,
                         uploaded_list: Uploaded,
                         loading: false
-                    }, ()=> {
-                        console.log(this.state.uploaded_list);
                     })
                 }
             })
@@ -192,6 +190,7 @@ export default class HomeScreen extends Component {
             else {
                 const itemData = JSON.parse(data).answers;
                 const itemHideState = JSON.parse(data).hide_state;
+                const completeRate = JSON.parse(data).complete_Rate;
                 // 从选中的本地记录中，获得数据和题目隐藏的情况
 
                 itemHideState[7].forEach((item, index) => {
@@ -218,10 +217,15 @@ export default class HomeScreen extends Component {
                     "Record_ID": 'ID0_0',
                     "Record_Value": this.tableModel.questions
                 });
-                allTableData.unshift({
+
+                completeRate === '100%' ? allTableData.unshift({
+                    "Record_ID": 'ID0_2',
+                    "Record_Value": '已完成'
+                }):allTableData.unshift({
                     "Record_ID": 'ID0_2',
                     "Record_Value": '未完成'
                 });
+                
                 allTableData.unshift({
                     "Record_ID": 'ID0_3',
                     "Record_Value": this.state.logged_user.province
@@ -247,7 +251,6 @@ export default class HomeScreen extends Component {
                     }
                 }
                 // 填坑，这里网页端的table7_8的存储有点问题，我必须过滤掉所有不是true的选项。
-
                 fetch("http://39.106.142.184:9501/healthexamination/recordop/", {
                     method: 'PUT',
                     body: JSON.stringify({
