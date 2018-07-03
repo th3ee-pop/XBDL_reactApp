@@ -3,6 +3,8 @@ import { StyleSheet , View, ScrollView, TextInput, ActivityIndicator} from 'reac
 import {Content, Form, Input, Label, Item, Text } from 'native-base';
 import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
 import TableLineComponent from './table_components/table-line';
+import {RadioGroup, RadioButton} from 'react-native-flexi-radio-button';
+import Checkbox from 'react-native-check-box';
 
 
 
@@ -21,13 +23,14 @@ export default class TableComponent extends Component {
             answers: [
 
             ],
-            loading: true
+            loading: true,
         };
         this.virtualState = {
             answers: [
             ],
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleSkip = this.handleSkip.bind(this);
     }
     componentWillMount() {
         const props = this.props;
@@ -62,13 +65,13 @@ export default class TableComponent extends Component {
             tableHead: header,
             tableData: tableData,
             answers: props.value,
-            loading: false
+            loading: false,
         }, () => {
+            console.log(this.state.answers);
         })
     }
 
     handleChange(index, answer) {
-        console.log(this.props.id);
         if(this.props.id === '7.8') {
             console.log(this.props.index);
             console.log(answer[0]);
@@ -78,6 +81,12 @@ export default class TableComponent extends Component {
             }
         }
         this.virtualState.answers[index] = answer;
+        this.props.handleChange(this.props.index, this.virtualState.answers);
+    }
+
+    handleSkip() {
+        this.virtualState.answers[28].Record_Value = !this.virtualState.answers[28].Record_Value;
+        console.log(this.virtualState.answers);
         this.props.handleChange(this.props.index, this.virtualState.answers);
     }
 
@@ -100,14 +109,6 @@ export default class TableComponent extends Component {
                         <Label>
                             { this.props.id + ' ' + this.props.title}
                         </Label>
-                        {
-                            this.state.loading ? (
-                                <View style={{alignItems: 'center', height: 100}}>
-                                    <ActivityIndicator size="small" color="#C0C0C0"/>
-                                    <Text style={{color:"#C0C0C0"}}>表格正在加载……</Text>
-                                </View>
-                            ) : ( <View/> )
-                        }
                         <Table borderStyle={{borderColor: 'transparent', paddingBottom: 15}}>
                             <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
                             {
@@ -118,7 +119,17 @@ export default class TableComponent extends Component {
                                 ))
                             }
                         </Table>
+                        {
+                            this.state.answers[28] ? (<Checkbox
+                                rightText={'以上情况都没有'}
+                                style={{flex: 1}}
+                                isChecked={this.state.answers[28].Record_Value} onClick={() => {
+                                    this.handleSkip()
+                            }}/>) : (<View/>)
+                        }
+
                     </Form>
+
                 </View>
             </Content>) : (<View/>)
         )

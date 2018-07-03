@@ -59,11 +59,6 @@ export default class Page_7 extends Component {
     }
 
     handleChange(index, answers) {
-        console.log(index, answers);
-        console.log(this.state.hidden);
-       /* if (index === 12) {
-            this.checkTable78(answers);
-        }*/
         this.virtualState.answers[index].Record_Value = answers;
         this.props.handleChange(6, this.virtualState.answers, this.state.hidden);
         this.getCompletion();
@@ -100,12 +95,10 @@ export default class Page_7 extends Component {
         validAnswer.forEach((item) => {
             if(Array.isArray(this.state.answers[item.index].Record_Value)) {
                 if (this.checkIfAnswered(this.virtualState.answers[item.index].Record_Value)) {
-                    console.log(item);
                     hasAnswer.push(item);
                 }
             } else {
                 if(this.state.answers[item.index].Record_Value) {
-                    console.log(this.state.answers[item.index].Record_Value);
                     hasAnswer.push(item);
                 }
             }
@@ -115,16 +108,19 @@ export default class Page_7 extends Component {
 
     checkIfAnswered(answer) {
         if (Array.isArray(answer[0])) {
-            let answeredNum = 0;
-            answer.forEach((row, index)=> {
-                for (let col = 1; col < row.length; col ++) {
-                    if (row[col].Record_Value){
-                        console.log(row[col].Record_Value);
-                        answeredNum ++;
+            if (answer.length === 29 && answer[28].Record_ID === 'ID7_8_29' && answer[28].Record_Value === true) {
+                return answer[28].Record_Value;
+            } else {
+                let answeredNum = 0;
+                answer.forEach((row, index)=> {
+                    for (let col = 1; col < row.length; col ++) {
+                        if (row[col].Record_Value){
+                            answeredNum ++;
+                        }
                     }
-                }
-            });
-            return (answeredNum !==0)
+                });
+                return (answeredNum !==0)
+            }
         } else {
             let num = 0;
             answer.forEach(item => {
@@ -136,7 +132,6 @@ export default class Page_7 extends Component {
     }
 
     generateHideSignal(index, id) {
-        console.log(id);
         id.forEach(item => {
             if (item > 0) {
                 this.state.hidden[item].hidden = true;
@@ -146,8 +141,6 @@ export default class Page_7 extends Component {
         });
         this.setState({
             hidden: this.state.hidden
-        }, ()=> {
-            console.log(this.state.hidden);
         })
     }
 

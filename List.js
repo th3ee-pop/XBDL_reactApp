@@ -47,7 +47,6 @@ export default class ExaminationView extends Component {
     }
 
     hideWoman(e) {
-        console.log(this.virtualState.completion);
         if (e > 0) {
             this.setState({
                 hide_woman: false,
@@ -90,15 +89,12 @@ export default class ExaminationView extends Component {
                     } else {
                         if (result.length > 0) {
                             const lastAnswer = result[result.length-1][1];
-                            console.log(this.state.answers);
                             const usefulAnswer = JSON.parse(lastAnswer).answers;
                             this.state.answers[0][2] = usefulAnswer[0][2];
                             this.state.answers[0][9] = usefulAnswer[0][9];
                             this.state.answers[0][10] = usefulAnswer[0][10];
                             this.setState({
                                 answers: this.state.answers
-                            }, () => {
-                                console.log(this.state.answers);
                             })
                         }
                     }
@@ -398,6 +394,10 @@ export default class ExaminationView extends Component {
         IdArray[25][0].Record_Value = '';
         IdArray[26][0].Record_ID = 'ID7_8_h_27';
         IdArray[26][0].Record_Value = '';
+        IdArray.push({
+            "Record_ID": `ID7_8_29`,
+            "Record_Value": false
+        });
         return IdArray;
     }
 
@@ -495,7 +495,6 @@ export default class ExaminationView extends Component {
     }
 
     handleChange(index, answer, hide) {
-        console.log(this.virtualState.answers);
         this.virtualState.answers[index] = answer;
         this.virtualState.hide_state[index] = hide;
     }
@@ -645,7 +644,6 @@ export default class ExaminationView extends Component {
         } else {
              this.virtualState.status = 0;
              this.virtualState.updateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-             console.log(this.virtualState);
              AsyncStorage.setItem(saveId, JSON.stringify(this.virtualState), (error) => {
                  if (error) {
                      alert(error);

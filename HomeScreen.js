@@ -382,10 +382,13 @@ export default class HomeScreen extends Component {
                 }
                 case 'ID7_8': {
                     tableData.forEach((row, index) => {
-                        if (index !== 25 && index !== 26) {
+                        if (index !== 25 && index !== 26 && index !== 28) {
                             row.splice(0, 1);
                         }
                     });
+                    if (tableData.length === 29) {
+                        tableData.pop();
+                    }
                     break;
                 }
                 case 'ID8_13': {
