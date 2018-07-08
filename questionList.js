@@ -1044,7 +1044,7 @@
                     '鱼肝油/鱼油',
                     '维生素',
                     '钙/铁/锌片',
-                    '中药',
+                    '人参类',
                     '其他保健补品'
                 ],
                 'hidden': false,
@@ -1120,7 +1120,7 @@
                 'hidden': false,
                 'hiddenlist': [
                     [11, 12, 13],
-                    [-11,-12,-13],
+                    [11,12,13],
                     [-11,-12,-13],
                     [-11,-12,-13],
                     [-11,-12,-13]
@@ -1195,7 +1195,7 @@
                     {
                         'dataType': 'text',
                         'inform': '',
-                        'validType': 'twonum'
+                        'validType': 'floatone'
                     }
                 ],
                 'hidden': false,
@@ -1228,7 +1228,7 @@
                     {
                         'dataType': 'text',
                         'inform': '',
-                        'validType': 'twonum'
+                        'validType': 'floatone'
                     }
                 ],
                 'hidden': false,
@@ -1271,7 +1271,7 @@
                     {
                         'dataType': 'text',
                         'inform': '',
-                        'validType': 'twonum'
+                        'validType': 'floatone'
                     }
                 ],
                 'hidden': false,
@@ -2001,12 +2001,6 @@
         ],
         [
             {
-                'id': '8.0.1',
-                'text': '如您是 非农林牧渔劳动者，请填写问题8.1-8.3',
-                'type': 'notification',
-                'hidden': false
-            },
-            {
                 'id': '8.1',
                 'content': [
                     '以静坐为主（如行政管理人员，秘书等）',
@@ -2016,11 +2010,11 @@
                     '离退休或者家务、待业一年以上或肢体残疾无法正常劳动 -> 若选此项，转至问题8.6'
                 ],
                 'hiddenlist': [
-                    [5, 10, 11, 12, 13, 14, 6, 7, 8, 9, -2, -3,-15,-16,4 ],
-                    [5, 10, 11, 12, 13, 14, 6, 7, 8, 9, -2, -3,-15,-16,4 ],
-                    [5, 10, 11, 12, 13, 14, 6, 7, 8, 9, -2, -3,-15,-16,4 ],
-                    [5, 10, 11, 12, 13, 14, 6, 7, 8, 9, -2, -3,-15,-16,4 ],
-                    [5, 10, 11, 12, 13, 14, 6, 7, 8, 9, 2, 3,15,16,4]
+                    [-1, -2, -3, -4],
+                    [-1, -2, -3, -4],
+                    [-1, -2, -3, -4],
+                    [-1, -2, -3, -4],
+                    [1, 2, 3, 4]
                 ],
                 'hidden': false,
                 'type': 'radio',
@@ -2053,141 +2047,6 @@
                 'tittle': '你每天平均工作多少小时？（非农林牧渔劳动者填写）'
             },
             {
-                'id': '8.0.2',
-                'text': '如您是 农林牧渔劳动者，请填写问题8.1.0-8.3.5',
-                'type': 'notification',
-                'hidden': false
-            },
-            {
-                'id': '8.1.0',
-                'content': [
-                    '否 ->转至问题8.3.1',
-                    '是'
-                ],
-                'hiddenlist': [
-                    [6, 7, 8, 9, 0 ,1, 2, 3],
-                    [-6, -7, -8, -9, 0 ,1, 2, 3]
-                ],
-                'hidden': false,
-                'type': 'radio',
-                'tittle': '你所从事的农业劳动是否有明显的农忙和农闲季节之分？（农林牧鱼劳动者填写）'
-            },
-            {
-                'id': '8.2.1',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'threenum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '农忙季节的累计持续时间有多长？（单位：天）（农林牧渔劳动者填写）'
-            },
-            {
-                'id': '8.2.2',
-                'content': [
-                    '人工',
-                    '半机械化',
-                    '机械化'
-                ],
-                'hidden': false,
-                'type': 'radio',
-                'tittle': '农忙时你干农活一般以什么方式为主？（农林牧渔劳动者填写）'
-            },
-            {
-                'id': '8.2.3',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '农忙时，你平均一天干几小时农活？（单位：小时）（农林牧渔劳动者填写）'
-            },
-            {
-                'id': '8.2.4',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '农忙时，你每天有几小时因干重活而出汗或感到心跳明显加快？（单位：小时）（农林牧渔劳动者填写）'
-            },
-            {
-                'id': '8.3.1',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '通常情况下，你平均每周干多长时间农活？（小时/周）（农林牧渔劳动者填写）'
-            },
-            {
-                'id': '8.3.2',
-                'content': [
-                    '否 ->转至问题8.7',
-                    '是'
-                ],
-                'hiddenlist': [
-                    [12, 13, 14, 15, 16, 17],
-                    [-12, -13, -14, -15, -16, -17]
-                ],
-                'hidden': false,
-                'type': 'radio',
-                'tittle': '除农活外，你平时是否还同时做其它正式工作？（农林牧鱼劳动者填写）'
-            },
-            {
-                'id': '8.3.3',
-                'content': [
-                    '以静坐为主',
-                    '以站立为主',
-                    '以一般的体力劳动为主',
-                    '以重体力劳动为主'
-                ],
-                'hidden': false,
-                'type': 'radio',
-                'tittle': ' 你所从事的其它工作，干活时是以静坐、站立为主还是以干体力活为主?（农林牧鱼劳动者填写）'
-            },
-            {
-                'id': '8.3.4',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '通常情况下你每周工作几天（从事上面所指的工作）？（单位：天）（农林牧渔劳动者填写）'
-            },
-            {
-                'id': '8.3.5',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'threenum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '除农活外，你一般每周做其它工作的累计时间有多长？（单位：小时）（农林牧渔劳动者填写）'
-            },
-            {
                 'id': '8.4',
                 'content': [
                     '步行',
@@ -2198,12 +2057,12 @@
                     '通常在家里或在家附近上班  ->转至问题8.6'
                 ],
                 'hiddenlist': [
-                    [-16],
-                    [-16],
-                    [-16],
-                    [-16],
-                    [-16],
-                    [16],
+                    [-4],
+                    [-4],
+                    [-4],
+                    [-4],
+                    [-4],
+                    [4],
                 ],
                 'hidden': false,
                 'type': 'radio',
@@ -2232,11 +2091,11 @@
                     '每天或几乎每天都锻炼'
                 ],
                 'hiddenlist': [
-                    [18, 19],
-                    [18, 19],
-                    [-18, -19],
-                    [-18, -19],
-                    [-18, -19],
+                    [6,7],
+                    [6, 7],
+                    [-6, -7],
+                    [-6, -7],
+                    [-6, -7],
                 ],
                 'hidden': false,
                 'type': 'radio',
@@ -2262,7 +2121,7 @@
                     {
                         'dataType': 'text',
                         'inform': '',
-                        'validType': 'twonum'
+                        'validType': 'floatone'
                     }
                 ],
                 'hidden': false,
@@ -2279,11 +2138,11 @@
                     '每天或几乎每天都有'
                 ],
                 'hiddenlist': [
-                    [21],
-                    [21],
-                    [-21],
-                    [-21],
-                    [-21],
+                    [9],
+                    [9],
+                    [-9],
+                    [-9],
+                    [-9],
                 ],
                 'hidden': false,
                 'type': 'radio',
@@ -2308,7 +2167,7 @@
                     {
                         'dataType': 'text',
                         'inform': '',
-                        'validType': 'twonum'
+                        'validType': 'floatone'
                     }
                 ],
                 'hidden': false,
@@ -2321,7 +2180,7 @@
                     {
                         'dataType': 'text',
                         'inform': '',
-                        'validType': 'twonum'
+                        'validType': 'floatone'
                     }
                 ],
                 'hidden': false,
@@ -2336,7 +2195,7 @@
                         '看电视/碟片', '看手机/pad', '读书/看报', '下棋/打牌/打麻将', '看电脑/写作/文件整理'
                     ],
                     'column_type': ['text', 'check','check','check','check','check', 'input'],
-                    'validType': 'hours'
+                    'validType': 'floatone'
                 },
                 'hidden': false,
                 'type': 'table',
@@ -2360,15 +2219,15 @@
                     '否-->转到最后一题'
                 ],
                 'hiddenlist': [
-                    [-27,
-                        -28,
-                        -29,
-                        -30],
+                    [-15,
+                        -16,
+                        -17,
+                        -18],
                     [
-                        27,
-                        28,
-                        29,
-                        30
+                        15,
+                        16,
+                        17,
+                        18
                     ]
                 ],
                 'hidden': false,
@@ -2394,20 +2253,20 @@
                     '其它'
                 ],
                 'hiddenlist': [
-                    [28],
-                    [28],
-                    [28],
-                    [28],
-                    [28],
-                    [28],
-                    [28],
-                    [28],
-                    [28],
-                    [28],
-                    [28],
-                    [28],
-                    [28],
-                    [-28]
+                    [16],
+                    [16],
+                    [16],
+                    [16],
+                    [16],
+                    [16],
+                    [16],
+                    [16],
+                    [16],
+                    [16],
+                    [16],
+                    [16],
+                    [16],
+                    [-16]
                 ],
                 'hidden': false,
                 'type': 'checkbox',
@@ -2685,7 +2544,7 @@
                     {
                         'dataType': 'text',
                         'inform': '',
-                        'validType': 'twonum'
+                        'validType': 'floatone'
                     }
                 ],
                 'hidden': false,

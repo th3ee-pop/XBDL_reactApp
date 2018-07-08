@@ -952,7 +952,7 @@ export class modelList {
                     '鱼肝油/鱼油',
                     '维生素',
                     '钙/铁/锌片',
-                    '中药',
+                    '人参类',
                     '其他保健补品'
                 ],
                 'hidden': false,
@@ -1897,135 +1897,6 @@ export class modelList {
                 'hidden': false,
                 'type': 'input',
                 'tittle': '你每天平均工作多少小时？（非农林牧渔劳动者填写）'
-            },
-            {
-                'id': '8.1.0',
-                'content': [
-                    '否 ->转至问题8.3.1',
-                    '是'
-                ],
-                'hiddenlist': [
-                    ['8.2.1', '8.2.2', '8.2.3', '8.2.4'],
-                    []
-                ],
-                'hidden': false,
-                'type': 'radio',
-                'tittle': '你所从事的农业劳动是否有明显的农忙和农闲季节之分？（农林牧鱼劳动者填写）'
-            },
-            {
-                'id': '8.2.1',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'threenum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '农忙季节的累计持续时间有多长？（单位：天）（农林牧渔劳动者填写）'
-            },
-            {
-                'id': '8.2.2',
-                'content': [
-                    '人工',
-                    '半机械化',
-                    '机械化'
-                ],
-                'hidden': false,
-                'type': 'radio',
-                'tittle': '农忙时你干农活一般以什么方式为主？（农林牧渔劳动者填写）'
-            },
-            {
-                'id': '8.2.3',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '农忙时，你平均一天干几小时农活？（单位：小时）（农林牧渔劳动者填写）'
-            },
-            {
-                'id': '8.2.4',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '农忙时，你每天有几小时因干重活而出汗或感到心跳明显加快？（单位：小时）（农林牧渔劳动者填写）'
-            },
-            {
-                'id': '8.3.1',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '通常情况下，你平均每周干多长时间农活？（小时/周）（农林牧渔劳动者填写）'
-            },
-            {
-                'id': '8.3.2',
-                'content': [
-                    '否 ->转至问题8.7',
-                    '是'
-                ],
-                'hiddenlist': [
-                    ['8.3.3', '8.3.4', '8.3.5', '8.4', '8.5', '8.6'],
-                    []
-                ],
-                'hidden': false,
-                'type': 'radio',
-                'tittle': '除农活外，你平时是否还同时做其它正式工作？（农林牧鱼劳动者填写）'
-            },
-            {
-                'id': '8.3.3',
-                'content': [
-                    '以静坐为主',
-                    '以站立为主',
-                    '以一般的体力劳动为主',
-                    '以重体力劳动为主'
-                ],
-                'hidden': false,
-                'type': 'radio',
-                'tittle': ' 你所从事的其它工作，干活时是以静坐、站立为主还是以干体力活为主?（农林牧鱼劳动者填写）'
-            },
-            {
-                'id': '8.3.4',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'twonum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '通常情况下你每周工作几天（从事上面所指的工作）？（单位：天）（农林牧渔劳动者填写）'
-            },
-            {
-                'id': '8.3.5',
-                'content': [
-                    {
-                        'dataType': 'text',
-                        'inform': '',
-                        'validType': 'threenum'
-                    }
-                ],
-                'hidden': false,
-                'type': 'input',
-                'tittle': '除农活外，你一般每周做其它工作的累计时间有多长？（单位：小时）（农林牧渔劳动者填写）'
             },
             {
                 'id': '8.4',

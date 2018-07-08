@@ -96,17 +96,17 @@ export default class NormalInputComponent extends Component {
             }
             break;
             case 'insurance_num':
-                const insReg = /^[a-zA-Z\d]{0,18}$/;
-                if(insReg.test(e) === false && e!=='') {
-                    this.setState({
-                        value: e,
-                        valid: false,
-                        info: '不合法的编号'
-                    })} else {
+                if (/[\u4E00-\u9FA5]/i.test(e) === false && e !== '') {
                     this.setState({
                         value: e,
                         valid: true,
                         info: ''
+                    })
+                } else {
+                    this.setState({
+                        value: e,
+                        valid: false,
+                        info: '不合法的编号'
                     });
                 }
                 break;

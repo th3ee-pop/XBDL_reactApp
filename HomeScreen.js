@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Text, View, AsyncStorage, ListView ,Alert, ToastAndroid, NetInfo} from 'react-native';
+import {Text, View, AsyncStorage, ListView ,Alert, ToastAndroid, NetInfo, StyleSheet} from 'react-native';
 import {Container, Header, Title, Content, List, ListItem, Left, Right, Icon, Body, Button, SwipeRow,Footer, FooterTab,Segment, Spinner, Tab, Tabs, TabHeading, Row} from 'native-base';
 import {QuestionList} from "./questionList";
 import { modelList } from "./qlmodel";
@@ -34,7 +34,8 @@ export default class HomeScreen extends Component {
             logged_user: null,
             isConnected: null,
             loading: true,
-            display: 1
+            display: 1,
+            uploading: false
         };
         // 当前页面的功能是显示本地有的所有体检表记录，因此保护以下state:
         // list[]: 所有未上传的体检表列表
@@ -45,6 +46,7 @@ export default class HomeScreen extends Component {
         // display: 用于判断当前显示“已上传”还是“未上传”
 
         this.switchPage = this.switchPage.bind(this);
+        this.getStorageUpload = this.getStorageUpload.bind(this);
     }
 
 
@@ -184,7 +186,14 @@ export default class HomeScreen extends Component {
 
     // 发送http请求的上传函数
     uploadItem(id) {
-        ToastAndroid.show('正在上传', ToastAndroid.SHORT);
+        this.setState({
+            uploading: true
+        }, () => {
+            this.getStorageUpload(id);
+        });
+    }
+
+    getStorageUpload(id) {
         AsyncStorage.getItem(id, (err, data) => {
             if (err) alert(err);
             else {
@@ -225,7 +234,7 @@ export default class HomeScreen extends Component {
                     "Record_ID": 'ID0_2',
                     "Record_Value": '未完成'
                 });
-                
+
                 allTableData.unshift({
                     "Record_ID": 'ID0_3',
                     "Record_Value": this.state.logged_user.province
@@ -264,12 +273,15 @@ export default class HomeScreen extends Component {
                     .then(response => response.json())
                     .then((result) => {
                         if (result.Return === 2 || result.Return === 5) {
-                            Alert.alert(
-                                '提示',
-                                '会话过期或其它设备登录，如需继续上传，您可能需要重新登录。',
-                                [
-                                    {text:'取消', onPress: () => console.log('取消了'), style: 'cancel'},
-                                    {text: '去登录', onPress: () => {
+                            this.setState({
+                                uploading: false
+                            }, () => {
+                                Alert.alert(
+                                    '提示',
+                                    '会话过期或其它设备登录，如需继续上传，您可能需要重新登录。',
+                                    [
+                                        {text:'取消', onPress: () => console.log('取消了'), style: 'cancel'},
+                                        {text: '去登录', onPress: () => {
                                             AsyncStorage.removeItem('_user', (err) => {
                                                 if(err) {
                                                     alert(err)
@@ -278,37 +290,53 @@ export default class HomeScreen extends Component {
                                                 }
                                             });
                                         }}
-                                ]
-                            ) // 发送http请求，如果返回token相关的问题，则提示需要登录
+                                    ]
+                                )
+                            });
+                             // 发送http请求，如果返回token相关的问题，则提示需要登录
                         } else if (result.Return === 0) {
-                            ToastAndroid.show('上传成功', ToastAndroid.SHORT);
-                            const newData = JSON.parse(data);
-                            if (newData.status !== 1) {
-                                newData.status = 1;
-                                AsyncStorage.setItem(id, JSON.stringify(newData), (err) => {
-                                    if(err) {
-                                        ToastAndroid.show(err, ToastAndroid.SHORT);
-                                    } else {
-                                        this.state.list.forEach((item, index )=> {
-                                            if(item[0] === id) {
-                                                this.state.list.splice(index, 1);
-                                            }
-                                        });
-                                        this.state.uploaded_list.push([id, JSON.stringify(newData)]);
-                                        this.setState({
-                                            list: this.state.list,
-                                            uploaded_list: this.state.uploaded_list
-                                        })
-                                    }
-                                })
-                            } // 上传成功，进行相应处理——已上传的如果再上传，则条目依然在uploaded_list，没有上传的则移出list，放进uploaded_list
+                            this.setState({
+                                uploading: false
+                            }, ()=> {
+                                ToastAndroid.show('上传成功', ToastAndroid.SHORT);
+                                const newData = JSON.parse(data);
+                                if (newData.status !== 1) {
+                                    newData.status = 1;
+                                    AsyncStorage.setItem(id, JSON.stringify(newData), (err) => {
+                                        if(err) {
+                                            ToastAndroid.show(err, ToastAndroid.SHORT);
+                                        } else {
+                                            this.state.list.forEach((item, index )=> {
+                                                if(item[0] === id) {
+                                                    this.state.list.splice(index, 1);
+                                                }
+                                            });
+                                            this.state.uploaded_list.push([id, JSON.stringify(newData)]);
+                                            this.setState({
+                                                list: this.state.list,
+                                                uploaded_list: this.state.uploaded_list
+                                            })
+                                        }
+                                    })
+                                }
+                            });
+                             // 上传成功，进行相应处理——已上传的如果再上传，则条目依然在uploaded_list，没有上传的则移出list，放进uploaded_list
                         } else if (result.Return === 1) {
+                            this.setState({
+                                uploading: false
+                            }, ()=> {
+                                ToastAndroid.show('上传失败，未知错误。', ToastAndroid.SHORT);
+                            });
                             console.log(result);
-                            ToastAndroid.show('上传失败，未知错误。', ToastAndroid.SHORT);
-                        } // 上传失败的情况，由于后端对于所有上传失败返回都是1，所以只能提示未知错误(经过实践，大概率是Record_ID不正确)
+
+                        } // 上传失败的情况，由于后端对于所有上传失败返回都是1，所以只能提示未知错误(经过实践，大概率是Record_ID不正确，或多人同时上传)
 
                     }).catch(err => {
-                    ToastAndroid.show('您当前不处于网络环境下或网络不佳', ToastAndroid.SHORT);
+                        this.setState({
+                            uploading: false
+                        }, ()=> {
+                            ToastAndroid.show('您当前不处于网络环境下或网络不佳', ToastAndroid.SHORT);
+                        });
                 })
             }
         })
@@ -466,6 +494,12 @@ export default class HomeScreen extends Component {
 
                 <Content>
                     {
+                        this.state.uploading && <View style={styles.loading}>
+                            <Spinner/>
+                            <Text>{'上传中，请等待'}</Text>
+                        </View>
+                    }
+                    {
                         this.state.display === 1 ? (
                             <Container>
                                 <View style={{marginTop: 15, marginBottom: 10}}>
@@ -563,4 +597,21 @@ export default class HomeScreen extends Component {
             </Container>
         );
     }
+
+
 }
+
+const styles = StyleSheet.create({
+    loading: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        opacity: 0.5,
+        backgroundColor: 'black',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 100
+    }
+});
