@@ -74,7 +74,6 @@ export default class InputYearComponent extends Component {
     }
 
     componentWillMount() {
-        console.log(this.props.value);
         if (this.props.value !== '') {
             console.log('valid');
             const monthNum = parseInt(this.props.value);
@@ -88,7 +87,6 @@ export default class InputYearComponent extends Component {
     }
 
     componentWillReceiveProps(props) {
-        console.log(props.value);
         if (props.value !== '') {
             const monthNum = parseInt(props.value);
             const year = parseInt(monthNum/12);

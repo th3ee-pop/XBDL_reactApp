@@ -8,6 +8,7 @@ import MyDatePicker from '../components/date-picker';
 import CheckBoxComponent from '../components/check-box';
 import TableComponent from '../components/table';
 import InputYearComponent from '../components/input-year';
+import InputWeekComponent from '../components/input-week';
 
 export default class Page_4 extends Component {
 
@@ -150,6 +151,8 @@ export default class Page_4 extends Component {
                 );
             case 'year-input':
                 return (<InputYearComponent index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} hidden = {this.state.hidden[index].hidden}/>);
+            case 'week-input':
+                return (<InputWeekComponent index={index} handleChange={this.handleChange} value={this.state.answers[index].Record_Value} title = {widget.tittle} id = {widget.id} hidden = {this.state.hidden[index].hidden}/>);
             default:
                 return (<Text>
                         other

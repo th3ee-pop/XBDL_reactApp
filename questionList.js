@@ -921,7 +921,7 @@
                     }
                 ],
                 'hidden': false,
-                'type': 'year-input',
+                'type': 'week-input',
                 'tittle': '你最近一次尝试戒烟时，坚持了多长时间未吸烟？'
             }
         ],
