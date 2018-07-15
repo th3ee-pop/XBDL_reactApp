@@ -120,7 +120,7 @@ export default class TableComponent extends Component {
                             }
                         </Table>
                         {
-                            this.state.answers[28] ? (<Checkbox
+                            this.props.id==='7.8' ? (<Checkbox
                                 rightText={'以上情况都没有'}
                                 style={{flex: 1}}
                                 isChecked={this.state.answers[28].Record_Value} onClick={() => {
