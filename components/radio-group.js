@@ -52,7 +52,6 @@ export default class RadioGroupComponent extends Component {
                 }
             })
         } else if (this.props.id === '1.3') {
-            console.log('涉及性别因素');
             this.props.value.forEach((option, index) => {
                 if(option.Record_Value === true) {
                     console.log(`当前选项为${index}`);
@@ -76,13 +75,9 @@ export default class RadioGroupComponent extends Component {
     componentWillReceiveProps(props) {
         this.props.value.forEach((item, index) => {
             if(item.Record_Value !== props.value[index].Record_Value && this.props.hiddenList !== null) {
-                console.log('检测到值的变化');
-                console.log(`${this.props.id}是一个涉及隐藏的问题，现在隐藏了${index}选项涉及的问题`);
                 this.sendHideSignal(index, this.props.hiddenList[index])
             } else if (item.Record_Value !== props.value[index].Record_Value && this.props.id === '1.3') {
-                console.log('检测到性别因素');
                 if (props.value[index].Record_Value === true) {
-                    console.log(`当前选项为${index}`);
                     this.props.hideWoman(index);
                 }
             }
@@ -97,9 +92,6 @@ export default class RadioGroupComponent extends Component {
         this.setState({
             value: props.value,
             selected: selected
-        }, () => {
-            /*console.log(this.props.value);
-            console.log(props.value);*/
         });
     }
 

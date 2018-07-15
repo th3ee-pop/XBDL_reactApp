@@ -30,6 +30,7 @@ export default class TableLineComponent extends Component {
         this.openDatePicker = this.openDatePicker.bind(this);
         this.switch_Widget = this.switch_Widget.bind(this);
         this.checkValid = this.checkValid.bind(this);
+        this.check51Valid = this.check51Valid.bind(this);
         this.changeDateValue = this.changeDateValue.bind(this);
     }
     componentWillMount() {
@@ -74,16 +75,17 @@ export default class TableLineComponent extends Component {
         })
     };
 
-
-
-
-    changeInputValue = (value, index) => {
+    changeInputValue = (value, index, localIndex) => {
         this.state.answers[index].Record_Value = value;
         this.setState({
             answers: this.state.answers
         }, () => {
             console.log(this.state.valid);
-            this.checkValid(value, index);
+            if (this.props.sourceTable === '5.1') {
+                this.check51Valid(value, index, localIndex);
+            } else {
+                this.checkValid(value, index);
+            }
             this.props.handleChange(this.props.index, this.state.answers);
         });
     };
@@ -235,6 +237,36 @@ export default class TableLineComponent extends Component {
         }
     }
 
+    check51Valid(value, index, localIndex) {
+      console.log(value, index, localIndex);
+      if (localIndex < 26) {
+          const twoReg = /^\d{0,2}$/;
+          if(twoReg.test(value) === false && value!=='') {
+              this.state.valid[index] = false;
+              this.setState({
+                  valid: this.state.valid
+              })
+          } else {
+              this.state.valid[index] = true;
+              this.setState({
+                  valid: this.state.valid
+              })
+          }
+      } else {
+          const threeReg = /^\d{0,3}$/;
+          if(threeReg.test(value) === false && value!=='') {
+              this.state.valid[index] = false;
+              this.setState({
+                  valid: this.state.valid
+              })
+          } else {
+              this.state.valid[index] = true;
+              this.setState({
+                  valid: this.state.valid
+              })
+          }
+      }
+    };
 
 
     switch_Widget = (widget, index) => {
@@ -244,7 +276,7 @@ export default class TableLineComponent extends Component {
             case 'input':
                 return (
                     <View>
-                    <TextInput value={this.state.answers[index].Record_Value}  onChangeText={(value) => {this.changeInputValue(value, index)}}/>
+                    <TextInput value={this.state.answers[index].Record_Value}  onChangeText={(value) => {this.changeInputValue(value, index, this.props.index)}}/>
                         {this.state.valid[index] ? (<View/>) : (<Text style={{color:'red'}}>
                         {'  所填内容有误'}
                     </Text>)}

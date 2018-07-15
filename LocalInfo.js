@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {Text, View, AsyncStorage, Alert, ToastAndroid} from 'react-native';
-import {Container, Header, Title, Content, List, ListItem, Left, Right, Icon, Body, Button, Item, Input, Toast, Separator, Footer, FooterTab} from 'native-base';
+import {Text, View, AsyncStorage, Alert, ToastAndroid, StyleSheet} from 'react-native';
+import {Container, Header, Title, Content, List, ListItem, Left, Right, Icon, Body, Button, Item, Input, Toast, Separator, Footer, FooterTab, Spinner} from 'native-base';
 
 
 export default class LocalInfo extends Component {
@@ -20,7 +20,8 @@ export default class LocalInfo extends Component {
             username: '',
             password: '',
             logged_user: null,
-            showToast: false
+            showToast: false,
+            loading: false
         };
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
@@ -45,10 +46,13 @@ export default class LocalInfo extends Component {
     }
 
     login() {
-        console.log(this.state);
+
         if(this.state.username === '' || this.state.password === '') {
             ToastAndroid.show('请完善登录信息', ToastAndroid.SHORT);
         } else {
+            this.setState({
+                loading: true
+            });
             const userInfo = {
                 username: this.state.username,
                 password: this.state.password
@@ -61,24 +65,35 @@ export default class LocalInfo extends Component {
                .then((res) => res.json())
                .then((jsonData) => {
                    if(jsonData.Return === 1) {
-                       ToastAndroid.show('用户名或密码错误', ToastAndroid.SHORT);
+                       this.setState({
+                           loading: false
+                       }, () => {
+                           ToastAndroid.show('用户名或密码错误', ToastAndroid.SHORT);
+                       });
                    } else {
-                       AsyncStorage.setItem('_user', JSON.stringify(jsonData), (error => {
-                           if(error) {
-                               alert(error);
-                           } else {
-                               this.setState({
-                                   logged_user:jsonData
-                               }, () => {
-                                   ToastAndroid.show('登录成功', ToastAndroid.SHORT);
-                                   this.props.navigation.navigate('Home');
-                               })
-                           }
-                       }))
+                       this.setState({
+                           loading:false
+                       }, () => {
+                           AsyncStorage.setItem('_user', JSON.stringify(jsonData), (error => {
+                               if(error) {
+                                   alert(error);
+                               } else {
+                                   this.setState({
+                                       logged_user:jsonData
+                                   }, () => {
+                                       ToastAndroid.show('登录成功', ToastAndroid.SHORT);
+                                       this.props.navigation.navigate('Home');
+                                   })
+                               }
+                           }))
+                       });
                    }
 
                })
                .catch((err) => {
+                   this.setState({
+                       loading: false
+                   });
                    ToastAndroid.show(err, ToastAndroid.SHORT);
                })
         }
@@ -117,6 +132,12 @@ export default class LocalInfo extends Component {
                 {
                     this.state.logged_user === null ? (
                         <Content>
+                            {
+                                this.state.loading && <View style={styles.loading}>
+                                    <Spinner/>
+                                    <Text>{'登录中，请等待'}</Text>
+                                </View>
+                            }
                             <View style={{flex:1, alignItems: 'center', paddingTop: 100}}>
                                 <View style={{width: 300, flexDirection: 'column'}}>
                                     <Item>
@@ -194,3 +215,18 @@ export default class LocalInfo extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    loading: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        opacity: 0.5,
+        backgroundColor: 'black',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000
+    }
+});

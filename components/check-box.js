@@ -17,7 +17,12 @@ export default class CheckBoxComponent extends Component {
     searchOption(index) {
         this.state.options[index].Record_Value = !this.state.options[index].Record_Value;
         if (this.props.hiddenList !== null) {
-            this.sendHideSignal(index, this.props.hiddenList[index])
+            if (index === this.props.hiddenList.length - 1) {
+                this.state.options[index].Record_Value ? this.sendHideSignal(index, this.props.hiddenList[index]) : this.sendHideSignal(index, this.props.hiddenList[index-1]);
+            } else {
+                this.state.options[index].Record_Value ? this.sendHideSignal(index, this.props.hiddenList[index]) : this.sendHideSignal(index, this.props.hiddenList[this.props.hiddenList.length - 1]);
+            }
+            // this.sendHideSignal(index, this.props.hiddenList[index])
         }
         this.setState({
             options: this.state.options

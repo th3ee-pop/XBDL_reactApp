@@ -114,7 +114,7 @@ export default class TableComponent extends Component {
                             {
                                 this.state.tableData.map((rowData, index) => (
                                     <TableLineComponent method={this.props.id === '7.8' ? 'multi': 'single'} handleChange={this.handleChange} key={index} config={rowData} answer={this.state.answers[index]} index={index}
-                                                        validType={this.props.configuration.validType}
+                                                        validType={this.props.configuration.validType} sourceTable={this.props.id}
                                     />
                                 ))
                             }
