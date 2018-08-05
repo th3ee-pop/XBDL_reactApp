@@ -150,7 +150,6 @@ export default class HomeScreen extends Component {
     checkAndUpload(id) {
         AsyncStorage.getItem('_user', (err, data) => {
             if (err) {
-                console.log(err);
             } else {
                 if (data) {
                     this.uploadItem(id);
@@ -327,8 +326,6 @@ export default class HomeScreen extends Component {
                             }, ()=> {
                                 ToastAndroid.show('上传失败，未知错误。', ToastAndroid.SHORT);
                             });
-                            console.log(result);
-
                         } // 上传失败的情况，由于后端对于所有上传失败返回都是1，所以只能提示未知错误(经过实践，大概率是Record_ID不正确，或多人同时上传)
 
                     }).catch(err => {
@@ -394,7 +391,6 @@ export default class HomeScreen extends Component {
                             })
                         }
                     });
-                   // console.log(tableData);
                     break;
                 }
                 case 'ID5_4': {

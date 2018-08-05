@@ -78,12 +78,12 @@ export default class Page_4 extends Component {
         validAnswer.forEach((item) => {
             if(Array.isArray(this.state.answers[item.index].Record_Value)) {
                 if (this.checkIfAnswered(this.virtualState.answers[item.index].Record_Value)) {
-                    console.log(item);
+
                     hasAnswer.push(item);
                 }
             } else {
                 if(this.state.answers[item.index].Record_Value) {
-                    console.log(this.state.answers[item.index].Record_Value);
+
                     hasAnswer.push(item);
                 }
             }
@@ -97,7 +97,7 @@ export default class Page_4 extends Component {
             answer.forEach((row, index)=> {
                 for (let col = 1; col < row.length; col ++) {
                     if (row[col].Record_Value){
-                        console.log(row[col].Record_Value);
+
                         answeredNum ++;
                     }
                 }

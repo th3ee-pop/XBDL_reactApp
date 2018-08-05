@@ -31,12 +31,15 @@ export default class TableComponent extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSkip = this.handleSkip.bind(this);
+        this.decideValidLine = this.decideValidLine.bind(this);
     }
     componentWillMount() {
         const props = this.props;
         const header = props.configuration.header;
         const column = props.configuration.column_title;
         const type = props.configuration.column_type;
+        const specialValidRow = props.configuration.specialValid_row;
+        const specialValidType = props.configuration.specialValid_type;
         const tableData = [];
         for (let row = 0; row < column.length; row ++) {
                 tableData.push([]);
@@ -56,7 +59,6 @@ export default class TableComponent extends Component {
             })
         }
         this.virtualState.answers = props.value;
-        console.log(props.value);
         if (props.id === '7.8') {
             if (props.value[27][1].Record_Value)
             this.props.generateHideSignal('7.8', [-13]);
@@ -67,16 +69,12 @@ export default class TableComponent extends Component {
             answers: props.value,
             loading: false,
         }, () => {
-            console.log(this.state.answers);
         })
     }
 
     handleChange(index, answer) {
         if(this.props.id === '7.8') {
-            console.log(this.props.index);
-            console.log(answer[0]);
             if (answer[0].Record_ID === 'ID7_8_0_28') {
-                console.log(answer[1].Record_Value);
                 answer[1].Record_Value ? this.props.generateHideSignal( '7.8' , [-13, -14]) : this.props.generateHideSignal( '7.8' , [13, 14])
             }
         }
@@ -86,7 +84,6 @@ export default class TableComponent extends Component {
 
     handleSkip() {
         this.virtualState.answers[28].Record_Value = !this.virtualState.answers[28].Record_Value;
-        console.log(this.virtualState.answers);
         this.props.handleChange(this.props.index, this.virtualState.answers);
     }
 
@@ -97,6 +94,25 @@ export default class TableComponent extends Component {
             loading: false
         }, () => {
         })
+    }
+
+    decideValidLine(rowData, index) {
+        if (this.props.configuration.specialValid_type) {
+            if (this.props.configuration.specialValid_row.indexOf(index) > -1) {
+                return  <TableLineComponent method={this.props.id === '7.8' ? 'multi': 'single'} handleChange={this.handleChange} key={index} config={rowData} answer={this.state.answers[index]} index={index}
+                                            validType={this.props.configuration.specialValid_type} sourceTable={this.props.id}
+                />
+            } else {
+                return <TableLineComponent method={this.props.id === '7.8' ? 'multi': 'single'} handleChange={this.handleChange} key={index} config={rowData} answer={this.state.answers[index]} index={index}
+                                           validType={this.props.configuration.validType} sourceTable={this.props.id}
+                />
+            }
+        } else {
+            return <TableLineComponent method={this.props.id === '7.8' ? 'multi': 'single'} handleChange={this.handleChange} key={index} config={rowData} answer={this.state.answers[index]} index={index}
+                                       validType={this.props.configuration.validType} sourceTable={this.props.id}
+            />
+        }
+
     }
 
 
@@ -113,9 +129,7 @@ export default class TableComponent extends Component {
                             <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
                             {
                                 this.state.tableData.map((rowData, index) => (
-                                    <TableLineComponent method={this.props.id === '7.8' ? 'multi': 'single'} handleChange={this.handleChange} key={index} config={rowData} answer={this.state.answers[index]} index={index}
-                                                        validType={this.props.configuration.validType} sourceTable={this.props.id}
-                                    />
+                                    this.decideValidLine(rowData, index)
                                 ))
                             }
                         </Table>

@@ -4,7 +4,6 @@ import {Content, Form, Input, Label, Item, Text, Button, Icon } from 'native-bas
 import CheckBox from 'react-native-check-box';
 import DatePicker from 'react-native-datepicker'
 import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
-import TableInputComponent from './table-input';
 
 
 
@@ -58,15 +57,12 @@ export default class TableLineComponent extends Component {
     changeOptionSingle = (index, method) => {
         this.state.answers[index].Record_Value = !this.state.answers[index].Record_Value;
         if (method === 'single') {
-            console.log('单选');
-            console.log(index);
             this.state.answers.forEach((option, opt_index) => {
                 if (opt_index !== index && typeof option.Record_Value === "boolean") {
                     this.state.answers[opt_index].Record_Value = false;
                 }
             });
         } else if (method === 'multi') {
-            console.log('多选');
         }
         this.setState({
             answers: this.state.answers
@@ -80,7 +76,6 @@ export default class TableLineComponent extends Component {
         this.setState({
             answers: this.state.answers
         }, () => {
-            console.log(this.state.valid);
             if (this.props.sourceTable === '5.1') {
                 this.check51Valid(value, index, localIndex);
             } else {
@@ -91,14 +86,11 @@ export default class TableLineComponent extends Component {
     };
 
     changeDateValue =  (value, index) => {
-        console.log('改变日期');
         this.state.answers[index].Record_Value = value;
         this.setState({
             answers: this.state.answers
         }, () => {
-            console.log(this.state.valid);
             const DateReg =  /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$/;
-            console.log(DateReg.test(value));
             if(DateReg.test(value) === false && value!=='') {
                 this.state.valid[index] = false;
                 this.setState({
@@ -238,8 +230,7 @@ export default class TableLineComponent extends Component {
     }
 
     check51Valid(value, index, localIndex) {
-      console.log(value, index, localIndex);
-      if (localIndex < 26) {
+      if (localIndex < 22) {
           const twoReg = /^\d{0,2}$/;
           if(twoReg.test(value) === false && value!=='') {
               this.state.valid[index] = false;
@@ -252,7 +243,7 @@ export default class TableLineComponent extends Component {
                   valid: this.state.valid
               })
           }
-      } else {
+      }  else {
           const threeReg = /^\d{0,3}$/;
           if(threeReg.test(value) === false && value!=='') {
               this.state.valid[index] = false;

@@ -963,7 +963,7 @@
                     'column_type': ['text', 'check', 'check', 'check', 'check', 'check', 'input'],
                     'special_row': [29],
                     'validType': 'twonum',
-                    'validColumn': 6
+                    'validColumn': 6,
                 },
                 'hidden': false,
                 'type': 'table',
@@ -2039,7 +2039,7 @@
                     {
                         'dataType': 'text',
                         'inform': '',
-                        'validType': 'twonum'
+                        'validType': 'floatone_day'
                     }
                 ],
                 'hidden': false,

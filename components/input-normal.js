@@ -155,9 +155,23 @@ export default class NormalInputComponent extends Component {
                     });
                 }
                 break;
+            case 'floatone_day':
+                const floatReg = /^\d{1,2}(\.\d)?$/;
+                if(floatReg.test(e) === false && e!=='' || e>24) {
+                    this.setState({
+                        value: e,
+                        valid: false,
+                        info: '不合法的数字'
+                    })} else {
+                    this.setState({
+                        value: e,
+                        valid: true,
+                        info: ''
+                    });
+                }
+                break;
             case 'number':
                 const numReg = /^\d{8}$/;
-                console.log(Number(e));
                 if(numReg.test(Number(e)) === false) {
                     this.setState({
                         value: e,
@@ -187,7 +201,6 @@ export default class NormalInputComponent extends Component {
                 this.sendHideSignal(this.props.id, this.props.hiddenList[0]);
             } else {
                 const recoverList = this.props.hiddenList[0].map(item => -item);
-                console.log(recoverList);
                 this.sendHideSignal(this.props.id, recoverList);
             }
         }
