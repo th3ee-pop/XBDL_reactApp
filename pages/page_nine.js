@@ -40,7 +40,6 @@ export default class Page_9 extends Component {
                 'hidden': question.hidden
             })
         });
-        console.log(this.props.hidden);
         if(this.props.hidden === true) {
             hiddenArray.forEach(item => {
                 item.hidden = true
@@ -54,7 +53,6 @@ export default class Page_9 extends Component {
             answers: this.props.answer,
             hidden: hiddenArray
         }, () => {
-            console.log(this.state);
             this.getCompletion();
         })
     }
@@ -76,7 +74,6 @@ export default class Page_9 extends Component {
                 answers: props.answer,
                 hidden: this.state.hidden
             }, () => {
-                console.log(this.state.hidden);
                 this.getCompletion();
             });
         }
@@ -103,12 +100,10 @@ export default class Page_9 extends Component {
         validAnswer.forEach((item) => {
             if(Array.isArray(this.state.answers[item.index].Record_Value)) {
                 if (this.checkIfAnswered(this.virtualState.answers[item.index].Record_Value)) {
-                    console.log(item);
                     hasAnswer.push(item);
                 }
             } else {
                 if(this.state.answers[item.index].Record_Value) {
-                    console.log(this.state.answers[item.index].Record_Value);
                     hasAnswer.push(item);
                 }
             }
@@ -122,7 +117,6 @@ export default class Page_9 extends Component {
             answer.forEach((row, index)=> {
                 for (let col = 1; col < row.length; col ++) {
                     if (row[col].Record_Value){
-                        console.log(row[col].Record_Value);
                         answeredNum ++;
                     }
                 }

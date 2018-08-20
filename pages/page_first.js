@@ -58,7 +58,6 @@ export default class Page_1 extends Component {
 
     handleChange(index, answers) {
         this.virtualState.answers[index].Record_Value = answers;
-        console.log(this.state.hidden);
         this.props.handleChange(0, this.virtualState.answers, this.state.hidden);
         this.getCompletion();
     }
@@ -103,7 +102,6 @@ export default class Page_1 extends Component {
     }
 
     generateHideSignal(index, id) {
-        console.log(index, id);
         id.forEach(item => {
             if (item > 0) {
                 this.state.hidden[item].hidden = true;
@@ -118,7 +116,6 @@ export default class Page_1 extends Component {
     }
 
     hideWomanInfo(e) {
-        console.log(e);
         if (e === 0) {
             this.props.hideWoman(0);
         } else {

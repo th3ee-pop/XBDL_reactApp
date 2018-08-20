@@ -1899,6 +1899,135 @@ export class modelList {
                 'tittle': '你每天平均工作多少小时？（非农林牧渔劳动者填写）'
             },
             {
+                'id': '8.1.0',
+                'content': [
+                    '否 ->转问题8.3.1',
+                    '是'
+                ],
+                'hiddenlist': [
+                    [0, 1, 2, 3, 6, 7, 8, 9],
+                    [0, 1, 2, 3, -6, -7, -8, -9]
+                ],
+                'hidden': false,
+                'type': 'radio',
+                'tittle': '你所从事的农业劳动是否有明显的农忙和农闲季节之分？'
+            },
+            {
+                'id': '8.2.1',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '过去一年的农忙季节累计持续时间有多长？'
+            },
+            {
+                'id': '8.2.2',
+                'content': [
+                    '人工',
+                    '半机械化',
+                    '机械化'
+                ],
+                'hidden': false,
+                'type': 'radio',
+                'tittle': '农忙时，你干农活一般以什么方式为主？'
+            },
+            {
+                'id': '8.2.3',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'floatone_day'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '农忙时，你平均一天干几小时农活？'
+            },
+            {
+                'id': '8.2.4',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'floatone_day'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '农忙时，你每天有几小时因干重活而出汗或感到心跳明显加快？'
+            },
+            {
+                'id': '8.3.1',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'threenum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '通常情况下（非农忙时），你平均每周干多长时间农活？'
+            },
+            {
+                'id': '8.3.2',
+                'content': [
+                    '否 ->转问题8.4',
+                    '是'
+                ],
+                'hiddenlist': [
+                    [12, 13, 14],
+                    [-12, -13, -14]
+                ],
+                'hidden': false,
+                'type': 'radio',
+                'tittle': '除农活外，你平时是否还同时做其它正式工作？'
+            },
+            {
+                'id': '8.3.3',
+                'content': [
+                    '以静坐为主（如编织，缝纫）',
+                    '以站立为主（如门卫，商店营业员）',
+                    '以一般体力劳动为主（如木工，电工，建筑工等）',
+                    '以重体力劳动为主（如搬运工，采矿，装卸等）'
+                ],
+                'hidden': false,
+                'type': 'radio',
+                'tittle': '你所从事的其他工作，干活时是以静坐﹑站立为主还是以干体力活为主？'
+            },
+            {
+                'id': '8.3.4',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'twonum'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '通常情况下，你每周工作几天(从事上面所指的工作)？'
+            },
+            {
+                'id': '8.3.5',
+                'content': [
+                    {
+                        'dataType': 'text',
+                        'inform': '',
+                        'validType': 'floatone_day'
+                    }
+                ],
+                'hidden': false,
+                'type': 'input',
+                'tittle': '除农活外，你一般每周做其他工作的累计时间有多长？'
+            },
+            {
                 'id': '8.4',
                 'content': [
                     '步行',

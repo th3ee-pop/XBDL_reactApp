@@ -32,7 +32,6 @@ export default class Page_2 extends Component {
 
 
     componentWillMount() {
-        console.log(this.props);
         this.virtualState.answers = this.props.answer;
         const hiddenArray = [];
         this.myQuestions.forEach(question => {
@@ -76,14 +75,11 @@ export default class Page_2 extends Component {
         });
         validAnswer.forEach((item) => {
             if(Array.isArray(this.state.answers[item.index].Record_Value)) {
-                console.log(item.index);
-                console.log('非输入');
                 if (this.checkIfAnswered(this.state.answers[item.index].Record_Value)) {
                     hasAnswer.push(item);
                 }
             } else {
                 if(this.state.answers[item.index].Record_Value) {
-                    console.log('输入有值');
                     hasAnswer.push(item);
                 }
             }

@@ -257,10 +257,15 @@ export default class HomeScreen extends Component {
                             i = i-1;
                         }
                     }
+                    if (allTableData[i].Record_ID === 'ID8_0_1' || allTableData[i].Record_ID === 'ID8_0_2') {
+                        allTableData.splice(i, 1);
+                        i = i - 1;
+                    }
                     if (allTableData[i].Record_ID === 'ID7_8_f_9') {
                         allTableData[i].Record_ID = 'ID7_8_f';
                     }
                 }
+
                 // 填坑，这里网页端的table7_8的存储有点问题，我必须过滤掉所有不是true的选项。
                 fetch("http://39.106.142.184:9501/healthexamination/recordop/", {
                     method: 'PUT',

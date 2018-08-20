@@ -111,7 +111,7 @@ export default class Page_8 extends Component {
 
     generateHideSignal(index, id) {
         id.forEach(item => {
-            if (item > 0) {
+            if (item >= 0) {
                 this.state.hidden[item].hidden = true;
             } else {
                 this.state.hidden[-item].hidden = false
