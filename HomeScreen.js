@@ -273,8 +273,9 @@ export default class HomeScreen extends Component {
                         allTableData[i].Record_ID = 'ID7_8_f';
                     }
                 }
+                console.log(itemId);
                 const checkExisted = new Promise((resolve, reject) => {
-                   fetch(`http://39.106.142.184:9501/healthexamination/checknumber/?q={"number":${itemId}}`, {
+                   fetch(`http://39.106.142.184:9501/healthexamination/checknumber/?q={"number":"${itemId}"}`, {
                        method: 'GET',
                        headers: {
                            "X-CSRFToken": this.state.logged_user.TOKEN,
@@ -283,11 +284,13 @@ export default class HomeScreen extends Component {
                    }).then(response => response.json())
                        .then((result) => {
                            if (result.Return === 0) {
+                               console.log(result);
                                resolve('new Id');
                            } else if (result.Return === 2 || result.Return === 5) {
                                this.setState({
                                    uploading: false
                                }, () => {
+                                   reject(1);
                                    Alert.alert(
                                        '提示',
                                        '会话过期或其它设备登录，如需继续上传，您可能需要重新登录。',
@@ -307,8 +310,7 @@ export default class HomeScreen extends Component {
                                });
                            }
                            else {
-                               console.log(result);
-                               reject('Id existed');
+                               reject(2);
                            }
                        });
                 });
@@ -395,6 +397,7 @@ export default class HomeScreen extends Component {
                         uploading: false
                     }, ()=> {
                         console.log(err);
+                        if (err === 2)
                         ToastAndroid.show('此体检编号已存在。', ToastAndroid.SHORT);
                     });
                 });
