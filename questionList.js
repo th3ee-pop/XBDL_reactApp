@@ -7,12 +7,12 @@
                     {
                         'dataType': 'text',
                         'inform': '',
-                        'validType': 'number'
+                        'validType': 'number',
                     }
                 ],
                 'hidden': false,
                 'type': 'input',
-                'tittle': '编号：（此项体检当天填写）'
+                'tittle': '编号：（此项体检当天填写）',
             },
             {
                 'id': '1.2.1',
@@ -1512,7 +1512,7 @@
                     'column_title': [
                         '煤气/蒸汽/烟/雾', '粉尘（如：硅石/煤炭/棉花）', '纤维（如　石棉/纺织品）', '化学制品（如：苯/甲苯）'
                         ],
-                    'column_type': ['text', 'check', 'input'],
+                    'column_type': ['text', 'co-check', 'input'],
                     'validType': 'twonum'
                 },
                 'hidden': false,
@@ -1736,7 +1736,7 @@
                         '其它1',
                         '其它2',
                         '恶性肿瘤（癌症）'],
-                    'column_type': ['text', 'check','input', 'check', 'check', 'date'],
+                    'column_type': ['text', 'co-check','input', 'co-check', 'co-check', 'date'],
                     'special_row': [25, 26],
                     'validType': 'twonum',
                 },
@@ -2634,7 +2634,7 @@
                     'column_title': [
                         '首次', '第二次', '第三次', '第四次', '第五次'
                     ],
-                    'column_type': ['text',  'input', 'input', 'check'],
+                    'column_type': ['text',  'input', 'input', 'co-check'],
                     'validType': 'twonum'
                 },
                 'hidden': false,
@@ -2758,7 +2758,7 @@
                     'column_title': [
                         '子宫切除术', '卵巢（单侧或双侧）摘除术', '乳房肿块/肿瘤摘除术', '绝育术', '剖腹产'
                     ],
-                    'column_type': ['text',  'check', 'input'],
+                    'column_type': ['text',  'co-check', 'input'],
                     'validType': 'twonum'
                 },
                 'hidden': false,

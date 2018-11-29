@@ -357,7 +357,7 @@ export default class ExaminationView extends Component {
             });
             IdArray[row].push({
                 "Record_ID": `ID6_14_${row + 1}`,
-                "Record_Value": false,
+                "Record_Value": 'unselected',
             });
             IdArray[row].push({
                 "Record_ID": `ID6_14_${String.fromCharCode(97+row)}`,
@@ -377,10 +377,10 @@ export default class ExaminationView extends Component {
                 "Record_Value": config.column_title[row]
             });
             for (let col = 1; col < config.header.length; col++) {
-                if(config.column_type[col] === 'check') {
+                if(config.column_type[col] === 'co-check') {
                     IdArray[row].push({
                         "Record_ID": `ID7_8_${String.fromCharCode(col+96)}_${row+1}`,
-                        "Record_Value": false
+                        "Record_Value": 'unselected'
                     })
                 } else {
                     IdArray[row].push({
@@ -467,7 +467,7 @@ export default class ExaminationView extends Component {
             }
             IdArray[row].push({
                 "Record_ID": `ID9_6_c_${row+1}`,
-                "Record_Value": false
+                "Record_Value": "unselected"
             })
         }
         return IdArray;
@@ -484,7 +484,7 @@ export default class ExaminationView extends Component {
             });
                 IdArray[row].push({
                     "Record_ID": `ID9_13_${row + 1}`,
-                    "Record_Value": false
+                    "Record_Value": "unselected"
                 });
             IdArray[row].push({
                 "Record_ID": `ID9_13_a_${row+1}`,
@@ -533,7 +533,7 @@ export default class ExaminationView extends Component {
         for (let i=1; i < question.content.length + 1; i++) {
             checkAnswer.push({
                 "Record_ID": this.switchID(question.id, i),
-                "Record_Value": false
+                "Record_Value": 'unselected'
             })
         }
         return checkAnswer;

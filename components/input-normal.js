@@ -229,6 +229,7 @@ export default class NormalInputComponent extends Component {
     }
 
 
+
     render() {
         const { func , value, title, id, hidden} = this.props;
         return (

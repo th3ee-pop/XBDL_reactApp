@@ -92,7 +92,7 @@ export default class Page_6 extends Component {
             let answeredNum = 0;
             answer.forEach((row, index)=> {
                 for (let col = 1; col < row.length; col ++) {
-                    if (row[col].Record_Value){
+                    if (row[col].Record_Value && row[col].Record_Value !== 'unselected'){
                         answeredNum ++;
                     }
                 }
@@ -101,7 +101,7 @@ export default class Page_6 extends Component {
         } else {
             let num = 0;
             answer.forEach(item => {
-                if(item.Record_Value)
+                if(item.Record_Value && item.Record_Value !== 'unselected')
                     num ++;
             });
             return (num !== 0);

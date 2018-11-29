@@ -94,7 +94,7 @@ export default class Page_1 extends Component {
         } else {
             let num = 0;
             answer.forEach(item => {
-                if(item.Record_Value)
+                if(item.Record_Value && item.Record_Value !== 'unselected')
                     num ++;
             });
             return (num !== 0);

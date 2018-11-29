@@ -199,6 +199,7 @@ export default class HomeScreen extends Component {
                 const itemData = JSON.parse(data).answers;
                 const itemHideState = JSON.parse(data).hide_state;
                 const completeRate = JSON.parse(data).complete_Rate;
+                let itemId;
                 // 从选中的本地记录中，获得数据和题目隐藏的情况
 
                 itemHideState[7].forEach((item, index) => {
@@ -250,6 +251,13 @@ export default class HomeScreen extends Component {
 
 
                 for (let i = 0; i < allTableData.length; i++) {
+                    if (allTableData[i].Record_Value === 'unselected') {
+                        allTableData.splice(i, 1);
+                        i = i - 1;
+                    }
+                    if (allTableData[i].Record_ID === 'ID1_1') {
+                        itemId = allTableData[i].Record_Value;
+                    }
                     if (allTableData[i].Record_ID.substr(0, 7) === 'ID7_8_a' || allTableData[i].Record_ID.substr(0, 7) === 'ID7_8_c' ||allTableData[i].Record_ID.substr(0, 7) === 'ID7_8_d') {
                         if(!allTableData[i].Record_Value)
                         {
@@ -265,84 +273,133 @@ export default class HomeScreen extends Component {
                         allTableData[i].Record_ID = 'ID7_8_f';
                     }
                 }
-                
-                // 填坑，这里网页端的table7_8的存储有点问题，我必须过滤掉所有不是true的选项。
-                fetch("http://39.106.142.184:9501/healthexamination/recordop/", {
-                    method: 'PUT',
-                    body: JSON.stringify({
-                        Records: allTableData
-                    }),
-                    headers: {
-                        "X-CSRFToken": this.state.logged_user.TOKEN,
-                        'Content-Type': 'application/json;charset=utf-8',
-                    }
-                })
-                    .then(response => response.json())
-                    .then((result) => {
-                        if (result.Return === 2 || result.Return === 5) {
-                            this.setState({
-                                uploading: false
-                            }, () => {
-                                Alert.alert(
-                                    '提示',
-                                    '会话过期或其它设备登录，如需继续上传，您可能需要重新登录。',
-                                    [
-                                        {text:'取消', onPress: () => console.log('取消了'), style: 'cancel'},
-                                        {text: '去登录', onPress: () => {
-                                            AsyncStorage.removeItem('_user', (err) => {
-                                                if(err) {
-                                                    alert(err)
-                                                } else {
-                                                    this.props.navigation.navigate('LocalInfo');
-                                                }
-                                            });
-                                        }}
-                                    ]
-                                )
-                            });
-                             // 发送http请求，如果返回token相关的问题，则提示需要登录
-                        } else if (result.Return === 0) {
-                            this.setState({
-                                uploading: false
-                            }, ()=> {
-                                ToastAndroid.show('上传成功', ToastAndroid.SHORT);
-                                const newData = JSON.parse(data);
-                                if (newData.status !== 1) {
-                                    newData.status = 1;
-                                    AsyncStorage.setItem(id, JSON.stringify(newData), (err) => {
-                                        if(err) {
-                                            ToastAndroid.show(err, ToastAndroid.SHORT);
-                                        } else {
-                                            this.state.list.forEach((item, index )=> {
-                                                if(item[0] === id) {
-                                                    this.state.list.splice(index, 1);
-                                                }
-                                            });
-                                            this.state.uploaded_list.push([id, JSON.stringify(newData)]);
-                                            this.setState({
-                                                list: this.state.list,
-                                                uploaded_list: this.state.uploaded_list
-                                            })
-                                        }
-                                    })
-                                }
-                            });
-                             // 上传成功，进行相应处理——已上传的如果再上传，则条目依然在uploaded_list，没有上传的则移出list，放进uploaded_list
-                        } else if (result.Return === 1) {
-                            this.setState({
-                                uploading: false
-                            }, ()=> {
-                                ToastAndroid.show('上传失败，未知错误。', ToastAndroid.SHORT);
-                            });
-                        } // 上传失败的情况，由于后端对于所有上传失败返回都是1，所以只能提示未知错误(经过实践，大概率是Record_ID不正确，或多人同时上传)
+                const checkExisted = new Promise((resolve, reject) => {
+                   fetch(`http://39.106.142.184:9501/healthexamination/checknumber/?q={"number":${itemId}}`, {
+                       method: 'GET',
+                       headers: {
+                           "X-CSRFToken": this.state.logged_user.TOKEN,
+                           'Content-Type': 'application/json;charset=utf-8',
+                       }
+                   }).then(response => response.json())
+                       .then((result) => {
+                           if (result.Return === 0) {
+                               resolve('new Id');
+                           } else if (result.Return === 2 || result.Return === 5) {
+                               this.setState({
+                                   uploading: false
+                               }, () => {
+                                   Alert.alert(
+                                       '提示',
+                                       '会话过期或其它设备登录，如需继续上传，您可能需要重新登录。',
+                                       [
+                                           {text:'取消', onPress: () => console.log('取消了'), style: 'cancel'},
+                                           {text: '去登录', onPress: () => {
+                                                   AsyncStorage.removeItem('_user', (err) => {
+                                                       if(err) {
+                                                           alert(err)
+                                                       } else {
+                                                           this.props.navigation.navigate('LocalInfo');
+                                                       }
+                                                   });
+                                               }}
+                                       ]
+                                   )
+                               });
+                           }
+                           else {
+                               console.log(result);
+                               reject('Id existed');
+                           }
+                       });
+                });
 
-                    }).catch(err => {
+                checkExisted.then((res) => {
+                    fetch("http://39.106.142.184:9501/healthexamination/recordop/", {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                            Records: allTableData
+                        }),
+                        headers: {
+                            "X-CSRFToken": this.state.logged_user.TOKEN,
+                            'Content-Type': 'application/json;charset=utf-8',
+                        }
+                    })
+                        .then(response => response.json())
+                        .then((result) => {
+                            if (result.Return === 2 || result.Return === 5) {
+                                this.setState({
+                                    uploading: false
+                                }, () => {
+                                    Alert.alert(
+                                        '提示',
+                                        '会话过期或其它设备登录，如需继续上传，您可能需要重新登录。',
+                                        [
+                                            {text:'取消', onPress: () => console.log('取消了'), style: 'cancel'},
+                                            {text: '去登录', onPress: () => {
+                                                    AsyncStorage.removeItem('_user', (err) => {
+                                                        if(err) {
+                                                            alert(err)
+                                                        } else {
+                                                            this.props.navigation.navigate('LocalInfo');
+                                                        }
+                                                    });
+                                                }}
+                                        ]
+                                    )
+                                });
+                                // 发送http请求，如果返回token相关的问题，则提示需要登录
+                            } else if (result.Return === 0) {
+                                this.setState({
+                                    uploading: false
+                                }, ()=> {
+                                    ToastAndroid.show('上传成功', ToastAndroid.SHORT);
+                                    const newData = JSON.parse(data);
+                                    if (newData.status !== 1) {
+                                        newData.status = 1;
+                                        AsyncStorage.setItem(id, JSON.stringify(newData), (err) => {
+                                            if(err) {
+                                                ToastAndroid.show(err, ToastAndroid.SHORT);
+                                            } else {
+                                                this.state.list.forEach((item, index )=> {
+                                                    if(item[0] === id) {
+                                                        this.state.list.splice(index, 1);
+                                                    }
+                                                });
+                                                this.state.uploaded_list.push([id, JSON.stringify(newData)]);
+                                                this.setState({
+                                                    list: this.state.list,
+                                                    uploaded_list: this.state.uploaded_list
+                                                })
+                                            }
+                                        })
+                                    }
+                                });
+                                // 上传成功，进行相应处理——已上传的如果再上传，则条目依然在uploaded_list，没有上传的则移出list，放进uploaded_list
+                            } else if (result.Return === 1) {
+                                this.setState({
+                                    uploading: false
+                                }, ()=> {
+                                    ToastAndroid.show('上传失败，未知错误。', ToastAndroid.SHORT);
+                                });
+                            } // 上传失败的情况，由于后端对于所有上传失败返回都是1，所以只能提示未知错误(经过实践，大概率是Record_ID不正确，或多人同时上传)
+
+                        }).catch(err => {
                         this.setState({
                             uploading: false
                         }, ()=> {
                             ToastAndroid.show('您当前不处于网络环境下或网络不佳', ToastAndroid.SHORT);
                         });
-                })
+                    })
+                }).catch((err) => {
+                    this.setState({
+                        uploading: false
+                    }, ()=> {
+                        console.log(err);
+                        ToastAndroid.show('此体检编号已存在。', ToastAndroid.SHORT);
+                    });
+                });
+                // 填坑，这里网页端的table7_8的存储有点问题，我必须过滤掉所有不是true的选项。
+
             }
         })
     }

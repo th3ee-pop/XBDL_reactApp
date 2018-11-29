@@ -31,6 +31,8 @@ export default class TableLineComponent extends Component {
         this.checkValid = this.checkValid.bind(this);
         this.check51Valid = this.check51Valid.bind(this);
         this.changeDateValue = this.changeDateValue.bind(this);
+        this.changeOptionDoubleTrue = this.changeOptionDoubleTrue.bind(this);
+        this.changeOptionDoubleFalse = this.changeOptionDoubleFalse.bind(this);
     }
     componentWillMount() {
         const props = this.props;
@@ -54,6 +56,24 @@ export default class TableLineComponent extends Component {
     }
 
 
+    changeOptionDoubleTrue = (index, method) => {
+        this.state.answers[index].Record_Value = true;
+        this.setState({
+            answers: this.state.answers
+        }, () => {
+            this.props.handleChange(this.props.index, this.state.answers);
+        })
+    };
+
+    changeOptionDoubleFalse = (index, method) => {
+        this.state.answers[index].Record_Value = false;
+        this.setState({
+            answers: this.state.answers
+        }, () => {
+            this.props.handleChange(this.props.index, this.state.answers);
+        })
+    };
+
     changeOptionSingle = (index, method) => {
         this.state.answers[index].Record_Value = !this.state.answers[index].Record_Value;
         if (method === 'single') {
@@ -62,7 +82,6 @@ export default class TableLineComponent extends Component {
                     this.state.answers[opt_index].Record_Value = false;
                 }
             });
-        } else if (method === 'multi') {
         }
         this.setState({
             answers: this.state.answers
@@ -278,6 +297,12 @@ export default class TableLineComponent extends Component {
                 return (
                     <CheckBox isChecked={this.state.answers[index].Record_Value} onClick={() => {this.changeOptionSingle(index, this.props.method)}} style={{padding: 10}}/>
                 );
+            case 'co-check':
+                return (
+                    <View >
+                      <CheckBox rightText={'是'}  onClick={() => {this.changeOptionDoubleTrue(index, this.props.method)}}  isChecked={this.state.answers[index].Record_Value === 'unselected' ? false : this.state.answers[index].Record_Value} />
+                      <CheckBox rightText={'否'}  onClick={() => {this.changeOptionDoubleFalse(index, this.props.method)}}  isChecked={this.state.answers[index].Record_Value === 'unselected' ? false : !this.state.answers[index].Record_Value} />
+                    </View>);
             case 'else':
                 return (
                     <TextInput value={this.state.answers[index].Record_Value}  onChangeText={(value) => {this.changeInputValue(value, index)}}/>
